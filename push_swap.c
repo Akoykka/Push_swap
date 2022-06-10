@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 10:09:42 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/09 15:15:05 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/10 20:02:29 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,6 +498,15 @@ systeemi toimii mutta viela on kymmenkertainen maara liikkeita
 
 tuli idea sellaisesta algosta joka laskee optimaalisen reitin tai olemassa olevat luvut jotka on jarjestyksessa. ja stack b kerataan lukuja joita asetetaan takaisin stack a.
 
+Nukutun yon jalkeen, luodaan int array joka sisaltaa jo oikealla paikalla olevat numerot jotka toimivat referenssina ja joka kerta kun numero pushataan oikealle paikalle se lisataan
+myos listaan 
+
+revelaatio 2: push on kaksi komentoa yhdessa: add to list and rotate
+
+revelaatio 3: unessa etiaisen joka kerto etta kannattaa jakaa b-stack kahteen osioon toinen johon kerataan pienia numeroita ja toiseen puoleen isot numeroita
+
+
+
 */
 int count_operations(char *str)
 {
@@ -513,6 +522,58 @@ int count_operations(char *str)
 	return(answer);
 }
 
+/*
+int *get_best_ascending_order(t_list *head, t_sort *numbers, int index)
+{
+	int *list_of_numbers;
+	t_list *temp;
+
+	if (!temp && (index + 1) > numbers->size)
+		ft_memcpy(numbers->best_asc_order, list_of_numbers, (index + 1)
+
+	if (temp->content > list of number )
+		add it to list
+		get_best_ascending_order(move to next)
+		delete it no need
+		
+	if (temp->content > list of number)
+		dont add it to list
+		get_best_ascending_order(move to next)
+		delete it no need
+
+	else 
+		get_best_ascending_order(move to next)
+
+}
+
+
+
+
+
+
+
+
+//10 20 30 40 50 60 | [ 5  4 ] 3 2 1		tai		1 2 3 4 5 | [ 60  50 ] 40 30 20 10
+
+t_sort *get_number_picking_order(t_list *head, t_sort *numbers)
+{
+	
+	pushed numbers get added to already sorted
+
+
+	malloc t_sort_struct
+
+	get_best_ascending_order
+
+
+	get_best_descending_order
+
+
+
+	free malloc t_sort_struct
+}
+
+*/
 int main(int arg_count, char **arg_values)
 {
 	t_stack *stacks;
