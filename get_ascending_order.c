@@ -47,6 +47,7 @@ void ft_lst_reverse(t_list **head)
 
 	//here are all the resolves when smaller number;
 	//in nondestructive manner must be resolved;
+	//make linked list copy of current and solve it.
 
 
 
