@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:08:48 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/07 20:44:35 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/09 09:02:30 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	ft_print_array(int *array, size_t size)
 	int i;
 
 	i = 0;
+
 	while (size--)
 	{
-		ft_printf("%i\n", array[i]);
+		printf("%i\n", array[i]);
 		++i;
 	}
 
@@ -55,7 +56,7 @@ void print_list(t_list *head)
 	while (temp != NULL)
 	{
 	value = *((int *)temp->content);
-	ft_printf("%i \n", value);
+	printf("%i \n", value);
 	temp = temp->next;
 	}
 }

@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 17:07:39 by akoykka           #+#    #+#              #
-#    Updated: 2022/06/07 17:02:20 by akoykka          ###   ########.fr        #
+#    Updated: 2022/06/09 08:34:49 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c \
 	ft_lst_del_one.c ft_lst_del.c ft_lst_push_top.c ft_lst_move_to_top.c\
 	ft_memrcpy.c ft_lst_count.c ft_lst_get_tail.c ft_lst_move_one_to_tail.c\
 	get_next_line.c
-	
+
 
 OBJECTS = $(SRCS:%.c=%.o)
 
@@ -44,21 +44,21 @@ INCLUDES = includes/
 
 all: $(NAME)
 
-$(NAME): 
+$(NAME):
 	gcc -c -Wall -Wextra -Werror $(SRCS) -I $(INCLUDES)
 	ar rc $(NAME) $(OBJECTS)
 	ranlib $(NAME)
-	make -C ft_printf/
 
-clean: 
+
+clean:
 	rm -f $(OBJECTS)
-	make clean -C ft_printf/
+
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C ft_printf/
+
 
 re: fclean all
-	
+
 norm:
 	norminette $(SRCS)

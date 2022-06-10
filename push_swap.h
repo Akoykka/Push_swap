@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:35:55 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/08 15:27:05 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/09 09:00:20 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft/includes/libft.h"
-# include "libft/ft_printf/ft_printf.h"
 # define ASCENDING 1
 # define DESCENDING 0
 
 typedef struct s_stack
 {
 	char 	premoves[10000];
-	
+
 	t_list	*head_a;
 	int		size_a;
 	char	operations_a[500000];
@@ -41,7 +40,7 @@ void	ft_print_array(int *array, size_t size);
 
 //Preparations
 t_stack	*make_struct(int argc, char **argv);
-t_list 	*make_list(int *array, int size);
+t_list 	*make_list(char **array, int size);
 
 
 /*

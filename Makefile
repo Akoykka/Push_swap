@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/06/08 15:34:37 by akoykka          ###   ########.fr        #
+#    Updated: 2022/06/09 15:15:08 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = push_swap
 
 INCLUDES = -I .
 
-LIB = -lft -L./libft -lftprintf -L./libft/ft_printf
+LIB = -lft -L./libft
 #
 SOURCES = push_swap.c utils.c
 
@@ -27,7 +27,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C libft/
-	$(COMPILER)  $(SOURCES)  $(INCLUDES) $(FLAGS) $(NAME) $(LIB) 
+	$(COMPILER)  $(SOURCES)  $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
 
 clean:
 	make clean -C libft/
@@ -86,7 +86,7 @@ re: fclean all
 
 #$(NAME):
 ##	make -C libft/
-#	$(COMPILER) $(SOURCES) $(INCLUDES)  $(FLAGS) $(NAME) $(LIB) 
+#	$(COMPILER) $(SOURCES) $(INCLUDES)  $(FLAGS) $(NAME) $(LIB)
 
 #clean:
 #	rm -f $(OBJECTS)
