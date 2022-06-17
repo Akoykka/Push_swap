@@ -18,3 +18,5 @@ while (argv[1][i])
 	write(1, &argv[1][i], 1);
 return 0;
 }
+
+

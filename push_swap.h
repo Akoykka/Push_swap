@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:35:55 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/14 15:41:56 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/17 13:10:13 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,19 @@ typedef struct s_stack
 
 }			t_stack;
 
-//typedef struct s_sort
-//{
-//	int current[500];
-//	int best_combination[500];
-//	int best_size;
-//}			t_sort;
+typedef struct s_mnode
+{
+	void 	*content;
+	size_t	content_size;
+	struct	s_mnode **next;
+	size_t	next_size;
+
+}			 t_mnode;
 
 // Utils (utils.c)
 
 void	ft_error (void);
 void 	print_list(t_list *head);
-int		*char_array_to_int_array(int argc, char **argv);
 void	ft_print_array(int *array, size_t size);
 
 

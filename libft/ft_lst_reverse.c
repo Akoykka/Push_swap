@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lst_del.c                                       :+:      :+:    :+:   */
+/*   ft_lst_reverse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 17:32:36 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/17 13:10:14 by akoykka          ###   ########.fr       */
+/*   Created: 2022/06/17 11:08:34 by akoykka           #+#    #+#             */
+/*   Updated: 2022/06/17 11:09:49 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-void	ft_lst_del(t_list **alst, void (*del)(void *, size_t))
+void ft_lst_reverse(t_list **head)
 {
-	t_list	*one_ahead;
-	t_list	*current;
+	t_list	*temp_prevnode;
+	t_list	*temp;
+	t_list	*temp_nextnode;
 
-	if (!alst || !del)
+	temp_prevnode = NULL;
+	temp_nextnode = NULL;
+	if (!head || !*head)
 		return ;
-	current = *alst;
-	while (current)
+	temp = *head;
+	while (temp)
 	{
-		one_ahead = current->next;
-		del(current->content, current->content_size);
-		free(current);
-		current = one_ahead;
+		temp_nextnode = temp->next;
+		temp->next = temp_prevnode;
+		temp_prevnode = temp;
+		temp = temp_nextnode;
 	}
-	*alst = NULL;
+	*head = temp_prevnode;
 }

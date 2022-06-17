@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:08:48 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/09 09:02:30 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/17 11:11:03 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,36 @@ void print_list(t_list *head)
 	printf("%i \n", value);
 	temp = temp->next;
 	}
+}
+
+void push_to(t_stack *stacks, char push_to_stack)
+{
+	if (push_to_stack == 'a' && stacks->size_b)
+	{
+		ft_lst_push_top(&(stacks->head_b), &(stacks->head_a));
+		++(stacks->size_a);
+		--(stacks->size_b);
+	}
+	if (push_to_stack == 'b' && stacks->size_a)
+	{
+		ft_lst_push_top(&(stacks->head_a), &(stacks->head_b));
+		++(stacks->size_b);
+		--(stacks->size_a);
+	}
+}
+
+void swap(t_stack *stacks, char target_stack)
+{
+	if (target_stack == 'a' && stacks->size_a > 1)
+		ft_lst_move_to_top(&stacks->head_a, (stacks->head_a)->next);
+	if (target_stack == 'b' && stacks->size_b > 1)
+		ft_lst_move_to_top(&stacks->head_b, (stacks->head_b)->next);
+}
+
+void rotate(t_stack *stacks, char target_stack)
+{
+	if (target_stack == 'a' && stacks->size_a > 1)
+		ft_lst_move_one_to_tail(&stacks->head_a, stacks->head_a);
+	if (target_stack == 'b' && stacks->size_b > 1)
+		ft_lst_move_one_to_tail(&stacks->head_b, stacks->head_b);
 }

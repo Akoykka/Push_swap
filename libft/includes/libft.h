@@ -88,6 +88,7 @@ void 	ft_lst_move_to_top(t_list **head, t_list *target);
 void 	ft_lst_push_top(t_list **src, t_list **dest);
 t_list	*ft_lst_get_tail(t_list *head);
 void 	ft_lst_move_one_to_tail(t_list **head, t_list *target);
+void 	ft_lst_reverse(t_list **head);
 
 void	*ft_memrcpy(void *dst, const void *src, size_t n);
 char	*ft_strndup(const char *s1, size_t n);

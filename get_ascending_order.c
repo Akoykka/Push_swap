@@ -22,7 +22,6 @@ void ft_lst_reverse(t_list **head)
 	if (!head || !*head)
 		return;
 	temp = *head;
-
 	while (temp)
 	{
 		temp_nextnode = temp->next;

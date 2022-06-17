@@ -6,10 +6,63 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 18:41:51 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/07 17:16:19 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/17 11:10:23 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+void ft_lst_reverse(t_list **head)
+{
+	t_list	*temp_prevnode;
+	t_list	*temp;
+	t_list	*temp_nextnode;
+
+	temp_prevnode = NULL;
+	temp_nextnode = NULL;
+	if (!head || !*head)
+		return ;
+	temp = *head;
+	while (temp)
+	{
+		temp_nextnode = temp->next;
+		temp->next = temp_prevnode;
+		temp_prevnode = temp;
+		temp = temp_nextnode;
+	}
+	*head = temp_prevnode;
+}
+
+int get_nth_highest_number(t_list *head, int n)
+	{
+		t_list *temp;
+		int max;
+		int cur_max;
+
+		cur_max = -2147483647;
+		max = -2147483647;
+		temp = head;
+		while(temp != NULL)
+		{
+			if (*((int *)temp->content) > max)
+				max = *((int *)temp->content);
+			temp = temp->next;
+		}
+
+		while(--n)
+		{
+			temp = head;
+			cur_max = -2147483647;
+			while(temp != NULL)
+			{
+				if (*((int *)temp->content) > cur_max
+				&& *((int *)temp->content) < max)
+					cur_max = *((int *)temp->content);
+				temp = temp->next;
+			}
+			max = cur_max;
+		}
+		return(max);
+	}
+	
 /*
 sa : swap a - swap the first 2 elements at the top of stack a. Do nothing if there
 is only one or no elements).
