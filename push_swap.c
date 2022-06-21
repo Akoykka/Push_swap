@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 10:09:42 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/20 20:29:47 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/21 14:42:30 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,56 +157,80 @@ void print_mnode(t_mnode *head)
 	}
 
 }
-int get_max_depth(t_mnode *head, int *value, int depth)
+void get_insert_point(t_mnode *head, int *value, int *depth, int curr_depth, t_mnode **point)
 {
 	size_t i;
-	int answer;
 
-	answer = 0;
 	i = 0;
-	if (head && *(int *)(head->content) < *value)
-	{
-		while (head->next_size > i)
-		{
-			if ()
-			{
-				return(get_max_depth((head->next)[i], value, depth + 1));
-			}
+	if (!head || !head->content || !value || !depth)
+		return ;
 
-		}
+	if (*(int *)(head->content) > *value)
+	{
+		return ;
 	}
-	return(0);
+	if (*depth < curr_depth)
+	{
+		*depth = curr_depth;
+		head = *point;
+	}
+	while (head->next_size > i)
+	{
+		get_insert_point((head->next)[i], value, depth, curr_depth + 1, point);
+		++i;
+	}
 }
 
 
 void insert_to_mnode(t_mnode *head, t_mnode *new)
 {
+	int *depth;
+	t_mnode *insert_point;
 
-	kun noden pienin next arvo on isompi kuin asetettava arvo
-	kun node itsessaan on pienempi kuin asetettava arvo
+	insert_point = NULL;
+	*depth = 0;
+	get_insert_point(head, new->content, depth, 0, &insert_point);
+	ft_mnode_insert(insert_point, new);
+}
 
-	rekursio
+int get_depth(t_mnode *tree, int depth)
+{
+	size_t i; /// this makes no sense
 
-	ensiksi mitataan syvin paikka mihin arvo sopii;
-	get_max_depth(head, new->content);
+	i = 0;
+	while (tree->next_size > i)
+	{
+		depth = get_depth((tree->next)[i], depth + 1);
+		++i;
+	}
+	return(depth);
+}
+t_list *find_n_cpy_longest_branch(t_mnode *tree)
+{
+	t_list *copy;
+	int max_depth;
 
-	sitten kun depth on tama arvo niin ekaan loytyvaan paikkaan ft_mnode_insert
+	copy = NULL;
+	max_depth = get_depth(tree);
 
 
 
+
+
+	return(copy)
 }
 
 t_list *get_longest_list(t_list *list)
 {
-	int low;
+	int start_value;
 	t_mnode *temp;
 
 	temp = NULL;
-	low = *(int *)(list->content);
+	start_value = *(int *)(list->content);
 
 	while (list)
 	{
-		if (*(int *)(temp->content) >= low)
+		if (*(int *)(temp->content) >= start_value)
 		{
 			if (temp == NULL)
 			{
@@ -219,14 +243,16 @@ t_list *get_longest_list(t_list *list)
 		}
 		list = list->next;
 	}
-	return(cpy_longest_depth(temp));
+	//cpy_longest_depth(temp)
+	//free everything
+	return(temp);
 }
 
 
 t_list *make(t_list *temp)
 {
 	int low;
-	t_list longest_list
+	t_list *longest_list;
 
 	low = *(int *)(temp->content);
 
