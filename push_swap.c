@@ -5,297 +5,154 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/07 10:09:42 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/21 14:42:30 by akoykka          ###   ########.fr       */
+/*   Created: 2022/06/22 12:07:05 by akoykka           #+#    #+#             */
+/*   Updated: 2022/06/22 14:41:00 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-	t_list *make_list(char **array, int size)
-	{
-		t_list *head = NULL;
-		t_list *new;
-		int number;
-		int i;
 
-		i = 0;
-
-		while(i < size)
-		{
-			number = ft_atoi(array[i]);
-			new = ft_lst_new(&number, 4);
-			ft_lst_add(&head, new);
-			++i;
-		}
-		ft_lst_reverse(&head);
-		return (head);
-	}
-
-
-	t_stack *make_struct(int arg_count, char **argv)
-	{
-		t_stack *stacks;
-		t_list *head_array_a;
-
-		stacks = (t_stack *)ft_memalloc(sizeof(t_stack));
-		stacks->head_a = make_list(argv, arg_count);
-
-		////
-		printf("Print list: head_a\n");
-		print_list(stacks->head_a);
-		printf("Length of list is: %zu\n", ft_lst_count(stacks->head_a));
-		/////
-
-		stacks->head_b = NULL;
-		stacks->size_a = arg_count;
-		stacks->size_b = 0;
-		ft_memset(stacks->operations_a, '\0', 50000);
-		ft_memset(stacks->operations_b, '\0', 50000);
-		return (stacks);
-	}
-
-void ft_mnode_insert(t_mnode *dst, t_mnode *new_mnode)
+int *make_int_array(int arg_count, char **arg_values)
 {
-	int 	i;
-	t_mnode **new_next_index;
+	size_t	i;
+	int *array;
 
 	i = 0;
-	new_next_index = (t_mnode **)ft_memalloc(sizeof(t_mnode *) * (dst->next_size + 1));
-
-	while (i < (dst->next_size))
+	array = (int *)ft_memalloc(sizeof(int) * arg_count);
+	while (arg_count > i)
 	{
-		new_next_index[i] = (dst->next)[i];
+		array[i] = ft_atoi(arg_values[i]);
 		++i;
 	}
-	(new_next_index)[i] = new_mnode;
-	++(dst->next_size);
-	//free old dst->next
-	dst->next = new_next_index;
+	return(array);
 }
 
-void ft_mnode_destroy(t_mnode **root)
+void get_longest_branch(t_mnode *tree, t_solve *answer, size_t depth)
 {
 	size_t i;
 
 	i = 0;
-	if (!root || !*root)
-		return ;
-	while(i < (*root)->next_size)
+	if (!tree)
+		return;
+
+	(answer->current)[depth] = *(int *)(tree->content);
+
+	if (depth > answer->answer_depth)
 	{
-		ft_mnode_destroy(&((*root)->next)[i]);
-		++i;
-	}
-	if ((*root)->content != NULL)
-	{
-		ft_memdel(&((*root)->content));
-	}
-	ft_memdel((void *)root);
-}
-
-
-t_mnode *ft_mnode_new(void const *content, size_t content_size)
-{
-	t_mnode *fresh;
-
-	fresh = (t_mnode *)ft_memalloc(sizeof(t_mnode));
-	if (!fresh)
-		return (NULL);
-	fresh->next_size = 0;
-	fresh->content_size = 0;
-	fresh->content = NULL;
-	fresh->next = NULL;
-	if (content != NULL)
-	{
-		fresh->content = (void *)ft_memalloc(content_size);
-		if (!fresh->content)
-		{
-			free(fresh);
-			return (NULL);
-		}
-		ft_memcpy(fresh->content, content, content_size);
-		fresh->content_size = content_size;
-	}
-	return (fresh);
-}
-
-
-void print_input(void *content)
-{
-	int result;
-
-	result = *(int *)content;
-
-	printf("INPUT IS %d\n", result);
-
-
-}
-
-
-
-
-
-
-void print_mnode(t_mnode *head)
-{
-	int i;
-
-	i = 0;
-	if(!head)
-	{
-		printf("nothing found\n");
-		return ;
+		answer->answer_depth = depth;
+		ft_memcpy(answer->answer, answer->current, depth);
 	}
 
-	if (head->content != NULL)
-		printf("print_mnode %d\n", *(int *)(head->content));
-
-	printf("%zu indexes found:\n", head->next_size);
-	while (i < head->next_size)
-	{
-		print_mnode((head->next)[i++]);
-	}
-
-}
-void get_insert_point(t_mnode *head, int *value, int *depth, int curr_depth, t_mnode **point)
-{
-	size_t i;
-
-	i = 0;
-	if (!head || !head->content || !value || !depth)
-		return ;
-
-	if (*(int *)(head->content) > *value)
-	{
-		return ;
-	}
-	if (*depth < curr_depth)
-	{
-		*depth = curr_depth;
-		head = *point;
-	}
-	while (head->next_size > i)
-	{
-		get_insert_point((head->next)[i], value, depth, curr_depth + 1, point);
-		++i;
-	}
-}
-
-
-void insert_to_mnode(t_mnode *head, t_mnode *new)
-{
-	int *depth;
-	t_mnode *insert_point;
-
-	insert_point = NULL;
-	*depth = 0;
-	get_insert_point(head, new->content, depth, 0, &insert_point);
-	ft_mnode_insert(insert_point, new);
-}
-
-int get_depth(t_mnode *tree, int depth)
-{
-	size_t i; /// this makes no sense
-
-	i = 0;
 	while (tree->next_size > i)
 	{
-		depth = get_depth((tree->next)[i], depth + 1);
+		get_longest_branch((tree->next)[i], answer, depth + 1);
 		++i;
 	}
-	return(depth);
-}
-t_list *find_n_cpy_longest_branch(t_mnode *tree)
-{
-	t_list *copy;
-	int max_depth;
-
-	copy = NULL;
-	max_depth = get_depth(tree);
-
-
-
-
-
-	return(copy)
 }
 
-t_list *get_longest_list(t_list *list)
+int move_array_pointer_and_adjust_size(int **array, size_t size)
 {
-	int start_value;
-	t_mnode *temp;
+	size_t i;
 
-	temp = NULL;
-	start_value = *(int *)(list->content);
+	i = 0;
 
-	while (list)
+	while(*array >= array[i] && i < size)
 	{
-		if (*(int *)(temp->content) >= start_value)
+		++i;
+	}
+
+	array = array + i;
+	return (size - i);
+}
+void get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth)
+{
+	size_t i;
+
+	i = 0;
+	if (!mtree)
+		return ;
+	if (temp->value < *(int *)(mtree->content))
+		return ;
+	if (temp->max_depth < depth)
+	{
+		temp->max_depth = depth;
+		temp->insert_point = mtree;
+	}
+	while (mtree->next_size > i)
+	{
+		get_insert_point((mtree->next)[i], temp, depth + 1);
+		++i;
+	}
+}
+
+void add_to_tree(t_mnode *mtree, void *content, size_t content_size);
+{
+	t_insert *temp;
+
+	temp = (t_insert *)ft_memalloc(sizeof(t_insert));
+	temp->value = *(int *)content;
+	temp->head = mtree;
+	temp->max_depth = 0;
+	temp->insert_point = NULL;
+	get_insert_point(mtree, temp, 0);
+	ft_mnode_insert(temp->insert_point, ft_mnode_new(content, content_size));
+	free(temp);
+}
+
+t_solve *solve_numbers_asc(int *array, size_t size)
+{
+	size_t i;
+	t_mnode *mtree;
+	t_solve	*answer;
+
+	answer = (t_solve *)ft_memalloc(sizeof(t_solve));
+	mtree = NULL;
+	while (size)
+	{
+		i = 0;
+		while (size > i)
 		{
-			if (temp == NULL)
+			if (array[i] >= *array)
 			{
-				temp = ft_mnode_new(list->content, list->content_size);
-			}
-			else
-			{
-				insert_to_mnode(temp, ft_mnode_new(list->content, list->content_size));
+				if	(mtree == NULL)
+					ft_mnode_new(array[i], sizeof(int));
+				else
+					add_to_tree(mtree, array[i], sizeof(int));
 			}
 		}
-		list = list->next;
+		//get_answer_compare_and_save()
+		
+		get_longest_branch(mtree, answer, 0);
+		//destroy_tree();
+		ft_mnode_destroy(&mtree);
+		//move_pointer_to_next_lower_val_and_adjust_size()
+		size = move_array_pointer_and_adjust_size(&array, size);
 	}
-	//cpy_longest_depth(temp)
-	//free everything
-	return(temp);
+	return (answer);
 }
 
-
-t_list *make(t_list *temp)
+void ft_print_int_array(int *array, size_t size)
 {
-	int low;
-	t_list *longest_list;
-
-	low = *(int *)(temp->content);
-
-	while (temp)
+	while (size--)
 	{
-		if(temp->content && *(int *)(temp->content) <= low)
-		{
-			printf("contents are %i\n", *(int *)(temp->content));
-			low = *(int *)(temp->content);
-		}
-		temp = temp->next;
+		printf("%i\n", *array);
+		++array;
 	}
-	printf("end of list\n");
-
-	return (longest_list);
 }
 
 
-
-
-
-int main(int arg_count, char **arg_values)
+void main (int arg_count, char **arg_values)
 {
-	t_stack *stacks;
-	t_list *optimal_asc;
-	t_mnode *head;
-	t_mnode *leg;
+	int		*array;
+	t_solve *solve_values;
 
 	arg_values += 1;
 	arg_count -= 1;
-	if (arg_count == 0)
-		ft_error();
-	int number = 9;
-	stacks = make_struct(arg_count, arg_values);
-	optimal_asc = make(stacks->head_a);
-	head = ft_mnode_new((void *)&number, sizeof(int));
-	number = 11;
-	ft_mnode_insert(head, ft_mnode_new((void *)&number, sizeof(int)));
-	ft_mnode_insert(head, ft_mnode_new((void *)&number, sizeof(int)));
-	ft_mnode_insert(head, ft_mnode_new((void *)&number, sizeof(int)));
+	
+	array = make_int_array(arg_count, arg_values);
+	
+	solve_values = solve_numbers_asc(array, arg_count);
 
-	print_mnode(head);
-	ft_mnode_destroy(&head);
-	print_mnode(head);
-	return (0);
+	ft_print_int_array(solve_values->answer, solve_values->answer_depth);
 }

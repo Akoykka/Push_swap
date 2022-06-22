@@ -23,6 +23,15 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct s_mnode
+{
+	void 	*content;
+	size_t	content_size;
+	struct	s_mnode **next;
+	size_t	next_size;
+
+}			 t_mnode;
+
 int		ft_atoi(const char *str);
 char	*ft_strcpy(char *dst, const char *src);
 char	*ft_strncpy(char *dst, const char *src, size_t len);
@@ -94,4 +103,7 @@ void	*ft_memrcpy(void *dst, const void *src, size_t n);
 char	*ft_strndup(const char *s1, size_t n);
 t_list	*ft_findtail(t_list *start);
 
+t_mnode	*ft_mnode_new(void const *content, size_t content_size);
+void	ft_mnode_destroy(t_mnode **root);
+void	ft_mnode_insert(t_mnode *dst, t_mnode *new_mnode);
 #endif

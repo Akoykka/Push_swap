@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/06/09 15:15:08 by akoykka          ###   ########.fr        #
+#    Updated: 2022/06/22 14:40:27 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ INCLUDES = -I .
 
 LIB = -lft -L./libft
 #
-SOURCES = push_swap.c utils.c
+SOURCES = push_swap.c
 
 COMPILER = gcc
 
