@@ -6,12 +6,24 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 12:07:05 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/24 15:30:41 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/28 17:00:51 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+void ft_print_int_array(int *array, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	while (size > i)
+	{
+		printf("%i\n", *array);
+		++array;
+		++i;
+	}
+}
 
 int *make_int_array(int arg_count, char **arg_values)
 {
@@ -33,19 +45,30 @@ void get_longest_branch(t_mnode *tree, t_solve *answer, size_t depth)
 	size_t i;
 
 	i = 0;
-	if (!tree)
-		return;
+	//if (!tree)
+	//{
+	//	printf("endofbranch\n");
+	//	return;
+	//}
 
 	(answer->current)[depth] = *(int *)(tree->content);
-
-	if (depth > answer->answer_depth)
+	//////
+	printf("copy_to_current depth: %zu\n", depth);
+	ft_print_int_array(answer->current, depth);
+	
+	if (depth == 0 || depth > answer->answer_depth) ////depth to -1 or something first possible 
 	{
 		answer->answer_depth = depth;
-		ft_memcpy(answer->answer, answer->current, depth);
+		ft_memcpy(answer->answer, answer->current, sizeof(int) * (depth + 1));
+		////////
+		printf("longest found:\n");
+		ft_print_int_array(answer->answer, answer->answer_depth + 1);
 	}
 
 	while (tree->next_size > i)
 	{
+		printf("going down(longest_branch):\n");
+		/////
 		get_longest_branch((tree->next)[i], answer, depth + 1);
 		++i;
 	}
@@ -70,16 +93,26 @@ void get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth)
 
 	i = 0;
 	if (!mtree)
-		return ;
-	if (temp->value < *(int *)(mtree->content))
-		return ;
-	if (temp->max_depth < depth)
 	{
+		//printf("end of mtree (depth:%zu\n", depth);
+		return ;
+	}
+	if (temp->value < *(int *)(mtree->content))
+	{
+		//printf("temp value smaller (temp: %i mtree->content %i\n", temp->value, *(int *)mtree->content);
+		return ;
+	}
+	if (temp->max_depth <= depth)
+	{
+		
 		temp->max_depth = depth;
 		temp->insert_point = mtree;
+		//printf("insert_point found: max_depth %zu\n", temp->max_depth);
+		//printf("insert point addr: %p\n", temp->insert_point);
 	}
 	while (mtree->next_size > i)
 	{
+		
 		get_insert_point((mtree->next)[i], temp, depth + 1);
 		++i;
 	}
@@ -93,6 +126,7 @@ void add_to_tree(t_mnode *mtree, void *content, size_t content_size)
 	temp->value = *(int *)content;
 	temp->max_depth = 0;
 	temp->insert_point = NULL;
+	//printf("trying to find insert point\n");
 	get_insert_point(mtree, temp, 0);
 	ft_mnode_insert(temp->insert_point, ft_mnode_new(content, content_size));
 	free(temp);
@@ -114,11 +148,17 @@ t_solve *solve_numbers_asc(int *array, size_t size)
 		{
 			if (array[i] >= array[0])
 			{
-				printf("i=%zutrying to insert %i\tcurrent low is %i\n",i, array[i], array[0]);
+				//printf("i=%zutrying to insert %i\tcurrent low is %i\n",i, array[i], array[0]);
 				if	(mtree == NULL)
-					ft_mnode_new(&array[i], sizeof(int));
+				{
+					//printf("mtree is null. making a new\n");
+					mtree = ft_mnode_new(&array[i], sizeof(int));
+				}
 				else
+				{
+					//printf("mtree exists, adding on to it\n");
 					add_to_tree(mtree, &array[i], sizeof(int));
+				}
 			}
 			++i;
 		}
@@ -133,14 +173,7 @@ t_solve *solve_numbers_asc(int *array, size_t size)
 	return (answer);
 }
 
-void ft_print_int_array(int *array, size_t size)
-{
-	while (size--)
-	{
-		printf("%i\n", *array);
-		++array;
-	}
-}
+
 
 
 int main (int arg_count, char **arg_values)
@@ -154,7 +187,64 @@ int main (int arg_count, char **arg_values)
 	array = make_int_array(arg_count, arg_values);
 	ft_print_int_array(array, (size_t)arg_count);
 	solve_values = solve_numbers_asc(array, arg_count);
+	printf("END:\n the answer_depth is %zu\n", solve_values->answer_depth + 1);
+	ft_print_int_array(solve_values->answer, (solve_values->answer_depth + 1));
 
-	ft_print_int_array(solve_values->answer, solve_values->answer_depth);
+
+
 	return (0);
 }
+/*
+	 make_sort_struct
+	{
+		unsolved = copy_stack(stack_a)
+		move ascending numbers to solved;
+		move ascending numbers to asc;
+		move descending numbers to desc;
+	}
+
+	
+
+	while (unsolved)
+	{
+		if stack_a value is in lists
+			
+		
+		while stack_b first or last value is smaller than next solved 
+			push first values first if true 
+				record move
+				push b to a
+				push corresponding to solved list
+				check_lists if asc or desc empty 
+
+
+					sorted 1 2 3 4 5 6 7 11 35 49
+
+	              50 40 30 20 10 | 1 2 |3 4 5 6 7
+
+				   50 40 30 20 10 |9 16| 17 19 44 80 
+
+								|1 2| 3 4 5 6 7 8 11 41 35 49  
+
+
+				7 1 8 2 3 9 
+
+				sorted = 1 4 7 9 11 12 20 21 28 49
+
+				asc =  2 23 29 31 34
+				desc = 
+
+				esiintymisjarjestyksessa 29 26 20 8 9 10 18 16 22 24 30 
+
+				unsorted = 27 12 23 7 28 4 25 5 21 
+
+
+
+	6 8 47 24 38 1 17 46 14 10 4 27 7 35 26 18 45 48 16 32 25 44 36 42 43 3 15 9 40 30 11 37 5 22 12 50 41 2 33 39 23 29 20 21 31 28 13 19 49 34
+	
+	
+	
+	
+
+	} 
+	*/

@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 17:07:39 by akoykka           #+#    #+#              #
-#    Updated: 2022/06/22 10:45:31 by akoykka          ###   ########.fr        #
+#    Updated: 2022/06/28 12:08:59 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ INCLUDES = includes/
 all: $(NAME)
 
 $(NAME):
-	gcc -c -Wall -Wextra -Werror $(SRCS) -I $(INCLUDES)
+	gcc -c -g -Wall -Wextra -Werror $(SRCS) -I $(INCLUDES)
 	ar rc $(NAME) $(OBJECTS)
 	ranlib $(NAME)
 

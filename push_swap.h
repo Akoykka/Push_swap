@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 12:18:08 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/24 14:52:29 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:46:48 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,17 @@ typedef struct s_insert
 	size_t		max_depth;
 	t_mnode 	*insert_point;
 }			t_insert;
+/*
+typedef struct s_sort
+{
+	moves[50000];
+	t_list *stack_a;
+	t_list *stack_b;
 
+	t_list *unsolved;
+	t_list *asc;
+	t_list *desc;
+	t_list *solved;
+}
+*/
 #endif
