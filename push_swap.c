@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 12:07:05 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/22 14:43:30 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/24 15:30:41 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,18 @@ void get_longest_branch(t_mnode *tree, t_solve *answer, size_t depth)
 	}
 }
 
-int move_array_pointer_and_adjust_size(int **array, size_t size)
+int move_array_pointer_and_adjust_size(int *array, size_t size)
 {
 	size_t i;
 
 	i = 0;
 
-	while(*array >= array[i] && i < size)
+	while (i < size && array[i] >= array[0])
 	{
 		++i;
 	}
-
-	array = array + i;
-	return (size - i);
+	printf("move pointer %zu forward\n", i);
+	return (i);
 }
 void get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth)
 {
@@ -86,13 +85,12 @@ void get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth)
 	}
 }
 
-void add_to_tree(t_mnode *mtree, void *content, size_t content_size);
+void add_to_tree(t_mnode *mtree, void *content, size_t content_size)
 {
 	t_insert *temp;
 
 	temp = (t_insert *)ft_memalloc(sizeof(t_insert));
 	temp->value = *(int *)content;
-	temp->head = mtree;
 	temp->max_depth = 0;
 	temp->insert_point = NULL;
 	get_insert_point(mtree, temp, 0);
@@ -103,6 +101,7 @@ void add_to_tree(t_mnode *mtree, void *content, size_t content_size);
 t_solve *solve_numbers_asc(int *array, size_t size)
 {
 	size_t i;
+	size_t forward = 0;
 	t_mnode *mtree;
 	t_solve	*answer;
 
@@ -113,21 +112,23 @@ t_solve *solve_numbers_asc(int *array, size_t size)
 		i = 0;
 		while (size > i)
 		{
-			if (array[i] >= *array)
+			if (array[i] >= array[0])
 			{
+				printf("i=%zutrying to insert %i\tcurrent low is %i\n",i, array[i], array[0]);
 				if	(mtree == NULL)
-					ft_mnode_new(array[i], sizeof(int));
+					ft_mnode_new(&array[i], sizeof(int));
 				else
-					add_to_tree(mtree, array[i], sizeof(int));
+					add_to_tree(mtree, &array[i], sizeof(int));
 			}
+			++i;
 		}
 		//get_answer_compare_and_save()
-		
+
 		get_longest_branch(mtree, answer, 0);
-		//destroy_tree();
 		ft_mnode_destroy(&mtree);
-		//move_pointer_to_next_lower_val_and_adjust_size()
-		size = move_array_pointer_and_adjust_size(&array, size);
+		forward = move_array_pointer_and_adjust_size(array, size);
+		array += forward;
+		size -= forward;
 	}
 	return (answer);
 }
@@ -142,17 +143,18 @@ void ft_print_int_array(int *array, size_t size)
 }
 
 
-void main (int arg_count, char **arg_values)
+int main (int arg_count, char **arg_values)
 {
 	int		*array;
 	t_solve *solve_values;
 
 	arg_values += 1;
 	arg_count -= 1;
-	
+
 	array = make_int_array(arg_count, arg_values);
-	
+	ft_print_int_array(array, (size_t)arg_count);
 	solve_values = solve_numbers_asc(array, arg_count);
 
 	ft_print_int_array(solve_values->answer, solve_values->answer_depth);
+	return (0);
 }
