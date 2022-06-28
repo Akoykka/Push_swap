@@ -106,4 +106,6 @@ t_list	*ft_findtail(t_list *start);
 t_mnode	*ft_mnode_new(void const *content, size_t content_size);
 void	ft_mnode_destroy(t_mnode **root);
 void	ft_mnode_insert(t_mnode *dst, t_mnode *new_mnode);
+
+int		*ft_invert_int_array(int *array, size_t size);
 #endif
