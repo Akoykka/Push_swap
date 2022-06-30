@@ -90,7 +90,7 @@ t_list	*ft_lst_new(void const *content, size_t content_size);
 void	ft_lst_add(t_list **alst, t_list *new);
 void	ft_lst_iter(t_list *lst, void (*f)(t_list *elem));
 t_list	*ft_lst_map(t_list *lst, t_list *(*f)(t_list *elem));
-void	ft_lst_del_one(t_list **alst, void (*del)(void*, size_t));
+void	ft_lst_del_one(t_list **head, t_list *target, void (*del)(void*, size_t));
 void	ft_lst_del(t_list **alst, void (*del)(void *, size_t));
 size_t	ft_lst_count(t_list *start);
 void 	ft_lst_move_to_top(t_list **head, t_list *target);
