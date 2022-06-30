@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 12:07:05 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/28 22:39:45 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/06/30 10:20:08 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,35 @@ t_solve *solve_numbers_asc(int *array, size_t size)
 	return (answer);
 }
 
+char **parse_input(int arg_count, char **arg_values)
+{
+	/// miten tietaa onko inputissa useampi luku
 
+	/// miten tarkistaa onko kaikki lukuja ja valilla int_min int_max
+
+	/// lopulta muokkaus muotoon char **array
+
+	size_t i;
+	size_t new_i;
+	char **new;
+
+	i = 0;
+	new_i = 0;
+	new = (char **)ft_memalloc(sizeof(char *) * arg_count + 1);
+
+	while (arg_count > i && *(arg_values[i]))
+		is_number()
+		is_in_int_range()
+		new[new_i] = copynumber
+
+
+
+
+
+
+
+
+}
 
 
 int main (int arg_count, char **arg_values)
@@ -205,6 +233,7 @@ int main (int arg_count, char **arg_values)
 	arg_values += 1;
 	arg_count -= 1;
 
+	arg_values = parse_input(arg_count, arg_values);
 	array = make_int_array(arg_count, arg_values);
 	//ft_print_int_array(array, (size_t)arg_count);
 	answer = solve_numbers_asc(array, arg_count);
@@ -221,18 +250,36 @@ int main (int arg_count, char **arg_values)
 	answer = solve_numbers_asc(array, arg_count);
 	printf("DESCENDING:\n the answer_depth is %zu\n", answer->answer_depth + 1);
 	//ft_print_int_array(answer->answer, (answer->answer_depth + 1));
-
+	make_sort_struct(array);
 
 	return (0);
 }
-/*
-	 make_sort_struct
+
+	 structname *make_sort_struct(int *array, size_t size);
 	{
+		make linked list out of int array;
 		unsolved = copy_stack(stack_a)
-		move ascending numbers to solved;
-		move ascending numbers to asc;
-		move descending numbers to desc;
+		solved = solve_numbers
+		under_sort = null
 	}
+
+	while (unsolved)
+	{
+		if (!under_sort)
+		{
+			fill_under_sort()
+			get_direction()
+		}
+		while(*(under_sort->contents) == *(stack_a->contents)
+			push a_to_b;
+
+		while (stack_b->contents < solved->contents &&
+			stack_b->contents > get_tail_value(solved))
+			push b_to_a;
+
+		rotate(sort_struct, sort->direction);
+	}
+
 
 
 
@@ -276,6 +323,22 @@ int main (int arg_count, char **arg_values)
 
 
 
+ 				11 15 32 45
+				-> and descending
+				 10 4 27 7 35 26 18 48 16  25 44 36 42 43 3 9 40 3037 5 22 12
 
+
+32 40			<- ascending
+				10 4 27 7 35 26 18 45 48 16  25 44 36 42 43 3 15 9  30 11 37 5 22 12
+
+
+
+				10 4 27 7 35 26 18 45 48 16 32 25 44 36 42 43 3 15 9 40 30 11 37 5 22 12
+
+
+
+				 40 36 32 27 10
+
+				-> and ascending
+				  4 7 35 26 18 45 48 16  25 44  42 43 3 15 9 30 11 37 5 22 12
 	}
-	*/
