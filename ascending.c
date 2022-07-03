@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:34:26 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/30 14:58:14 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/03 19:16:07 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth)
 	(branch->current)[depth] = *(int *)(tree->content);
 	if (depth > branch->answer_depth) //|| branch->answer_depth == 0) 
 	{
+		printf("branch->answer_depth: %zu\n", branch->answer_depth);
 		branch->answer_depth = depth;
 		ft_memcpy(branch->answer, branch->current, sizeof(int) * (depth + 1));
 
@@ -81,16 +82,18 @@ void add_to_tree(t_mnode *mtree, void *content, size_t content_size)
 	free(temp);
 }
 
-t_list *solve_numbers(int *array, size_t size)
+t_list *solve_numbers(int *array, size_t size, int sort)
 {
 	size_t i;
 	size_t forward = 0;
 	t_mnode 	*mtree;
-	t_branch	*branch;
-	t_list		*ret;
+	t_branch	branch;
 
-	ret = NULL;
 	mtree = NULL;
+	if (sort == DESCENDING)
+		ft_invert_int_array(array, size);
+	
+	ft_bzero(&branch, sizeof(t_branch));
 	while (size)
 	{
 		i = 0;
@@ -105,14 +108,15 @@ t_list *solve_numbers(int *array, size_t size)
 			}
 			++i;
 		}
-		branch = (t_branch *)ft_memalloc(sizeof(t_branch));
-		get_longest_branch(mtree, branch, 0);
+		get_longest_branch(mtree, &branch, 0);
 		ft_mnode_destroy(&mtree);
 		forward = move_array_pointer_and_adjust_size(array, size);
 		array += forward;
 		size -= forward;
 	}
-	ret = int_arr_to_list(branch->answer, branch->answer_depth + 1);
-	//free(answer);
-	return (ret);
+	return (int_arr_to_list(branch.answer, branch.answer_depth + 1));
 }
+
+
+3 4 5 6 7 8 9 1 2
+ 12 123 23 345 345 456 456456 456 4564564 45

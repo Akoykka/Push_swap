@@ -3,8 +3,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft/includes/libft.h"
-# define ASCENDING 1
+# define ASCENDING 	1
 # define DESCENDING 0
+# define FORWARD	1
+# define BACKWARD	0
 
 typedef struct s_branch
 {
@@ -36,7 +38,7 @@ typedef struct s_sort
 
 ///Ascending.c
 
-t_list	*solve_numbers(int *array, size_t size);
+t_list	*solve_numbers(int *array, size_t size, int sort);
 void 	add_to_tree(t_mnode *mtree, void *content, size_t content_size);
 void 	get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth);
 int 	move_array_pointer_and_adjust_size(int *array, size_t size);
@@ -46,7 +48,6 @@ void 	get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth);
 void print_list(t_list *list);
 t_list *int_arr_to_list(int *array, size_t size);
 void ft_del(void *target, size_t size);
-t_list *remove_extra_from_head(t_list **head, t_list *extra);
 int *ft_invert_int_array(int *array, size_t size);
 void ft_print_int_array(int *array, size_t size);
 int *make_int_array(int arg_count, char **arg_values);

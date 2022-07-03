@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/30 14:58:16 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/03 19:16:05 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,23 @@ void ft_del(void *target, size_t size)
 }
 
 
-t_list *remove_extra_from_head(t_list **head, t_list *extra)
+t_list *ft_lst_dup_except(t_list *dup, t_list *except)
 {
 	t_list *temp;
-	t_list *head_temp;
+	t_list *fresh;
 
-	head_temp = *head;
-
-	while(head_temp)
+	fresh = NULL;
+	while(dup)
 	{
-		temp = extra;
-		while(temp)
-		{
-			if (*((int *)head_temp->content) == *((int *)temp->content))
-				ft_lst_del_one(head, head_temp, ft_del);
+		temp = except;
+		while (temp && *(int *)(dup->content) != *(int *)(temp->content))
 			temp = temp->next;
-		}
-		head_temp = head_temp->next;
+		if (!temp)
+			ft_lst_add(&fresh, ft_lst_new(dup->content, dup->content_size));
+		dup = dup->next;
 	}
-	return(*head);
+	ft_lst_reverse(&fresh);
+	return (fresh);
 }
 
 
@@ -128,16 +126,12 @@ t_sort *make_sort_struct(int *array, size_t size)
 		t_sort *new;
 
 		new = NULL;
-		new = (t_sort *)malloc(sizeof(t_sort));
+		new = (t_sort *)ft_memalloc(sizeof(t_sort));
 		new->stack_a = int_arr_to_list(array, size);
-		new->solved = solve_numbers(array, size);
-		printf("\n\nThis is solved:\n");
-		print_list(new->solved);
-		//new->unsolved = remove_extra_from_head(int_arr_to_list(array,size), new->solved);
-		new->under_sort = NULL;
-		ft_memset(new->moves, '\0', 50000);
-		new->stack_b = NULL;
-		new->direction = 0;
+		new->solved = solve_numbers(array, size, ASCENDING);
+		new->unsolved = ft_lst_dup_except(new->stack_a, new->solved);
+		printf("this is new->unsolved\n");
+		print_list(new->unsolved);
 		return (new);
 }
 
