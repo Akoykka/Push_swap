@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:34:26 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/03 19:16:07 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/04 19:06:36 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,3 @@ t_list *solve_numbers(int *array, size_t size, int sort)
 	}
 	return (int_arr_to_list(branch.answer, branch.answer_depth + 1));
 }
-
-
-3 4 5 6 7 8 9 1 2
- 12 123 23 345 345 456 456456 456 4564564 45

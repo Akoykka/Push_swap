@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 16:42:05 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/07 16:42:31 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/04 20:12:16 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,15 @@
 void ft_lst_move_one_to_tail(t_list **head, t_list *target)
 {
 	t_list	*temp;
-
+	
 	temp = *head;
-	if (*head == target)
+	if (temp == target)
+	{
 		*head = temp->next;
+		(ft_lst_get_tail(temp))->next = target;
+		target->next = NULL;
+		return ;
+	}
 	else
 	{
 		while(temp->next != target && temp->next)

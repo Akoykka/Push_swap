@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 16:38:21 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/07 16:45:50 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/04 20:11:31 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 t_list *ft_lst_get_tail(t_list *head)
 {
-	if (!head)
-		return (NULL);
 	while (head->next)
 		head = head->next;
 	return (head);

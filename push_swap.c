@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/03 19:16:05 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/04 19:12:13 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int main (int arg_count, char **arg_values)
 
 	array = make_int_array(arg_count, arg_values);
 	sort = make_sort_struct(array, arg_count);
-	
+	ft_answer(sort);
 	//print_list(sort->unsolved);
 
 	return (0);
