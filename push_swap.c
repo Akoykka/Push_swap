@@ -6,14 +6,15 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/04 19:12:13 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/05 13:04:52 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 void print_list(t_list *list)
-{
+{	if (!list)
+		printf("EMPTY LIST\n");
 	while(list)
 	{
 		ft_putnbr(*(int *)list->content);
@@ -130,8 +131,8 @@ t_sort *make_sort_struct(int *array, size_t size)
 		new->stack_a = int_arr_to_list(array, size);
 		new->solved = solve_numbers(array, size, ASCENDING);
 		new->unsolved = ft_lst_dup_except(new->stack_a, new->solved);
-		printf("this is new->unsolved\n");
-		print_list(new->unsolved);
+		//printf("this is new->unsolved\n");
+		//print_list(new->unsolved);
 		return (new);
 }
 
@@ -146,7 +147,18 @@ int main (int arg_count, char **arg_values)
 
 	array = make_int_array(arg_count, arg_values);
 	sort = make_sort_struct(array, arg_count);
-	ft_answer(sort);
+	//ft_answer(sort);
+	//printf("solved\n");
+	//print_list(sort->solved);
+	//printf("before\n");
+	//print_list(sort->under_sort);
+	fill_under_sort(sort);
+	//printf("after\n");
+	//print_list(sort->under_sort);
+	//delete_head(&sort->under_sort);
+	//printf("deletehead:\n");
+	//print_list(sort->under_sort);
+
 	//print_list(sort->unsolved);
 
 	return (0);

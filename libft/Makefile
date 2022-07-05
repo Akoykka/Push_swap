@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 17:07:39 by akoykka           #+#    #+#              #
-#    Updated: 2022/06/28 22:08:09 by akoykka          ###   ########.fr        #
+#    Updated: 2022/07/05 13:04:52 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,6 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c \
 OBJECTS = $(SRCS:%.c=%.o)
 
 INCLUDES = includes/
-
 
 all: $(NAME)
 

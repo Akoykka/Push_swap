@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:34:26 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/04 19:06:36 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:05:11 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth)
 	(branch->current)[depth] = *(int *)(tree->content);
 	if (depth > branch->answer_depth) //|| branch->answer_depth == 0) 
 	{
-		printf("branch->answer_depth: %zu\n", branch->answer_depth);
+		//printf("branch->answer_depth: %zu\n", branch->answer_depth);
 		branch->answer_depth = depth;
 		ft_memcpy(branch->answer, branch->current, sizeof(int) * (depth + 1));
 
 		
 		/////
-		printf("longest found depth %lu:\n", (branch->answer_depth + 1));
-		ft_print_int_array(branch->answer, branch->answer_depth + 1);
+		//printf("longest found depth %lu:\n", (branch->answer_depth + 1));
+		//ft_print_int_array(branch->answer, branch->answer_depth + 1);
 	}
 	while (tree->next_size > i)
 	{

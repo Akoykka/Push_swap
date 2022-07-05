@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 12:07:05 by akoykka           #+#    #+#             */
-/*   Updated: 2022/06/30 14:58:23 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/05 10:54:56 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,6 @@ t_solve *solve_numbers_asc(int *array, size_t size)
 			++i;
 		}
 		get_longest_branch(mtree, answer, 0);
-		ft_mnode_destroy(&mtree);
 		forward = move_array_pointer_and_adjust_size(array, size);
 		array += forward;
 		size -= forward;
