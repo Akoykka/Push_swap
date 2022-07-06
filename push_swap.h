@@ -32,6 +32,11 @@ typedef struct s_sort
 
 	t_list	*unsolved;
 	t_list	*under_sort;
+	
+	t_list 	*asc;
+	int		last_asc
+	t_list	*desc;
+	int		last_desc
 	t_list	*solved;
 	int		direction;
 }				t_sort;
