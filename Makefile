@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/05 13:04:54 by akoykka          ###   ########.fr        #
+#    Updated: 2022/07/13 23:55:06 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,16 +18,21 @@ LIB = -lft -L./libft
 #
 SOURCES = push_swap.c ascending.c answer.c
 
+OBJECTS = $(SOURCES:%.c=%.o)
+
 COMPILER = gcc
 
-FLAGS = -g -o
-#FLAGS +=  -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra
+FLAGS +=  -g -o
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): #$(OBJECTS) Makefile
 	make -C libft/
-	$(COMPILER)  $(SOURCES)  $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
+	$(COMPILER) $(SOURCES) $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
+
+$(OBJECTS): %.o:%.c Makefile
+	gcc $(FLAGS) -c $< -o $@ -I $(LIBFT)
 
 clean:
 	make clean -C libft/

@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/06 18:07:12 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/13 23:32:38 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void ft_print_int_array(int *array, size_t size)
 
 int *make_int_array(int arg_count, char **arg_values)
 {
-	size_t	i;
+	int	i;
 	int *array;
 
 	i = 0;
@@ -131,15 +131,12 @@ t_sort *make_sort_struct(int *array, size_t size)
 		new->stack_a = int_arr_to_list(array, size);
 		new->solved = solve_numbers(array, size, ASCENDING);
 		new->unsolved = ft_lst_dup_except(new->stack_a, new->solved);
-		//printf("this is new->unsolved\n");
-		//print_list(new->unsolved);
 		return (new);
 }
 
 int main (int arg_count, char **arg_values)
 {
 	int		*array;
-	t_list	*fresh;
 	t_sort	*sort;
 
 	arg_values += 1;
@@ -147,19 +144,9 @@ int main (int arg_count, char **arg_values)
 
 	array = make_int_array(arg_count, arg_values);
 	sort = make_sort_struct(array, arg_count);
-	//ft_answer(sort);
-	//printf("solved\n");
-	//print_list(sort->solved);
-	//printf("before\n");
-	//print_list(sort->under_sort);
-	fill_under_sort(sort);
-	//printf("after\n");
-	//print_list(sort->under_sort);
-	//delete_head(&sort->under_sort);
-	//printf("deletehead:\n");
-	//print_list(sort->under_sort);
+	test_push_b(sort);
 
-	//print_list(sort->unsolved);
+
 
 	return (0);
 }
@@ -182,27 +169,82 @@ int main (int arg_count, char **arg_values)
 		rotate(sort_struct, sort->direction);
 	}
 
+ft_is_int()
 
+ft_is_dup
 
-char **parse_input(int arg_count, char **arg_values)
+static int	ft_whtspc(char c)
 {
+	if ((c <= 13 && c >= 9) || c == 32)
+		return (1);
+	return (0);
+}
+
+int	custom_atoi(const char *str)
+{
+	int	i;
+	int	a;
+	int	negative;
+
+	negative = 1;
+	a = 0;
+	i = 0;
+	while (ft_whtspc(str[i]) == 1)
+		++i;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+		{
+			negative = -1;
+		}
+		++i;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{	
+		a = a * 10 + (str[i] - '0');
+		++i;
+	}
+	return (a * negative);
+}
+
+
+
+char **check_input(int arg_count, char **arg_values)
+{
+	///is_only_numbers_and_spaces
+	/// count spaces
+
+
 	/// miten tietaa onko inputissa useampi luku
+	
 
 	/// miten tarkistaa onko kaikki lukuja ja valilla int_min int_max
+		
+
+	// is_duplicates
 
 	/// lopulta muokkaus muotoon char **array
 
-	size_t i;
-	size_t new_i;
-	char **new;
-
-	i = 0;
-	new_i = 0;
-	new = (char **)ft_memalloc(sizeof(char *) * arg_count + 1);
-
-	while (arg_count > i && *(arg_values[i]))
-		is_number()
-		is_in_int_range()
-		new[new_i] = copynumber
+	
 }
+
+
+Muita charectereita kuin numeroita ja valeja
+
+esim &^%@ tab tai aakkosia inputissa
+
+Samoja numeroita
+
+esim 33 11 02 33 11
+
+isompia numeroita kuin max int tai pienempia kuin min int 
+
+esim -3123123123 38 99 04 11233 1233983833838383 20 99
+
+
+useita argumentteja yhdessa 
+
+esim: "2 33 4 22 9" "3" "2 4 5 6"
+
+
 */

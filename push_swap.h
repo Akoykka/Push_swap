@@ -5,6 +5,10 @@
 # include "libft/includes/libft.h"
 # define ASCENDING 	1
 # define DESCENDING 0
+# define UNSOLVED	2
+# define SOLVED		3
+# define STACK_A	4
+# define STACK_B	5
 # define FORWARD	1
 # define BACKWARD	0
 
@@ -19,7 +23,6 @@ typedef struct s_branch
 typedef struct s_insert
 {
 	int			value;
-
 	size_t		max_depth;
 	t_mnode 	*insert_point;
 }			t_insert;
@@ -30,15 +33,11 @@ typedef struct s_sort
 	t_list	*stack_a;
 	t_list	*stack_b;
 
+	t_list	*solved;
 	t_list	*unsolved;
-	t_list	*under_sort;
 	
 	t_list 	*asc;
-	int		last_asc
 	t_list	*desc;
-	int		last_desc
-	t_list	*solved;
-	int		direction;
 }				t_sort;
 
 ///Ascending.c
@@ -57,14 +56,23 @@ int		*ft_invert_int_array(int *array, size_t size);
 void	ft_print_int_array(int *array, size_t size);
 int		*make_int_array(int arg_count, char **arg_values);
 t_sort	*make_sort_struct(int *array, size_t size);
+t_list *ft_lst_dup_except(t_list *dup, t_list *except);
 
 ///// Answer.c
-void	ft_answer(t_sort *sort);
-void 	rotate(t_list *list, int direction);
+void	ft_answers(t_sort *sort);
+void 	rotate(t_list **list);
 void 	delete_head(t_list **head);
 int 	check_stack_b(t_sort *sort);
 int 	check_stack_a(t_sort *sort);
 int 	get_tail_value(t_list *list);
-void 	fill_under_sort(t_sort *sort);
-int 	*list_to_ints(t_list *list);
+void 	fill_list(t_sort *sort, int type);
+int		*list_to_ints(t_list *list);
+int		is_fit(t_list *list, int value);
+void	test_push_b(t_sort *sort);
+
+
+/// USELESS EXTRA FUNCTIONS (CAN BE MERGED)
+
+void delete_head_asc(t_sort *sort);
+void delete_head_desc(t_sort *sort);
 #endif
