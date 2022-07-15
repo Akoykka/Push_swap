@@ -6,17 +6,65 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 16:34:42 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/14 00:23:14 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/15 19:36:35 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int is_fit(t_list *list, int value)
+void count_moves(char *str)
 {
-	if (get_tail_value(list) < value
-	&& *(int *)(list->content) > value)
+	int moves;
+
+	moves = 0;
+	while(*str)
+	{
+		if (*str == '\n')
+			++moves;
+		++str;
+	}
+	printf("move amount is approx: %i\n", moves);
+}
+
+int is_fit_stack_b_head(t_sort *sort)
+{
+	int value;
+
+	value = *(int *)sort->stack_b->content;
+	
+	if (get_tail_value(sort->solved) < value
+		&& *(int *)(sort->solved->content) > value)
 		return (1);
+
+	if (get_tail_value(sort->solved) < value
+		&& is_smallest_val(*(int *)sort->solved->content, sort->solved))
+		return(1);
+
+	if (is_smallest_val(*(int *)sort->solved->content, sort->solved) 
+		&& value < *(int *)sort->solved->content)
+		return (1);
+
+	return (0);
+}
+
+int is_fit_stack_b_tail(t_sort *sort)
+{
+	int value;
+	
+	value = get_tail_value(sort->stack_b);
+
+	if (get_tail_value(sort->solved) < value
+		&& *(int *)(sort->solved->content) > value)
+		return (1);
+
+	if (get_tail_value(sort->solved) < value
+		&& is_smallest_val(*(int *)sort->solved->content, sort->solved))
+		return(1);
+
+	if (is_smallest_val(*(int *)sort->solved->content, sort->solved) 
+		&& value < *(int *)sort->solved->content)
+		return (1);
+
 	return (0);
 }
 
@@ -57,13 +105,10 @@ void fill_list(t_sort *sort, int type)
 	{
 		fresh = solve_numbers(list_to_ints(sort->unsolved), len, ASCENDING);
 		sort->asc = fresh;
-		printf("fill list after asc fill from no numbers\n");
-		print_list(sort->asc);
 	}
-
-	new_unsolved = ft_lst_dup_except(sort->unsolved, fresh);
+	if(len > 1)
+		new_unsolved = ft_lst_dup_except(sort->unsolved, fresh);
 	ft_lst_del(&sort->unsolved, ft_del);
-	
 	sort->unsolved = new_unsolved;
 }
 
@@ -77,25 +122,15 @@ int get_tail_value(t_list *list)
 }
 
 
-int is_biggest_val(int value, t_list *compare)
+int is_smallest_val(int value, t_list *compare)
 {
 	while(compare)
 	{
-		if (value < *(int *)compare->content)
+		if (value > *(int *)compare->content)
 			return (0);
-			compare = compare->next;
+		compare = compare->next;
 	}
 	return (1);
-}
-
-int check_stack_b(t_sort *sort)
-{
-	if ((*(int *)(sort->stack_b->content) < *(int *)(sort->solved->content)
-		&& *(int *)(sort->stack_b->content) > get_tail_value(sort->solved))
-		|| ft_lst_count(sort->stack_a) == 1
-		|| is_biggest_val(*(int *)sort->stack_b->content, sort->stack_a))
-		return 1;
-	return (0);
 }
 
 void delete_head_asc(t_sort *sort)
@@ -109,7 +144,8 @@ void delete_head_asc(t_sort *sort)
 	sort->asc = sort->asc->next;
 
 	//free(target->content);
-	//free(target);
+	free(target);
+	target = NULL;
 }
 
 void delete_head_desc(t_sort *sort)
@@ -124,6 +160,7 @@ void delete_head_desc(t_sort *sort)
 
 	//free(target->content);
 	free(target);
+	target = NULL;
 
 }
 
@@ -191,7 +228,7 @@ void rrotate_list(t_sort *sort, int stack)
 			temp = temp->next;
 		temp->next = NULL;
 		target->next = sort->asc;
-		sort->asc = temp;
+		sort->asc = target;
 	}
 	if (stack == DESCENDING && sort->desc && sort->desc->next)
 	{
@@ -201,7 +238,7 @@ void rrotate_list(t_sort *sort, int stack)
 			temp = temp->next;
 		temp->next = NULL;
 		target->next = sort->desc;
-		sort->desc = temp;
+		sort->desc = target;
 	}
 
 	if (stack == STACK_A && sort->stack_a && sort->stack_a->next)
@@ -212,17 +249,22 @@ void rrotate_list(t_sort *sort, int stack)
 			temp = temp->next;
 		temp->next = NULL;
 		target->next = sort->stack_a;
-		sort->stack_a = temp;
+		sort->stack_a = target;
 	}
 	if (stack == STACK_B && sort->stack_b && sort->stack_b->next)
 	{
 		target = ft_lst_get_tail(sort->stack_b);
+
 		temp = sort->stack_b;
+
 		while(temp->next != target)
 			temp = temp->next;
+
 		temp->next = NULL;
+
 		target->next = sort->stack_b;
-		sort->stack_b = temp;
+
+		sort->stack_b = target;
 	}
 	if (stack == SOLVED && sort->solved && sort->solved->next)
 	{
@@ -232,7 +274,7 @@ void rrotate_list(t_sort *sort, int stack)
 			temp = temp->next;
 		temp->next = NULL;
 		target->next = sort->solved;
-		sort->solved = temp;
+		sort->solved = target;
 	}
 	if (stack == UNSOLVED && sort->unsolved && sort->unsolved->next)
 	{
@@ -242,7 +284,7 @@ void rrotate_list(t_sort *sort, int stack)
 			temp = temp->next;
 		temp->next = NULL;
 		target->next = sort->unsolved;
-		sort->unsolved = temp;
+		sort->unsolved = target;
 	}
 }
 
@@ -284,100 +326,115 @@ void push_top_of_b(t_sort *sort)
 
 void test_push_b(t_sort *sort)
 {
-	fill_list(sort, DESCENDING);
-	printf("this is sort-desc after fill\n");
-	print_list(sort->desc);
+	int i;
 
-	fill_list(sort, ASCENDING);
-	printf("this is sort-asc after fill\n");
-	print_list(sort->asc);
-
-	while (sort->desc)
+	i = 6;
+	while (i--)
 	{
-		if (sort->desc
-		&& *(int *)sort->stack_a->content == *(int *)sort->desc->content)
+		fill_list(sort, DESCENDING);
+		printf("this is sort-desc after fill\n");
+		print_list(sort->desc);
+		fill_list(sort, ASCENDING);
+		printf("this is sort-asc after fill\n");
+		print_list(sort->asc);
+		
+		while (sort->desc)
 		{
-			printf("STACK_A VALUE IS IN DESC LIST\n");
-			printf("stack_a is:\n");
-			print_list(sort->stack_a);
-			push_top_of_a(sort);
-			printf("stack_a after push top is:");
-			print_list(sort->stack_a);
-			printf("puushed, (desc)\n");
-			print_list(sort->desc);
-			ft_strcat(sort->moves, "pa\n");
-			delete_head_desc(sort);
-			printf("deleted\n");
+			if (sort->desc
+			&& *(int *)sort->stack_a->content == *(int *)sort->desc->content)
+			{
+				printf("STACK_A VALUE IS IN DESC LIST\n");
+				printf("stack_a is:\n");
+				print_list(sort->stack_a);
+				push_top_of_a(sort);
+				printf("stack_a after push top is:\n");
+				print_list(sort->stack_a);
+				printf("puushed, (desc)\n");
+				print_list(sort->desc);
+				ft_strcat(sort->moves, "pa\n");
+				delete_head_desc(sort);
+				printf("deleted\n");
+			}
+			else
+			{
+				rotate_list(sort, STACK_A);
+				ft_strcat(sort->moves, "ra\n");
+			}
 		}
-		rotate_list(sort, STACK_A);
+		printf("rotation completed on the desc list\n");
+		print_list(sort->stack_a);
 		print_list(sort->stack_b);
-	}
-	printf("rotation completed on the desc list\n");
-	while (sort->asc)
-	{
-		if (sort->asc
-		&& *(int *)sort->stack_a->content == *(int *)sort->asc->content)
+		while (sort->asc)
 		{
-			printf("STACK_A VALUE IS IN ASC LIST\n");
-			push_top_of_a(sort);
-			printf("puushed(asc)");
-			ft_strcat(sort->moves, "pa\n");
-			rotate_list(sort, STACK_B);
-			ft_strcat(sort->moves, "rb\n");
-			delete_head_asc(sort);
-			printf("stacka\n");
-			print_list(sort->stack_a);
-			printf("stackb\n");
-			print_list(sort->stack_b);
-			printf("asc\n");
-			print_list(sort->asc);
-		}
-		rotate_list(sort, STACK_A);
-		print_list(sort->stack_b);
-	}
-	/*
-	while(sort->stack_b)
-	{
-		if ((sort->stack_b
-			&& is_fit(sort->solved, *(int *)sort->stack_b->content))
-			||(sort->stack_b 
-			&& is_biggest_val(*(int *)sort->stack_b->content, sort->solved) 
-			&& is_biggest_val(get_tail_value(sort->solved), sort->solved)))
-		{
-			printf("STACK B HEAD VALUE FITS INTO STACK A\n");
-			push_top_of_b(sort);
-			ft_strcat(sort->moves, "pb\n");
-				// copy to solved
-			ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
-		}
-
-		if (sort->stack_b
-			&& is_fit(sort->solved, get_tail_value(sort->stack_b)
-			||(sort->stack_b
-			&& is_biggest_val(get_tail_value(sort->stack_b), sort->solved) 
-			&& is_biggest_val(get_tail_value(sort->solved), sort->solved))))
-		{
-			printf("STACK B TAIL VALUE FITS INTO STACK A\n");
-			rrotate_list(sort, STACK_B);
-			ft_strcat(sort->moves, "rrb\n");
-			ft_lst_push_top(&(sort->stack_b), &(sort->stack_a));
-			ft_strcat(sort->moves, "pb\n");
-			// copy to solved
-			ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
+			if (sort->asc
+			&& *(int *)sort->stack_a->content == *(int *)sort->asc->content)
+			{
+				printf("STACK_A VALUE IS IN ASC LIST\n");
+				push_top_of_a(sort);
+				printf("puushed(asc)\n");
+				ft_strcat(sort->moves, "pa\n");
+				rotate_list(sort, STACK_B);
+				ft_strcat(sort->moves, "rb\n");
+				delete_head_asc(sort);
+				printf("stacka\n");
+				print_list(sort->stack_a);
+				printf("stackb\n");
+				print_list(sort->stack_b);
+				printf("asc\n");
+				print_list(sort->asc);
+			}
+			else
+				rotate_list(sort, STACK_A);
 		}
 		
-		printf("STACK_B = \n");
-		print_list(sort->stack_b);
-		printf("SOLVED = \n");
-		print_list(sort->stack_b);
+		while(sort->stack_b)
+		{
+			if (sort->stack_b
+				&& is_fit_stack_b_head(sort))
+			{
+				printf("STACK B HEAD VALUE FITS INTO STACK A\n");
+				push_top_of_b(sort);
+				ft_strcat(sort->moves, "pb\n");
+				ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
+			}
 		
-	
-
-
-
-
-*/
-	
+			else if (sort->stack_b
+				&& is_fit_stack_b_tail(sort))
+			{
+				//printf("this is stack b\n");
+				//print_list(sort->stack_b);
+				printf("STACK B TAIL VALUE FITS INTO STACK A\n");
+				//count_moves(sort->moves);
+				//printf("unsolved len = %zu\n", ft_lst_count(sort->unsolved));
+				//printf("solved len = %zu\n", ft_lst_count(sort->solved));
+				//printf("stack_a len = %zu\n", ft_lst_count(sort->stack_a));
+				//printf("stack_b len = %zu\n", ft_lst_count(sort->stack_b));
+				//printf("asc len = %zu\n", ft_lst_count(sort->asc));
+				//printf("desc len = %zu\n", ft_lst_count(sort->desc));
+				//print_list(sort->solved);
+				rrotate_list(sort, STACK_B);
+				ft_strcat(sort->moves, "rrb\n");
+				push_top_of_b(sort);
+				printf("pushed_top_of_b\n");
+				ft_strcat(sort->moves, "pb\n");
+				ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
+			}
+			else 
+			{
+				if( *(int *)sort->stack_a->content == *(int *)sort->solved->content)
+					rotate_list(sort, SOLVED);
+				rotate_list(sort, STACK_A);
+				ft_strcat(sort->moves, "ra\n");
+				printf("thisStackA\n");
+				print_list(sort->stack_a);
+				printf("up stack a down stack b\n");
+				print_list(sort->stack_b);
+				printf("Endofb\n");
+			}
+		}
+		
+	}
+	////END !
 	printf("stack_a is:\n");
 	print_list(sort->stack_a);
 	printf("stack_b is:\n");
@@ -386,112 +443,193 @@ void test_push_b(t_sort *sort)
 	print_list(sort->solved);
 	printf("UNSOLVED\n");
 	print_list(sort->unsolved);
+	printf("%s", sort->moves);
+	count_moves(sort->moves);
+	printf("unsolved len = %zu\n", ft_lst_count(sort->unsolved));
+	printf("solved len = %zu\n", ft_lst_count(sort->solved));
+	printf("stack_a len = %zu\n", ft_lst_count(sort->stack_a));
+	printf("stack_b len = %zu\n", ft_lst_count(sort->stack_b));
+	printf("asc len = %zu\n", ft_lst_count(sort->asc));
+	printf("desc len = %zu\n", ft_lst_count(sort->desc));
+	print_list(sort->stack_a);
+	
+}
 
+void push_stack_a_desc(t_sort *sort)
+{
+	if((sort->desc
+		&& *(int *)sort->stack_a->content == *(int *)sort->desc->content))
+	{
+		push_top_of_a(sort);
+		ft_strcat(sort->moves, "pa\n");
+		delete_head_desc(sort);
+	}
+}
+
+void push_stack_a_asc(t_sort *sort)
+{
+	if((sort->asc
+		&& *(int *)sort->stack_a->content == *(int *)sort->asc->content))
+	{
+		push_top_of_a(sort);
+		rrotate_list(sort, STACK_B);
+		ft_strcat(sort->moves, "pa\n");
+		ft_strcat(sort->moves, "rrb\n");
+		delete_head_desc(sort);
+	}
+}
+
+void push_stack_b_head(t_sort *sort)
+{
+	if (sort->action_executed)
+	{
+		sort->action_executed = 0;
+		return ;
+	}
+	if (sort->stack_b && is_fit_stack_b_head(sort))
+	{
+		push_top_of_b(sort);
+		ft_strcat(sort->moves, "pb\n");
+		ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
+		sort->action_executed = 1;
+	}
+}
+
+void push_stack_b_tail(t_sort *sort)
+{
+	if (sort->action_executed)
+	{
+		sort->action_executed = 0;
+		return ;
+	}
+	if (sort->stack_b && is_fit_stack_b_tail(sort))
+	{
+		rrotate_list(sort, STACK_B);
+		push_top_of_b(sort);
+		ft_strcat(sort->moves, "rrb\npb\n");
+		ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
+		sort->action_executed = 1;
+	}
+}
+
+void rotate_stack_a(t_sort *sort)
+{
+	if (sort->action_executed)
+	{
+		sort->action_executed = 0;
+		return ;
+	}
+	if (*(int *)sort->stack_a->content == *(int *)sort->solved->content)
+		rotate_list(sort, SOLVED);
+	rotate_list(sort, STACK_A);
+	
+}
+int is_sorted(t_sort *sort)
+{
+	if (sort->unsolved ||sort->asc || sort->desc || sort->stack_b)
+		return (0);
+	return(1);
 }
 
 
-
-
-
+void answersfive(t_sort *sort)
+{
+	size_t stopcondition;
+	
+	stopcondition = ft_lst_count(sort->stack_a);
+	while (ft_lst_count(sort->solved) != stopcondition)
+	{
+		if(!sort->stack_b)
+		{
+			fill_list(sort, ASCENDING);
+			fill_list(sort, DESCENDING);
+		}
+		push_stack_a_desc(sort);
+		push_stack_a_asc(sort);
+		if (sort->stack_b &&
+			get_tail_value(sort->stack_b) < *(int *)sort->stack_b->content)
+		{
+			push_stack_b_tail(sort);
+			push_stack_b_head(sort);
+		}
+		else
+		{
+			push_stack_b_head(sort);
+			push_stack_b_tail(sort);
+		}
+		count_moves(sort->moves);
+		printf("unsolved len = %zu\n", ft_lst_count(sort->unsolved));
+		printf("solved len = %zu\n", ft_lst_count(sort->solved));
+		printf("stack_a len = %zu\n", ft_lst_count(sort->stack_a));
+		printf("stack_b len = %zu\n", ft_lst_count(sort->stack_b));
+		printf("asc len = %zu\n", ft_lst_count(sort->asc));
+		printf("desc len = %zu\n", ft_lst_count(sort->desc));
+		rotate_stack_a(sort);
+	}
+	printf("stack_a is:\n");
+	print_list(sort->stack_a);
+	printf("stack_b is:\n");
+	print_list(sort->stack_b);
+	printf("SOLVED\n");
+	print_list(sort->solved);
+	printf("UNSOLVED\n");
+	print_list(sort->unsolved);
+	printf("%s", sort->moves);
+	count_moves(sort->moves);
+	printf("unsolved len = %zu\n", ft_lst_count(sort->unsolved));
+	printf("solved len = %zu\n", ft_lst_count(sort->solved));
+	printf("stack_a len = %zu\n", ft_lst_count(sort->stack_a));
+	printf("stack_b len = %zu\n", ft_lst_count(sort->stack_b));
+	printf("asc len = %zu\n", ft_lst_count(sort->asc));
+	printf("desc len = %zu\n", ft_lst_count(sort->desc));
+	print_list(sort->stack_a);
+}
 
 
 
 
 /*
-void ft_answers(t_sort *sort)
-{
-	printf("this is solved list\n");
-	print_list(sort->solved);
-	while (sort->asc || sort->desc || sort->unsolved)
-	{
-		if (!sort->asc && !sort->desc && !sort->stack_b)
-		{
-			fill_list(sort, ASCENDING);
-			printf("this is sort-asc after fill\n");
-			print_list(sort->asc);
-			fill_list(sort, DESCENDING);
-			printf("this is sort-desc after fill\n");
-			print_list(sort->desc);
-		}
-	
-		
+fill list if stack b empty;
 
-		// CHECK IF PUSH TO B FROM A 
+pickup stuff on the lists - asc desc problem nope not a problem
+distribute what you can 
 
-		if (sort->desc
-			&& *(int *)sort->stack_a->content == *(int *)sort->desc->content)
-		{
-			printf("STACK_A VALUE IS IN DESC LIST\n");
-			ft_lst_push_top(&sort->stack_a, &sort->stack_b);
-			ft_strcat(sort->moves, "pa\n");
-			delete_head(&sort->desc);
-		}
-		if (sort->asc
-			&& *(int *)sort->stack_a->content == *(int *)sort->asc->content)
-		{
-			printf("STACK_A VALUE IS IN ASC LIST\n");
-			push_top_of_a(sort); /// THIS BROKEN
-			printf("puushed");
-			ft_strcat(sort->moves, "pa\n");
-			rotate(sort->stack_b);
-			ft_strcat(sort->moves, "rb\n");
-			delete_head(&sort->asc);
-			printf("stacka\n");
-			print_list(sort->stack_a);
-			printf("stackb\n");
-			print_list(sort->stack_b);
-			printf("asc\n");
-			print_list(sort->asc);
+only one thing can be done 
 
-		}
-		
-		
-		// CHECK HEAD STACK_B
-		if ((sort->stack_b
-			&& is_fit(sort->solved, *(int *)sort->stack_b->content))
-			||(sort->stack_b 
-				&& is_biggest_val(*(int *)sort->stack_b->content, sort->solved) && is_biggest_val(get_tail_value(sort->solved), sort->solved)))
-		{
-			printf("STACK B HEAD VALUE FITS INTO STACK A\n");
-			ft_lst_push_top(&(sort->stack_b), &(sort->stack_a));
-			ft_strcat(sort->moves, "pb\n");
-				// copy to solved
-			ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
-		}
-	}
+then rotate 
+also rotate solved 
 
-		// CHECK TAIL STACK_B
-		if (sort->stack_b
-			&& is_fit(sort->solved, get_tail_value(sort->stack_b)
-			||(sort->stack_b
-			&& is_biggest_val(get_tail_value(sort->stack_b), sort->solved) && is_biggest_val(get_tail_value(sort->solved), sort->solved))))
-		{
-			printf("STACK B TAIL VALUE FITS INTO STACK A\n");
-			rrotate(sort->stack_b);
-			ft_strcat(sort->moves, "rrb\n");
-			ft_lst_push_top(&(sort->stack_b), &(sort->stack_a));
-			ft_strcat(sort->moves, "pb\n");
-			// copy to solved
-			ft_lst_add(&sort->solved, ft_lst_new(sort->stack_a->content, sizeof(int)));
-		}
-		
-		if (*(int *)sort->solved->content == *(int *)sort->stack_a->content)
-		{
-			printf("FOUND VALUE THAT IS SORTED ROTATE_A\n ");
-			print_list(sort->stack_a);
-			printf("THIS IS CURRENT SOLVED\n ");
-			print_list(sort->solved);
-			rotate(sort->solved);
-			rotate(sort->stack_a);
-			strcat(sort->moves, "ra\n");
-		}
-		else
-		{
-			printf("NOTHING ELSE HAPPENED SO JUST ROTATE\n");
-			rotate(sort->stack_a);
-			strcat(sort->moves, "ra\n");
-		}
-}
 
+scenario 1
+
+stack b empty -> asc list pickup       normal push
+
+scenario 2
+
+stack b empty -> desc list pickup		normal push
+
+scenario 3
+
+stack b has asc number in it -> asc number pickup 
+
+push + rrotate
+
+scenario 4
+
+stack b has asc number in it -> desc number pickup
+
+5 4 3 2 1 10 20 30 40
+
+10 4 
+
+scenario 5
+
+stack b has desc number in it -> asc number pickup
+
+10
+
+scenario 6 
+
+stack b has desc number in it -> desc number pickup
 
 */

@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/13 23:32:38 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/15 19:26:14 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_list *ft_lst_dup_except(t_list *dup, t_list *except)
 	while(dup)
 	{
 		temp = except;
-		while (temp && *(int *)(dup->content) != *(int *)(temp->content))
+		while (temp && *(int *)dup->content != *(int *)temp->content)
 			temp = temp->next;
 		if (!temp)
 			ft_lst_add(&fresh, ft_lst_new(dup->content, dup->content_size));
@@ -144,34 +144,28 @@ int main (int arg_count, char **arg_values)
 
 	array = make_int_array(arg_count, arg_values);
 	sort = make_sort_struct(array, arg_count);
-	test_push_b(sort);
+	
+	answersfive(sort);
 
 
 
 	return (0);
 }
 
-/*answer = solve_numbers_asc(array, arg_count);
-	while (unsolved)
-	{
-		if (!under_sort)
-		{
-			fill_under_sort()
-			get_direction()
-		}
-		while(*(under_sort->contents) == *(stack_a->contents)
-			push a_to_b;
+/*
+printf("unsolved len = %zu\n", ft_lst_count(sort->unsolved));
+	printf("solved len = %zu\n", ft_lst_count(sort->solved));
+	printf("stack_a len = %zu\n", ft_lst_count(sort->stack_a));
+	printf("stack_b len = %zu\n", ft_lst_count(sort->stack_b));
+	printf("asc len = %zu\n", ft_lst_count(sort->asc));
+	printf("desc len = %zu\n", ft_lst_count(sort->desc));
+unsolved len = 84
+solved len = 16
+stack_a len = 100
+stack_b len = 0
+asc len = 0
+desc len = 0
 
-		while (stack_b->contents < solved->contents &&
-			stack_b->contents > get_tail_value(solved))
-			push b_to_a;
-
-		rotate(sort_struct, sort->direction);
-	}
-
-ft_is_int()
-
-ft_is_dup
 
 static int	ft_whtspc(char c)
 {

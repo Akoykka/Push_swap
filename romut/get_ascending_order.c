@@ -19,7 +19,7 @@ void ft_lst_reverse(t_list **head)
 	t_list *temp;
 	t_list *temp_nextnode = NULL;
 
-	if (!head || !*head)
+	if (!head || !*head || !(*head)->next)
 		return;
 	temp = *head;
 	while (temp)
@@ -32,24 +32,6 @@ void ft_lst_reverse(t_list **head)
 	*head = temp_prevnode;
 }
 	
-	funktio
-
-	if (!head)
-	{
-		save
-	}
-	while next number is higher
-		save it 
-		head = head->next
-	
-	functioncall with same index and head->next
-
-	//here are all the resolves when smaller number;
-	//in nondestructive manner must be resolved;
-	//make linked list copy of current and solve it.
-
-
-
 
 void  get_numbers_in_order(t_list *head, t_sort *numbers, int index, int order)
 {
