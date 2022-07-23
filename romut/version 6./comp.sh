@@ -1,0 +1,1 @@
+gcc push_swap.c simplify.c utils.c -I "push_swap.h" -Wall -Wextra -Werror -g -o push_swap -lft -L./libft -lftprintf -L./libft/ft_printf

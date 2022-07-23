@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ascending.c                                        :+:      :+:    :+:   */
+/*   replace.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 13:34:26 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/23 13:58:36 by akoykka          ###   ########.fr       */
+/*   Created: 2022/07/23 17:52:15 by akoykka           #+#    #+#             */
+/*   Updated: 2022/07/23 21:29:43 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,10 @@ void get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth)
 
 	i = 0;
 	(branch->current)[depth] = *(int *)(tree->content);
-	if (depth > branch->answer_depth) //|| branch->answer_depth == 0) 
+	if (depth > branch->answer_depth) 
 	{
-		//printf("branch->answer_depth: %zu\n", branch->answer_depth);
 		branch->answer_depth = depth;
 		ft_memcpy(branch->answer, branch->current, sizeof(int) * (depth + 1));
-
-		
-		/////
-		//printf("longest found depth %lu:\n", (branch->answer_depth + 1));
-		//ft_print_int_array(branch->answer, branch->answer_depth + 1);
 	}
 	while (tree->next_size > i)
 	{
@@ -69,6 +63,7 @@ void get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth)
 	}
 }
 
+
 void add_to_tree(t_mnode *mtree, void *content, size_t content_size)
 {
 	t_insert *temp;
@@ -82,7 +77,7 @@ void add_to_tree(t_mnode *mtree, void *content, size_t content_size)
 	free(temp);
 }
 
-t_list *solve_numbers(int *array, size_t size, int sort)
+t_llist *solve_numbers(int *array, size_t size, int sort)
 {
 	size_t i;
 	size_t forward = 0;
@@ -114,5 +109,7 @@ t_list *solve_numbers(int *array, size_t size, int sort)
 		array += forward;
 		size -= forward;
 	}
-	return (int_arr_to_list(branch.answer, branch.answer_depth + 1));
+	if (sort == DESCENDING)
+		return (make_list(branch.answer, branch.answer_depth + 1, DESCENDING));
+	return (make_list(branch.answer, branch.answer_depth + 1, ASCENDING));
 }

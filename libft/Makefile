@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 17:07:39 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/13 23:18:42 by akoykka          ###   ########.fr        #
+#    Updated: 2022/07/23 13:08:15 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,6 @@ $(OBJECTS): %.o:%.c Makefile
 
 clean:
 	rm -f $(OBJECTS)
-
 
 fclean: clean
 	rm -f $(NAME)

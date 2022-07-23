@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/23 21:21:04 by akoykka          ###   ########.fr        #
+#    Updated: 2022/07/15 17:18:34 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ INCLUDES = -I .
 
 LIB = -lft -L./libft
 #
-SOURCES = push_swap.c utils.c replace.c solve.c
+SOURCES = push_swap.c ascending.c answer.c
 
 OBJECTS = $(SOURCES:%.c=%.o)
 
 COMPILER = gcc
+
 FLAGS = -Wall -Werror -Wextra
 FLAGS +=  -g -o
 
