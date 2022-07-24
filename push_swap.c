@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/23 21:29:44 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/24 21:34:52 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_llist *llist_dup_except(t_llist *dup, t_llist *except)
 	t_llist *new;
 
 	new = NULL;
+	temp = NULL;
 	while(dup)
 	{
 		temp = except;
@@ -100,7 +101,6 @@ t_sort *make_sort_struct(int *array, int size)
 
 	sort = (t_sort *)ft_memalloc(sizeof(t_sort));
 	sort->stack_a = make_list(array,size, ASCENDING);
-	print_list(sort->stack_a);
 	sort->solved = solve_numbers(array, size, ASCENDING);
 	sort->unsolved = llist_dup_except(sort->stack_a, sort->solved);
 	return(sort);
@@ -120,14 +120,15 @@ int main (int arg_count, char **arg_values)
 	solve_final(sort);
 
 
-	printf("stack_a is:\n");
-	print_list(sort->stack_a);
-	printf("stack_b is:\n");
-	print_list(sort->stack_b);
-	printf("SOLVED\n");
-	print_list(sort->solved);
-	printf("UNSOLVED\n");
-	print_list(sort->unsolved);
+	printf("stack_a is:(%zu members)\n", llist_len(sort->stack_a));
+	//print_list(sort->stack_a);
+	printf("stack_b is:(%zu members)\n", llist_len(sort->stack_b));
+	//print_list(sort->stack_b);
+	printf("SOLVED (%zu members)\n", llist_len(sort->solved));
+	//print_list(sort->solved);
+	printf("UNSOLVED (%zu members)\n", llist_len(sort->unsolved));
+	//print_list(sort->unsolved);
+	count_moves(sort->moves);
 	printf("%s", sort->moves);
 }
 	

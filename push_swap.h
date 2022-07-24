@@ -60,6 +60,7 @@ void	ft_error(void);
 /// DEBUG
 void 	ft_print_int_array(int *array, size_t size);
 void 	print_list(t_llist *list);
+void 	count_moves(char *str);
 
 //PUSHSWAP
 void llist_rev(t_llist **head);
@@ -68,6 +69,7 @@ void llist_add(t_llist **list, t_llist *new);
 t_llist *make_list(int *array, int size, int type);
 t_sort *make_sort_struct(int *array, int size);
 void 	solve_final(t_sort *sort);
+size_t llist_len(t_llist *list);
 
 ///replace.c
 
@@ -78,4 +80,4 @@ int 	move_array_pointer_and_adjust_size(int *array, size_t size);
 void 	get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth);
 t_llist *llist_dup_except(t_llist *dup, t_llist *except);
 
-#endif
+#endifs

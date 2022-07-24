@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 17:52:15 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/23 21:29:43 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/24 18:42:40 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,9 @@ t_llist *solve_numbers(int *array, size_t size, int sort)
 	t_branch	branch;
 
 	mtree = NULL;
+	ft_bzero(&branch, sizeof(t_branch));
 	if (sort == DESCENDING)
 		array = ft_invert_int_array(array, size); /// modification
-	
-	ft_bzero(&branch, sizeof(t_branch));
 	while (size)
 	{
 		i = 0;

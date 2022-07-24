@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:08:48 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/23 15:42:53 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/24 21:23:43 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,27 @@ void print_list(t_llist *list)
 	while(list)
 	{
 		ft_putnbr(list->content);
+		if (list->type == ASCENDING)
+			printf("\t\t (type ASC)");
+		else
+			printf("\t\t (type DESC)");
 		printf("\n");
 		list = list->next;
 	}
+}
+
+void count_moves(char *str)
+{
+	int moves;
+
+	moves = 0;
+	while(*str)
+	{
+		if (*str == '\n')
+			++moves;
+		++str;
+	}
+	printf("move amount is approx: %i\n", moves);
 }
 
 int *ft_invert_int_array(int *array, size_t size)
