@@ -3,14 +3,26 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft/includes/libft.h"
-# define ASCENDING 	1
-# define DESCENDING 0
-# define UNSOLVED	2
-# define SOLVED		3
 # define STACK_A	4
 # define STACK_B	5
 # define FORWARD	1
 # define BACKWARD	0
+# define TOP		6
+# define BOT		7
+
+typedef struct s_optim
+{
+	int forward_a;
+	int forward_b;
+
+	int backward_a;
+	int backward_b;
+
+	int direction;
+	int best_a;
+	int best_b;
+	int best_target;
+}		t_optim;
 
 typedef struct s_llist
 {
@@ -21,10 +33,15 @@ typedef struct s_llist
 
 typedef struct s_sort
 {
-	char	moves[500000000];
+	char	moves[200000];
 	t_llist		*stack_a;
 	t_llist		*stack_b;
-	int 		chunk_amount;
+	int			curr_chunk;
+
+	int			direction;
+	int			a_rotation;
+	int			b_rotation;
+	int			curr_target;
 
 }				t_sort;
 
@@ -32,34 +49,47 @@ typedef struct s_sort
 int 	*make_int_array(int arg_count, char **arg_values);
 int 	*ft_invert_int_array(int *array, size_t size);
 void	ft_error(void);
-void	count_moves(char *str);
-int 	*make_int_array(int arg_count, char **arg_values);
+int		is_biggest(t_sort *sort, int value);
+int 	is_smallest(t_sort *sort, int value);
+int		get_bigger(int value, int valuetwo);
+t_llist *get_llist_tail(t_llist *list);
+int		*char_array_to_int_array(int amount, char **array);
 
 /// DEBUG
 void 	ft_print_int_array(int *array, size_t size);
 void 	print_list(t_llist *list);
-void 	count_moves(char *str);
+void 	print_move_count(char *str);
+int		count_moves(char *str);
+
+/// SIMPLIFY
+int *simplify_numbers (int *array, int size);
 
 //PUSHSWAP
-void llist_rev(t_llist **head);
-t_llist *llist_new(int content, int type);
-void llist_add(t_llist **list, t_llist *new);
-t_llist *make_list(int *array, int size, int type);
-t_sort *make_sort_struct(int *array, int size);
-void 	solve_final(t_sort *sort);
-size_t llist_len(t_llist *list);
+void 	llist_rev(t_llist **head);
+t_llist	*llist_new(int content);
+void	llist_add(t_llist **list, t_llist *new);
+t_llist	*make_list(int *array, int size, float split);
+void	fill_sort_struct(t_sort *sort, int *array, int size, float split);
+size_t	llist_len(t_llist *list);
 
-///replace.c
+// OPERATIONS.c
 
-t_llist	*solve_numbers(int *array, size_t size, int sort);
-void 	add_to_tree(t_mnode *mtree, void *content, size_t content_size);
-void 	get_insert_point(t_mnode *mtree, t_insert *temp, size_t depth);
-int 	move_array_pointer_and_adjust_size(int *array, size_t size);
-void 	get_longest_branch(t_mnode *tree, t_branch *branch, size_t depth);
-t_llist *llist_dup_except(t_llist *dup, t_llist *except);
+void 	push_stack(t_sort *sort, int stack);
+void	rotate_stack_a(t_sort *sort, int direction);
+void	rotate_stack_b(t_sort *sort, int direction);
+void	rotate_both_stacks(t_sort *sort, int direction);
 
-///SOLVE.c
-size_t llist_len(t_llist *list);
-void solve_final(t_sort *sort);
+///SORT.C
+void	sort_integers(t_sort *sort);
+void	align_biggest_number(t_sort *sort);
+void	move_target_to_stack_b(t_sort *sort);
+int		is_curr_chunk_sorted(t_sort *sort);
+void	get_next_target(t_sort *sort);
 
+///get_travel.c
+int		get_travel_b(t_sort *sort, int value, int direction);
+int		get_travel_a(t_sort *sort, int value, int direction);
+
+//// compare.c
+void	compare_results(t_optim *optimum, int target_value);
 #endif

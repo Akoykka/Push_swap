@@ -6,40 +6,23 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:08:48 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/24 21:23:43 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/07/30 16:14:04 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void print_list(t_llist *list)
-{	
-	if (!list)
-		printf("EMPTY LIST\n");
-	while(list)
+size_t llist_len(t_llist *list)
+{
+	size_t length;
+
+	length = 0;
+	while (list)
 	{
-		ft_putnbr(list->content);
-		if (list->type == ASCENDING)
-			printf("\t\t (type ASC)");
-		else
-			printf("\t\t (type DESC)");
-		printf("\n");
+		length++;
 		list = list->next;
 	}
-}
-
-void count_moves(char *str)
-{
-	int moves;
-
-	moves = 0;
-	while(*str)
-	{
-		if (*str == '\n')
-			++moves;
-		++str;
-	}
-	printf("move amount is approx: %i\n", moves);
+	return (length);
 }
 
 int *ft_invert_int_array(int *array, size_t size)
@@ -63,19 +46,6 @@ int *ft_invert_int_array(int *array, size_t size)
 	return (array);
 }
 
-void ft_print_int_array(int *array, size_t size)
-{
-	size_t i;
-
-	i = 0;
-	while (size > i)
-	{
-		printf("%i\n", *array);
-		++array;
-		++i;
-	}
-}
-
 int *make_int_array(int arg_count, char **arg_values)
 {
 	int	i;
@@ -83,6 +53,8 @@ int *make_int_array(int arg_count, char **arg_values)
 
 	i = 0;
 	array = (int *)ft_memalloc(sizeof(int) * arg_count);
+	if (!array)
+		return(NULL);
 	while (arg_count > i)
 	{
 		array[i] = ft_atoi(arg_values[i]);
@@ -110,4 +82,44 @@ int	*char_array_to_int_array(int amount, char **array)
 		++i;
 	}
 	return (stack);
+}
+int get_bigger(int value, int valuetwo)
+{
+	if (value > valuetwo)
+		return (value);
+	return(valuetwo);
+}
+
+int is_biggest(t_sort *sort, int value)
+{
+	t_llist *temp;
+
+	temp = sort->stack_b;
+	while (temp)
+	{
+		if (temp->content > value)
+			return(0);
+		temp = temp->next;
+	}
+	return (1);
+}
+int is_smallest(t_sort *sort, int value)
+{
+	t_llist *temp;
+
+	temp = sort->stack_b;
+	while (temp)
+	{
+		if (temp->content < value)
+			return(0);
+		temp = temp->next;
+	}
+	return (1);
+}
+
+t_llist *get_llist_tail(t_llist *list)
+{
+	while (list->next)
+		list = list->next;
+	return list;
 }

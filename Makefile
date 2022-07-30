@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/26 14:19:05 by akoykka          ###   ########.fr        #
+#    Updated: 2022/07/30 23:46:18 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,22 +16,26 @@ INCLUDES = -I .
 
 LIB = -lft -L./libft
 #
-SOURCES = push_swap.c utils.c replace.c solve.c
+SRC_LIST =	push_swap.c utils.c sort.c operations.c debug.c \
+			simplify.c compare.c
 
-OBJECTS = $(SOURCES:%.c=%.o)
+OBJECT_LIST = $(SRC_LIST:%.c=%.o)
 
 COMPILER = gcc
-FLAGS = -Wall -Werror -Wextra
+
+WWW = -Wall -Werror -Wextra
+#WWW += Wconversion
+
 FLAGS +=  -g -o
 
 all: $(NAME)
 
-$(NAME): #$(SOURCES) $(OBJECTS) Makefile
+$(NAME): $(OBJECT_LIST) $(SRC_LIST) Makefile
 	make -C libft/
-	$(COMPILER) $(SOURCES) $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
+	$(COMPILER) $(WWW) $(OBJECT_LIST) $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
 
-$(OBJECTS): %.o:%.c Makefile
-	gcc $(FLAGS) -c $< -o $@ -I $(LIBFT)
+$(OBJECT_LIST): %.o:%.c Makefile
+	gcc -c -g $< $(INCLUDES)
 
 clean:
 	make clean -C libft/
