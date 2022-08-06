@@ -1,0 +1,1 @@
+gcc input_test.c -g -L./libft -lft -I ./libft/includes

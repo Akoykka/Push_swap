@@ -53,7 +53,7 @@ int		is_biggest(t_sort *sort, int value);
 int 	is_smallest(t_sort *sort, int value);
 int		get_bigger(int value, int valuetwo);
 t_llist *get_llist_tail(t_llist *list);
-int		*char_array_to_int_array(int amount, char **array);
+int		*make_int_array(int amount, char **array);
 
 /// DEBUG
 void 	ft_print_int_array(int *array, size_t size);
@@ -62,7 +62,7 @@ void 	print_move_count(char *str);
 int		count_moves(char *str);
 
 /// SIMPLIFY
-int *simplify_numbers (int *array, int size);
+int 	*simplify_numbers (int *array, int size);
 
 //PUSHSWAP
 void 	llist_rev(t_llist **head);
