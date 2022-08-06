@@ -32,3 +32,89 @@ dispatch
 
 	ra rb rr, rra, rrb, rrr, sa, sb, ss, pa, pb.
 
+int is_only_numbers(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return(0);
+		++str;
+	}
+	return(1);
+}
+
+int is_smaller_than_max(*str)
+{
+	if (ft_isdigit(*str) && ft_strcmp(str, "21398210938098213") > 0)
+		return (0);
+	return (1);
+}
+
+int is_bigger_than_min(*str)
+{
+
+	if (*str == '-' && ft_strcmp(str, "-123123123213213") < 0)
+		return (0);
+	return(1);
+}
+
+int is_dup(char **numbers, int index, int size)
+{
+	char *target;
+
+	target = numbers[index];
+	++index;
+	while (size > index)
+	{
+		if (!ft_strcmp(target, numbers[index]))
+			return(1);
+		++index;
+	}
+	return (0);
+}
+
+
+int is_valid_input(char **input, int size)
+{
+	int i;
+
+	i = 0;
+	while(size > i)
+	{	if (!is_only_numbers(input[i])
+			|| !is_smaller_than_max(input[i])
+			|| !is_bigger_than_min(input[i])
+			|| is_dup(input, i, size))
+			return(0);
+		++i;
+	}
+	return(1);
+}
+
+
+
+
+void main (int arg_count, char **arg_values)
+{
+	char **numbers;
+
+	numbers = NULL;
+	arg_count--;
+	arg_values++;
+
+	if(arg_count == 1)
+	{
+		numbers = ft_strsplit(*arg_values, ' ');
+		if (!is_valid_input(numbers, count_numbers(numbers)))
+			exit(1);
+		make_list(numbers, count_numbers(numbers));
+		free(numbers)
+	}
+	else
+	{
+		if (!is_valid_input(arg_values, size))
+			exit(1);
+		make_list(arg_values);
+	}
+
+
+}
