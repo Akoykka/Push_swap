@@ -6,14 +6,29 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 11:22:32 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/06 17:44:10 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:00:03 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
+int	*char_array_to_int_array(int amount, char **array)
+{
+	int	*stack;
+	int	i;
+
+	i = 0;
+	stack = (int *)ft_memalloc(sizeof(int) * (amount));
+	while (amount > i)
+	{
+		stack[i] = ft_atoi(array[i]);
+		++i;
+	}
+	return (stack);
+}
+
 int is_only_numbers(char *str)
-{	
+{
 	if (*str == '-' && ft_strlen(str) > 1)
 		++str;
 	while (*str)
@@ -37,7 +52,7 @@ int is_bigger_than_max(char *str)
 			printf("bigger than max failed(number was %s)\n ", str);
 			return (1);
 		}
-		if (ft_strlen(str) == 10 
+		if (ft_strlen(str) == 10
 			&& ft_strcmp(str, "2147483647") > 0)
 		{
 			printf("bigger than max failed(number was %s)\n ", str);
@@ -146,7 +161,7 @@ void parse_moves(char **moves)
 
 	ret = 1;
 	next_move = NULL;
-	while (ret > 0)
+	while (ret)
 	{
 		ret = get_next_line(0, &next_move);
 		if (ret == -1)
@@ -287,10 +302,18 @@ void rrotate_b(t_stacks *stacks)
 	stacks->stack_b = target;
 	}
 }
-
-void	apply_moves(t_stacks *stacks, char *moves)
+void is_error(t_stacks *stacks)
 {
-	static const t_dispatch_table	dispatch_table[9] = {
+	printf("error in parsing (moves code 8)");
+	exit(1);
+
+}
+void	apply_moves(t_stacks *stacks)
+{
+	int i;
+
+	i = 0;
+	static const t_dispatch_table dispatch_table[9] = {
 		push_a,
 		push_b,
 		swap_a,
@@ -299,54 +322,77 @@ void	apply_moves(t_stacks *stacks, char *moves)
 		rotate_b,
 		rrotate_a,
 		rrotate_b,
-		error
+		is_error
 	};
-	while(*moves)
+	while(stacks->moves[i])
 	{
-		dispatch_table[*moves - 0](stacks);
-		++moves;
+		dispatch_table[stacks->moves[i] - 0](stacks);
+		++i;
 	}
 }
+int is_in_order(t_stacks *stacks)
+{
+	t_llist *temp;
 
+	temp = stacks->stack_a;
+	if(stacks->stack_b == NULL)
+	{
+		while(temp->next)
+		{
+			if(temp->content > temp->next->content)
+				return(0);
+			temp = temp->next;
+		}
+		return(1);
+	}
+	return(0);
+}
+
+void prepare_struct(t_llist **stacks)
 
 int main (int arg_count, char **arg_values)
 {
-	char **numbers;
-	char *moves;
 	t_stacks *stacks;
-	numbers = NULL;
-	t_llist *list;
-
-	int ret = 0;
+	int		*array;
 
 	arg_count--;
 	arg_values++;
-	moves = (char *)ft_memalloc(sizeof(char) * 40000);
-	if(arg_count == 1)
+
+	if (arg_count == 1)
 	{
-		numbers = ft_strsplit(*arg_values, ' ');
-		if (!is_valid_input(numbers, count_numbers(numbers)))
-		{
-			printf("invalid input (arg_count 1)");
-			exit(1);
-		}
+		stacks->numbers = ft_strsplit(*arg_values, ' ');
+		stacks->size = count_numbers(numbers);
 	}
 	else
 	{
-		if (!is_valid_input(arg_values, arg_count))
+		stacks->numbers = cpy_arg_values(arg_count, arg_values);
+		stacks->size = arg_count;
+	}
+	if (!is_valid_input(stacks->numbers, stacks->size))
 		{
 			printf("invalid input (arg_count > 1)");
 			exit(1);
 		}
-	}
-	printf("REGGAE OKAY INPUT \n");
-	
-	parse_moves(&moves);
-	apply_moves(list, moves);
-	//if(is_in_order(list))
-	//	printf("OK\n")
-	//else
-	//	printf("KO\n")
-
+	array = char_array_to_int_array(arg_count, numbers);
+	stacks->stack_a = make_llist(array, arg_count, 0);
+	printf("INPUT IS REGGAE OKAY \n");
+	parse_moves(&stacks->moves);
+	apply_moves(stacks);
+	if (is_in_order(stacks))
+		printf("OK\n")
+	else
+		printf("KO\n")
 	return (0);
 }
+
+
+
+
+yks argumentti:
+splitti
+
+
+useampi argumentti
+numerocheck
+is number valid
+

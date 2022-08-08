@@ -6,24 +6,11 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:08:48 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/30 16:14:04 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/06 20:01:44 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-size_t llist_len(t_llist *list)
-{
-	size_t length;
-
-	length = 0;
-	while (list)
-	{
-		length++;
-		list = list->next;
-	}
-	return (length);
-}
 
 int *ft_invert_int_array(int *array, size_t size)
 {
@@ -83,6 +70,7 @@ int	*char_array_to_int_array(int amount, char **array)
 	}
 	return (stack);
 }
+
 int get_bigger(int value, int valuetwo)
 {
 	if (value > valuetwo)

@@ -22,6 +22,11 @@ typedef struct s_stacks
 {
 	t_llist		*stack_a;
 	t_llist		*stack_b;
+	char		*moves[40000];
+
+	char		**numbers;
+	int			*array;
+	int			size;
 }			t_stacks;
 
 #endif
