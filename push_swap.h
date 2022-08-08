@@ -33,10 +33,12 @@ typedef struct s_llist
 
 typedef struct s_sort
 {
-	char	moves[200000];
+	t_llist		*moves;
 	t_llist		*stack_a;
 	t_llist		*stack_b;
-	int			curr_chunk;
+	t_llist		*current_best;
+
+	float		split;
 
 	int			direction;
 	int			a_rotation;
@@ -85,6 +87,7 @@ void	align_biggest_number(t_sort *sort);
 void	move_target_to_stack_b(t_sort *sort);
 int		is_curr_chunk_sorted(t_sort *sort);
 void	get_next_target(t_sort *sort);
+int 	assign_chunk(float value, float size, float split);
 
 ///get_travel.c
 int		get_travel_b(t_sort *sort, int value, int direction);

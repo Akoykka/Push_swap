@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 11:22:32 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/08 14:00:03 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/08 21:59:46 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,12 @@ void swap_b(t_stacks *stacks)
 	}
 }
 
+void swap_both(t_stacks *stacks)
+{
+	swap_a(stacks);
+	swap_b(stacks);
+}
+
 void rotate_a(t_stacks *stacks)
 {
 	t_llist *target;
@@ -261,6 +267,12 @@ void rotate_b(t_stacks *stacks)
 	get_llist_tail(stacks->stack_b)->next = target;
 	target->next = NULL;
 	}
+}
+
+void rotate_both(t_stacks *stacks)
+{
+	rotate_a(stacks);
+	rotate_b(stacks);
 }
 
 void rrotate_a(t_stacks *stacks)
@@ -302,6 +314,13 @@ void rrotate_b(t_stacks *stacks)
 	stacks->stack_b = target;
 	}
 }
+
+void rrotate_both(t_stacks *stacks)
+{
+	rrotate_a(stacks);
+	rrotate_b(stacks);
+}
+
 void is_error(t_stacks *stacks)
 {
 	printf("error in parsing (moves code 8)");
@@ -384,15 +403,3 @@ int main (int arg_count, char **arg_values)
 		printf("KO\n")
 	return (0);
 }
-
-
-
-
-yks argumentti:
-splitti
-
-
-useampi argumentti
-numerocheck
-is number valid
-

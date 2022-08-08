@@ -1,1 +1,1 @@
-gcc input_test.c -g -L./libft -lft -I ./libft/includes
+gcc checker.c -g -L./libft -lft -I ./libft/includes

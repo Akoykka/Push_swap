@@ -6,44 +6,52 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/30 23:46:18 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/08 21:59:51 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
+NAME_CHECKER = checker
 
-INCLUDES = -I .
-
-LIB = -lft -L./libft
-#
 SRC_LIST =	push_swap.c utils.c sort.c operations.c debug.c \
-			simplify.c compare.c
+			simplify.c compare.c llist_functions.c
+
+SRC_LIST_CHECKER = checker.c
 
 OBJECT_LIST = $(SRC_LIST:%.c=%.o)
+OBJECT_LIST_CHECKER = $(SRC_LIST_CHECKER:%.c=%.o)
 
 COMPILER = gcc
-
+INCLUDES = -I .
 WWW = -Wall -Werror -Wextra
 #WWW += Wconversion
-
 FLAGS +=  -g -o
+LIB = -lft -L./libft
 
-all: $(NAME)
+all: $(NAME) $(NAME_CHECKER)
 
 $(NAME): $(OBJECT_LIST) $(SRC_LIST) Makefile
 	make -C libft/
 	$(COMPILER) $(WWW) $(OBJECT_LIST) $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
+
+$(NAME_CHECKER): $(OBJECT_LIST_CHECKER) $(SRC_LIST_CHECKER) Makefile
+	$(COMPILER) $(WWW) $(OBJECT_LIST_CHECKER) $(INCLUDES) $(FLAGS) $(NAME_CHECKER) $(LIB)
+
+$(OBJECT_LIST_CHECKER): %.o:%.c Makefile
+	gcc -c -g $< $(INCLUDES)
 
 $(OBJECT_LIST): %.o:%.c Makefile
 	gcc -c -g $< $(INCLUDES)
 
 clean:
 	make clean -C libft/
-	rm -f $(OBJECTS)
+	rm -f $(OBJECT_LIST)
+	rm -f $(OBJECT_LIST_CHECKER)
 
 fclean:
 	make fclean -C libft/
 	rm -f $(NAME)
+	rm -f $(NAME_CHECKER)
 
 run:
 	./$(NAME) 9 8 1 2 4 5 6 7
