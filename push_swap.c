@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/09 19:18:37 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/09 19:47:47 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,7 +347,7 @@ int get_travel_a(t_sort *sort, int value, int direction)
 	while(temp->content != value)
 	{
 		++travel_dist;
-		temp = temp->next;
+		temp = temp->next; CONTINUE HERE PROBLEM LIES IN THE EXTRA MOVES
 	}
 	if (direction == BACKWARD && travel_dist > 0)
 		return (llist_len(sort->stack_a) - travel_dist);
@@ -577,32 +577,34 @@ void add_move(t_sort *sort, int move_id, int direction)
 			exit(1);
 	}
 	if (direction == BACKWARD)
-		new->content++;
-	llist_add_tail(sort->moves, new);
+		new->content += 1;
+	llist_add(&sort->moves, new);
 }
 
 void move_target_to_stack_b(t_sort *sort)
 {
-	printf("target is: %i\n", sort->curr_target);
-	printf("most optimal move is b_direction: %i b_rotation: %i\n", sort->b_direction, sort->b_rotation);
-	printf("most optimal move is a_direction: %i a_rotation: %i\n", sort->a_direction, sort->a_rotation);
+	//printf("target is: %i\n", sort->curr_target);
+	//printf("most optimal move is b_direction: %i b_rotation: %i\n", sort->b_direction, sort->b_rotation);
+	//printf("most optimal move is a_direction: %i a_rotation: %i\n", sort->a_direction, sort->a_rotation);
 	while (sort->a_rotation || sort->b_rotation)
 	{
 		if (sort->a_direction == sort->b_direction
-			&& sort->a_rotation && sort->b_rotation)
+			&& sort->a_rotation && sort->b_rotation
+			&& llist_len(sort->stack_a > 1)
+			&& llist_len(sort->stack_b > 1))
 		{
 			rotate_both_stacks(sort, sort->a_direction);
 			add_move(sort, ROTATE_BOTH, sort->a_direction);
 			sort->a_rotation--;
 			sort->b_rotation--;
 		}
-		else if (sort->a_rotation)
+		else if (sort->a_rotation && llist_len(sort->stack_a > 1))
 		{
 			rotate_stack_a(sort, sort->a_direction);
 			add_move(sort, ROTATE_A, sort->a_direction);
 			sort->a_rotation--;
 		}
-		else
+		else if (llist_len(sort->stack_b > 1))
 		{ 
 			rotate_stack_b(sort, sort->b_direction);
 			add_move(sort, ROTATE_B, sort->b_direction);
@@ -695,7 +697,6 @@ void sort_integers(t_sort *sort)
 
 void compare_sort(t_sort *sort)
 {
-	printf("current best is %zu lists long\n", llist_len(sort->current_best));
 	if (sort->current_best == NULL 
 	 		|| llist_len(sort->moves) < llist_len(sort->current_best))
 		{
@@ -729,7 +730,23 @@ void print_list(t_llist *list)
 	while(list)
 	{
 		ft_putnbr(list->content);
-		printf("\t\t (Chunk: %i)", list->chunk);
+		if (list->content == PUSH_A)
+			printf("\t PUSH_A");
+		if (list->content == PUSH_B)
+			printf("\t PUSH_B");
+		if (list->content == ROTATE_A)
+			printf("\t ROTATE_A");
+		if (list->content == RROTATE_A)
+			printf("\t RROTATE_A");
+		if (list->content == ROTATE_B)
+			printf("\t ROTATE_B");
+		if (list->content == RROTATE_B)
+			printf("\t RROTATE_B");
+		if (list->content == ROTATE_BOTH)
+			printf("\t RROTATE_B");
+		if (list->content == RROTATE_BOTH)
+			printf("\t RROTATE_B");
+		//printf("\t\t (Chunk: %i)", list->chunk);
 		printf("\n");
 		list = list->next;
 		nodecount++;
@@ -750,7 +767,7 @@ int main(int arg_count, char **arg_values)
 	
 	sort.current_best = NULL;
 	sort.split = 1.0;
-	while ((1.0f / 12.0f) < sort.split)
+	while ((1.0f / 18.0f) < sort.split)
 	{
 		make_struct(&sort, arg_count, arg_values);
 		sort_integers(&sort);
@@ -758,6 +775,7 @@ int main(int arg_count, char **arg_values)
 		sort.split = adjust_split();
 		reset_struct(&sort);
 	}
+	llist_rev(&sort.current_best);
 	print_list(sort.current_best);
 	llist_destroy(&sort.current_best);
 	return (0);
