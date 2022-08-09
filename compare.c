@@ -6,11 +6,45 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 13:17:24 by akoykka           #+#    #+#             */
-/*   Updated: 2022/07/30 14:42:36 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/09 12:48:30 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+compare_both_forward(t_optim *optimum)
+{
+	if	(get_bigger(optimum->forward_a, optimum->forward_b) < optimum->least_moves)
+
+
+
+
+}
+compare_both_backward(t_optim *optimum)
+{
+
+
+
+
+
+}
+compare_forward_a_backward_b(t_optim *optimum)
+{
+
+
+
+
+
+
+}
+compare_forward_b_backward_a(t_optim *optimum)
+{
+
+
+
+
+
+}
 
 void compare_results(t_optim *optimum, int target_value)
 {

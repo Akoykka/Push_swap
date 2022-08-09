@@ -6,15 +6,14 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/08 21:59:51 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/09 18:04:44 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
 NAME_CHECKER = checker
 
-SRC_LIST =	push_swap.c utils.c sort.c operations.c debug.c \
-			simplify.c compare.c llist_functions.c
+SRC_LIST =	push_swap.c llist_functions.c
 
 SRC_LIST_CHECKER = checker.c
 

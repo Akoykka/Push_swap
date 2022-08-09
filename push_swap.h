@@ -9,6 +9,14 @@
 # define BACKWARD	0
 # define TOP		6
 # define BOT		7
+# define PUSH_A		10
+# define PUSH_B		11
+# define ROTATE_A	12
+# define RROTATE_A	13
+# define ROTATE_B	14
+# define RROTATE_B  15
+# define ROTATE_BOTH 16
+# define RROTATE_BOTH 17
 
 typedef struct s_optim
 {
@@ -18,8 +26,12 @@ typedef struct s_optim
 	int backward_a;
 	int backward_b;
 
-	int direction;
+	int target_value;
+
+	int least_moves;
+	int a_direction;
 	int best_a;
+	int b_direction;
 	int best_b;
 	int best_target;
 }		t_optim;
@@ -40,59 +52,86 @@ typedef struct s_sort
 
 	float		split;
 
-	int			direction;
+	int			a_direction;
 	int			a_rotation;
+	int			b_direction;
 	int			b_rotation;
 	int			curr_target;
 
 }				t_sort;
 
-/// UTILS.c
-int 	*make_int_array(int arg_count, char **arg_values);
-int 	*ft_invert_int_array(int *array, size_t size);
-void	ft_error(void);
-int		is_biggest(t_sort *sort, int value);
-int 	is_smallest(t_sort *sort, int value);
-int		get_bigger(int value, int valuetwo);
-t_llist *get_llist_tail(t_llist *list);
-int		*make_int_array(int amount, char **array);
-
-/// DEBUG
-void 	ft_print_int_array(int *array, size_t size);
-void 	print_list(t_llist *list);
-void 	print_move_count(char *str);
-int		count_moves(char *str);
-
-/// SIMPLIFY
-int 	*simplify_numbers (int *array, int size);
-
-//PUSHSWAP
-void 	llist_rev(t_llist **head);
-t_llist	*llist_new(int content);
-void	llist_add(t_llist **list, t_llist *new);
-t_llist	*make_list(int *array, int size, float split);
-void	fill_sort_struct(t_sort *sort, int *array, int size, float split);
-size_t	llist_len(t_llist *list);
-
-// OPERATIONS.c
-
+//OPERATIONS
 void 	push_stack(t_sort *sort, int stack);
-void	rotate_stack_a(t_sort *sort, int direction);
-void	rotate_stack_b(t_sort *sort, int direction);
-void	rotate_both_stacks(t_sort *sort, int direction);
+void 	rotate_stack_a(t_sort *sort, int direction);
+void 	rotate_stack_b(t_sort *sort, int direction);
+void 	rotate_both_stacks(t_sort *sort, int direction);
 
-///SORT.C
-void	sort_integers(t_sort *sort);
-void	align_biggest_number(t_sort *sort);
-void	move_target_to_stack_b(t_sort *sort);
-int		is_curr_chunk_sorted(t_sort *sort);
-void	get_next_target(t_sort *sort);
-int 	assign_chunk(float value, float size, float split);
+//VALIDATOR
+int is_only_numbers(char *str);
+int is_bigger_than_max(char *str);
+int is_smaller_than_min(char *str);
+int is_dup(char **numbers, int index, int size);
+int is_valid_input(char **input, int size);
 
-///get_travel.c
-int		get_travel_b(t_sort *sort, int value, int direction);
-int		get_travel_a(t_sort *sort, int value, int direction);
+/// UTILS ??
+int		 getarrlen(char **str);
+t_llist	*char_array_to_llist(char **array, int size);
+float adjust_split(void);
 
-//// compare.c
-void	compare_results(t_optim *optimum, int target_value);
+/// ASSIGN CHUNKS
+
+t_llist *find_smallest(t_llist *list);
+t_llist *find_next_smallest(t_llist *list, int prev_value);
+int 	assign(t_sort *sort, int n);
+void 	assign_chunks(t_sort *sort);
+
+/// STRUCT MAKER
+
+void make_struct(t_sort *sort, int argc, char **argv);
+
+/// GET TARGET
+
+int get_travel_a(t_sort *sort, int value, int direction);
+int distance(t_sort *sort, int travel, int direction);
+int get_travel_b(t_sort *sort, int value, int direction);
+void get_next_target(t_sort *sort, int current_chunk);
+
+
+/// COMPARE 
+
+void compare_both_forward(t_optim *optm);
+void compare_both_backward(t_optim *optm);
+void compare_forward_a_backward_b(t_optim *optm);
+void compare_forward_b_backward_a(t_optim *optm);
+void compare_results(t_optim *optm);
+
+/// LLIST FUNCTIONS
+t_llist	*get_llist_tail(t_llist *list);
+t_llist *llist_new(int content);
+size_t	llist_len(t_llist *list);
+void	llist_add_tail(t_llist *head, t_llist *new); //onestar here might be bug
+void	llist_destroy(t_llist **list);
+void 	llist_rev(t_llist **head);
+void	llist_add(t_llist **list, t_llist *new);
+
+
+
+/// OPERATIONS ROTATE & PUSH
+void 	push_stack(t_sort *sort, int stack);
+void 	rotate_stack_a(t_sort *sort, int direction);
+void 	rotate_stack_b(t_sort *sort, int direction);
+void 	rotate_both_stacks(t_sort *sort, int direction);
+void 	add_move(t_sort *sort, int move_id, int direction);
+
+/// SORT
+void move_target_to_stack_b(t_sort *sort);
+int is_curr_chunk_sorted(t_sort *sort, int curr_chunk);
+void sort_integers(t_sort *sort);
+void compare_sort(t_sort *sort);
+
+///ALIGN BIG 
+int get_big(t_llist *list);
+int get_dist_to_big(t_llist *list, int big);
+void align_biggest_number(t_sort *sort);
+
 #endif

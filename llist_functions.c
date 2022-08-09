@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:28:16 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/06 20:01:21 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/09 18:19:17 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void llist_add(t_llist **list, t_llist *new)
 	new->next = *list;
 	*list = new;
 }
-
+/*
 t_llist *make_list(int *array, int size, float split)
 {
 	t_llist *head;
@@ -90,7 +90,7 @@ t_llist *make_list(int *array, int size, float split)
 	llist_rev(&head);
 	return(head);
 }
-
+*/
 size_t llist_len(t_llist *list)
 {
 	size_t length;
