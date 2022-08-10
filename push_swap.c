@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/09 19:47:47 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/10 09:05:35 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ int assign(t_sort *sort, int n)
 {
 	int total;
 	int chunk;
-	
+
 	total = llist_len(sort->stack_a);
 	chunk = (float)n / (float)total / sort->split;
 	if (total == n)
@@ -274,7 +274,7 @@ void assign_chunks(t_sort *sort)
 	current->chunk = assign(sort, n);
 
 	while (n < llist_len(sort->stack_a))
-	{	
+	{
 		++n;
 		current = find_next_smallest(sort->stack_a, current->content);
 		current->chunk = assign(sort, n);
@@ -354,11 +354,11 @@ int get_travel_a(t_sort *sort, int value, int direction)
 	return (travel_dist);
 }
 
-//// SOME RANDOM UTILS
+//// TRAVEL CALC
 ///START
 int distance(t_sort *sort, int travel, int direction)
 {
-	if (direction == BACKWARD && travel)
+	if (direction == BACKWARD && travel != 0)
 		return(llist_len(sort->stack_b) - travel);
 	return (travel);
 }
@@ -396,8 +396,36 @@ int is_smallest(t_sort *sort, int value)
 	}
 	return (1);
 }
-//// SOME RANDOM UTILS
-///END
+
+
+int get_stack_b_travel(t_sort *sort, int value, int direction)
+{
+	int travel;
+	t_llist *temp;
+
+	travel = 0;
+	temp = sort->stack_b;
+	if (llist_len(sort->stack_b) < 2) under work
+		return(0);
+	while(temp)
+	{
+		if (is_biggest(sort, temp->content)
+			 && (temp->content < value || is_smallest(sort, value)))
+			return (distance(sort, travel, direction));
+
+		if (temp->next && value < temp->content && value > temp->next->content)
+			return (distance(sort, travel + 1, direction));
+
+		temp = temp->next;
+		++travel;
+	}
+	return (0);
+}
+
+////
+////Travel End`
+////
+
 
 int get_travel_b(t_sort *sort, int value, int direction)
 {
@@ -415,7 +443,7 @@ int get_travel_b(t_sort *sort, int value, int direction)
 		{
 			return(distance(sort, travel_dist, direction));
 		}
-		if (value < temp->content
+		if (value < temp->content &&
 			&& (!temp->next ||  value > temp->next->content))
 		{
 			return(distance(sort, travel_dist + 1, direction));
@@ -423,10 +451,7 @@ int get_travel_b(t_sort *sort, int value, int direction)
 		temp = temp->next;
 		++travel_dist;
 	}
-	//print_list(sort->stack_b);
-	//printf("stack_b is above the value is %i\n", value);
-	printf("hit and miss value didnt fulfill parameters\n");
-	exit(1);
+
 }
 
 ///
@@ -605,13 +630,13 @@ void move_target_to_stack_b(t_sort *sort)
 			sort->a_rotation--;
 		}
 		else if (llist_len(sort->stack_b > 1))
-		{ 
+		{
 			rotate_stack_b(sort, sort->b_direction);
 			add_move(sort, ROTATE_B, sort->b_direction);
 			sort->b_rotation--;
 		}
 	}
-	push_stack(sort, STACK_A);	
+	push_stack(sort, STACK_A);
 	add_move(sort, PUSH_A, FORWARD);
 }
 
@@ -692,12 +717,12 @@ void sort_integers(t_sort *sort)
 		push_stack(sort, STACK_B);
 		add_move(sort, PUSH_B, FORWARD);
 	}
-	
+
 }
 
 void compare_sort(t_sort *sort)
 {
-	if (sort->current_best == NULL 
+	if (sort->current_best == NULL
 	 		|| llist_len(sort->moves) < llist_len(sort->current_best))
 		{
 			llist_destroy(&sort->current_best);
@@ -764,7 +789,7 @@ int main(int arg_count, char **arg_values)
 
 	arg_count -= 1;
 	arg_values += 1;
-	
+
 	sort.current_best = NULL;
 	sort.split = 1.0;
 	while ((1.0f / 18.0f) < sort.split)
