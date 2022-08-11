@@ -91,13 +91,13 @@ void make_struct(t_sort *sort, int argc, char **argv);
 
 /// GET TARGET
 
-int get_travel_a(t_sort *sort, int value, int direction);
+int get_stack_b_travel(t_sort *sort, int value, int direction);
 int distance(t_sort *sort, int travel, int direction);
 int get_travel_b(t_sort *sort, int value, int direction);
 void get_next_target(t_sort *sort, int current_chunk);
 
 
-/// COMPARE 
+/// COMPARE
 
 void compare_both_forward(t_optim *optm);
 void compare_both_backward(t_optim *optm);
@@ -129,7 +129,7 @@ int is_curr_chunk_sorted(t_sort *sort, int curr_chunk);
 void sort_integers(t_sort *sort);
 void compare_sort(t_sort *sort);
 
-///ALIGN BIG 
+///ALIGN BIG
 int get_big(t_llist *list);
 int get_dist_to_big(t_llist *list, int big);
 void align_biggest_number(t_sort *sort);
