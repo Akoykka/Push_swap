@@ -49,6 +49,7 @@ typedef struct s_sort
 	t_llist		*current_best;
 
 	float		split;
+	float		max_split;
 
 	int			a_direction;
 	int			a_rotation;

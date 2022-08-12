@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/11 15:10:17 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/12 18:57:22 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,10 +227,7 @@ t_llist	*char_array_to_llist(char **array, int size)
 	head = NULL;
 	i = 0;
 	if (!is_valid_input(array, size))
-	{
-		printf("ERROR NOT VALID NUMBERS");
 		return (NULL);
-	}
 	while (size > i)
 	{
 		new = llist_new(ft_atoi(array[i]));
@@ -508,7 +505,7 @@ void rrotate_both(t_stacks *stacks)
 
 void is_error(t_stacks *stacks)
 {
-	printf("error in parsing (moves code 8)");
+	printf("error in parsing (moves code 8)\n");
 	ft_error(stacks);
 }
 
@@ -575,15 +572,15 @@ int main (int arg_count, char **arg_values)
 // PHASE 1 GET NUMBERS AS A LIST
 	make_struct(arg_count, arg_values, &stacks);
 
-	printf("\tThese are the numbers:\n");
-	print_list(stacks.stack_a);
+	//printf("\tThese are the numbers:\n");
+	//print_list(stacks.stack_a);
 
 
 /// PHASE 2 GET INSTRUCTIONS AS A LIST
 	get_moves(&stacks);
 
-	printf("\tThese are the moves:\n");
-	print_list(stacks.moves);
+	//printf("\tThese are the moves:\n");
+	//print_list(stacks.moves);
 
 // PHASE 3 DISPATCH TABLE FOR EXECUTION
 	execute_moves(&stacks);

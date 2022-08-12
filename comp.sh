@@ -1,1 +1,0 @@
-gcc checker.c -g -L./libft -lft -I ./libft/includes

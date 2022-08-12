@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/12 13:05:45 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/12 18:34:50 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int is_only_numbers(char *str)
 	{
 		if (!ft_isdigit(*str))
 		{
-			printf("isonlynumbers failed\n");
+			write(1, "Error, invalid input (not_numbers)\n", 35);
 			return(0);
 		}
 		++str;
@@ -119,13 +119,13 @@ int is_bigger_than_max(char *str)
 	{
 		if (ft_strlen(str) > 10)
 		{
-			printf("bigger than max failed(number was %s)\n ", str);
+			write(1, "Error, number bigger than MAX_INT\n", 33);
 			return (1);
 		}
 		if (ft_strlen(str) == 10
 			&& ft_strcmp(str, "2147483647") > 0)
 		{
-			printf("bigger than max failed(number was %s)\n ", str);
+			write(1, "Error, number bigger than MAX_INT\n", 33);
 			return (1);
 		}
 	}
@@ -138,13 +138,13 @@ int is_smaller_than_min(char *str)
 	{
 		if (ft_strlen(str) > 11)
 		{
-			printf("smaller than min failed\n");
+			write(1, "Error, number smaller than MIN_INT\n", 35);
 			return (1);
 		}
 		if (ft_strlen(str) == 11
 			&& ft_strcmp(str, "-2147483648") > 0)
 		{
-			printf("smaller than min failed\n");
+			write(1, "Error, number smaller than MIN_INT\n", 35);
 			return (1);
 		}
 	}
@@ -161,7 +161,7 @@ int is_dup(char **numbers, int index, int size)
 	{
 		if (ft_strcmp(target, numbers[index]) == 0)
 		{
-			printf("isdup failed\n");
+			write(1, "Error, duplicate number\n", 25);
 			return(1);
 		}
 		++index;
@@ -199,10 +199,7 @@ t_llist	*char_array_to_llist(char **array, int size)
 	head = NULL;
 	i = 0;
 	if (!is_valid_input(array, size))
-	{
-		printf("ERROR NOT VALID NUMBERS");
 		return (NULL);
-	}
 	while (size > i)
 	{
 		new = llist_new(ft_atoi(array[i]));
@@ -287,6 +284,7 @@ void print_list_delete(t_llist *list)
 	}
 	printf("list_len = %i\n", nodecount);
 }
+
 void assign_chunks(t_sort *sort)
 {
 	int n;
@@ -342,11 +340,10 @@ int getarrlen(char **str)
 void make_struct(t_sort *sort, int argc, char **argv)
 {
 	char	**temp;
-
 	temp = NULL;
 	if (argc == 1)
 	{
-		ft_strsplit(*argv, ' ');
+		temp = ft_strsplit(*argv, ' ');
 		sort->stack_a = char_array_to_llist(temp, getarrlen(temp));
 		free_array(temp);
 		temp = NULL;
@@ -361,14 +358,6 @@ void make_struct(t_sort *sort, int argc, char **argv)
 	assign_chunks(sort);
 	sort->stack_b = NULL;
 	sort->moves = NULL;
-}
-
-float adjust_split(void)
-{
-	static int	counter = 1;
-
-	++counter;
-	return(1.0f / counter);
 }
 
 ////
@@ -548,8 +537,6 @@ void get_next_target(t_sort *sort, int current_chunk)
 	{
 		if (temp->chunk == current_chunk)
 		{
-			//if(llist_len(sort->stack_a) == 2)
-			//	printf("wtf push plx\n");
 			optm.forward_a = get_travel_a(sort, temp);
 			optm.forward_b = get_travel_b(sort, temp->content);
 			optm.backward_a = convert(optm.forward_a, llist_len(sort->stack_a));
@@ -798,7 +785,7 @@ void compare_sort(t_sort *sort)
 		}
 }
 
-void reset_struct(t_sort *sort)
+void free_struct(t_sort *sort)
 {
 	llist_destroy(&sort->stack_a);
 	sort->stack_a = NULL;
@@ -874,25 +861,80 @@ void print_moves(t_llist *list)
 	}
 }
 
+int count_parameters(char *s)
+{
+	int	param;
+	int	i;
+
+	i = 0;
+	param = 0;
+	while (s[i])
+	{
+		if (((unsigned char *)s)[i] == ' ')
+			++i;
+		else
+		{
+			++param;
+			while (s[i] && ((unsigned char *)s)[i] != ' ')
+				++i;
+		}
+	}
+	return (param);
+}
+
+void increase_split(t_sort *sort, int split_counter)
+{
+	sort->split = 1.0f / (float)split_counter;
+}
+
+int set_split_and_max_split(t_sort *sort, int arg_count, char **arg_values)
+{
+	if (arg_count == 1)
+		arg_count = count_parameters(*arg_values);
+	sort->split = 1.0f / 1.0f;
+	sort->max_split = 1.0f / 6.0f;
+	if (arg_count > 99 && arg_count < 400)
+	{
+		sort->split = 1.0f /2;
+		sort->max_split = 1.0f / 8;
+		return (2);
+	}
+	if (arg_count > 399 && arg_count < 800)
+	{
+		sort->split = 1.0f / 4;
+		sort->max_split = 1.0f / 12;
+		return (4);
+	}
+	if (arg_count > 799)
+	{
+		sort->split = 1.0f / 8;
+		sort->max_split = 1.0f / 16;
+		return (8);
+	}
+	return(1);
+}
+
 int main(int arg_count, char **arg_values)
 {
 	t_sort sort;
+	int split_counter;
 
 	arg_count -= 1;
 	arg_values += 1;
 
 	sort.current_best = NULL;
-	sort.split = 1.0f / 1.0f ;
-	while ((1.0f / 12.0f) < sort.split)
+	split_counter = set_split_and_max_split(&sort, arg_count, arg_values);
+	while (sort.split > sort.max_split)
 	{
+		//printf("split = %f \t max split = %f, split_counter = %i\n", sort.split, sort.max_split, split_counter);
 		make_struct(&sort, arg_count, arg_values);
 		sort_integers(&sort);
 		/// DEBUG
 		//is_sorted(&sort);
 		/// DEBUG
 		compare_sort(&sort);
-		sort.split = adjust_split();
-		reset_struct(&sort);
+		free_struct(&sort);
+		increase_split(&sort, ++split_counter);
 	}
 	llist_rev(&sort.current_best);
 	//print_list(sort.current_best);
@@ -900,6 +942,3 @@ int main(int arg_count, char **arg_values)
 	llist_destroy(&sort.current_best);
 	return (0);
 }
-//$>ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
-//$>ARG="388 230 1234 380 331 961 1011 1193 332 363 1086 839 206 652 519 581 747 894 1077 34 1203 1270 876 1132 1268 1230 420 1127 209 768 248 14 1128 1070 1117 44 1250 211 61 1007 122 1098 690 597 374 29 647 703 587 329 931 777 692 196 521 968 1290 572 948 439 1194 607 237 1105 766 721 530 969 739 527 1019 1185 407 701 252 883 631 1002 665 1174 352 403 1287 30 41 99 1226 17 809 770 1243 991 453 385 676 731 444 477 980 411 1277 171 778 1221 528 157 543 712 1024 993 536 1085 154 339 760 934 1093 992 309 557 910 585 190 466 148 265 819 315 262 442 677 1125 470 952 843 109 722 734 437 942 269 998 855 825 383 191 1099 472 205 849 412 103 21 933 251 1224 774 794 1172 1012 1082 1013 243 354 155 529 795 545 971 451 1183 906 419 850 752 233 36 91 165 965 239 1190 1102 1255 1126 808 911 944 1147 1136 872 807 596 905 340 1100 939 59 1181 40 1291 389 173 1046 814 152 1005 866 433 875 1120 1175 561 1153 454 292 610 588 293 181 37 490 1049 798 621 1297 1079 518 954 1143 1206 461 579 614"; ./push_swap $ARG | ./checker $ARG
-//OK
