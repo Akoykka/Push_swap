@@ -21,12 +21,10 @@
 typedef struct s_optim
 {
 	int forward_a;
-	int forward_b;
-
 	int backward_a;
+	int forward_b;
 	int backward_b;
-
-	int target_value;
+	int value;
 
 	int least_moves;
 	int a_direction;
@@ -91,9 +89,9 @@ void make_struct(t_sort *sort, int argc, char **argv);
 
 /// GET TARGET
 
-int get_stack_b_travel(t_sort *sort, int value, int direction);
+int get_travel_a(t_sort *sort, t_llist *target);
 int distance(t_sort *sort, int travel, int direction);
-int get_travel_b(t_sort *sort, int value, int direction);
+int get_travel_b(t_sort *sort, int value);
 void get_next_target(t_sort *sort, int current_chunk);
 
 

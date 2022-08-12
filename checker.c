@@ -6,13 +6,13 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/08 20:26:08 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/11 15:10:17 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-/////LLIST FUNCTIONS START 
+/////LLIST FUNCTIONS START
 /////
 
 void llist_add(t_llist **list, t_llist *new)
@@ -277,7 +277,7 @@ void free_array(char **array)
 void make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 {
 	char	**temp;
-	
+
 	temp = NULL;
 	if (arg_count == 1)
 	{
@@ -570,9 +570,9 @@ int main (int arg_count, char **arg_values)
 
 	arg_count--;
 	arg_values++;
-	
 
-// PHASE 1 GET NUMBERS AS A LIST 
+
+// PHASE 1 GET NUMBERS AS A LIST
 	make_struct(arg_count, arg_values, &stacks);
 
 	printf("\tThese are the numbers:\n");

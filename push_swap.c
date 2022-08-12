@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/10 22:02:07 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/12 13:05:45 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ t_llist *find_smallest(t_llist *list)
 	smallest = list;
 	while(list)
 	{
-		if (smallest->content > list->content)
+		if (list->content < smallest->content)
 			smallest = list;
 		list = list->next;
 	}
@@ -236,49 +236,83 @@ t_llist *find_smallest(t_llist *list)
 
 t_llist *find_next_smallest(t_llist *list, int prev_value)
 {
-	t_llist *next_smallest;
-
-	while (list && list->content < prev_value)
+	t_llist *temp;
+	int new_low;
+	while (list->content <= prev_value)
 		list = list->next;
-	next_smallest = list;
+
+	temp = list;
+	new_low = list->content;
+
 	while(list)
 	{
-		if (list->content < next_smallest->content
+		if (list->content < new_low
 			&& list->content > prev_value)
-			next_smallest = list;
+		{
+			temp = list;
+			new_low = list->content;
+		}
 		list = list->next;
 	}
-	return (next_smallest);
+	return (temp);
 }
 
 
 int assign(t_sort *sort, int n)
 {
-	int total;
+	float total;
 	int chunk;
 
-	total = llist_len(sort->stack_a);
-	chunk = (float)n / (float)total / sort->split;
-	if (total == n)
-		return (chunk - 1);
-	return (chunk);
+	total = (float)llist_len(sort->stack_a);
+	chunk = (float)n / total / sort->split;
+	//printf("total %f / nth low %i / split %f = chunk %i\n", total, n, sort->split, chunk);
+	if ((int)total == n && sort->split != 1.0f / 7.0f)
+		return(chunk - 1);
+	return(chunk);
 }
+void print_list_delete(t_llist *list)
+{
+	int nodecount;
 
+	nodecount = 0;
+	if (!list)
+		printf("EMPTY LIST\n");
+	while(list)
+	{
+		ft_putnbr(list->content);
+		printf("\t\t (Chunk: %i)", list->chunk);
+		printf("\n");
+		list = list->next;
+		nodecount++;
+	}
+	printf("list_len = %i\n", nodecount);
+}
 void assign_chunks(t_sort *sort)
 {
 	int n;
+	int value;
 	t_llist *current;
-
+	///
+	//sort->split = 1.0f / 7;
+	////
 	n = 1;
 	current = find_smallest(sort->stack_a);
+	value = current->content;
 	current->chunk = assign(sort, n);
+	//printf("assigned number is %i\n",current->content);
 
 	while (n < llist_len(sort->stack_a))
 	{
 		++n;
-		current = find_next_smallest(sort->stack_a, current->content);
+		current = find_next_smallest(sort->stack_a, value);
 		current->chunk = assign(sort, n);
+		value = current->content;
+		//printf("assigned number is %i\t chunk is %i \n",current->content,current->chunk);
 	}
+	////
+	//print_list_delete(sort->stack_a);
+	//exit(1);
+	//////
 }
 //// ASSIGN END
 
@@ -337,38 +371,109 @@ float adjust_split(void)
 	return(1.0f / counter);
 }
 
-int get_travel_a(t_sort *sort, int value, int direction)
-{
-	int travel;
-	t_llist *temp;
+////
+////Travel End`
+////
 
-	travel = 0;
-	temp = sort->stack_a;
-	while(temp->content != value)
-	{
-		++travel;
-		temp = temp->next;
-	}
-	if (direction == BACKWARD && travel > 0)
-		return (llist_len(sort->stack_a) - travel);
-	return (travel);
-}
-
-//// TRAVEL CALC
-///START
-int distance(t_sort *sort, int travel, int direction)
-{
-	if (direction == BACKWARD && travel != 0)
-		return(llist_len(sort->stack_b) - travel);
-	return (travel);
-}
-
+///
+//// COMPARE START
+///
 int get_bigger(int value, int valuetwo)
 {
 	if (value > valuetwo)
 		return (value);
 	return(valuetwo);
 }
+void compare_both_forward(t_optim *optm)
+{
+	int total_moves;
+
+	total_moves = get_bigger(optm->forward_a, optm->forward_b);
+	if	(total_moves < optm->least_moves)
+	{
+		optm->a_direction = FORWARD;
+		optm->b_direction = FORWARD;
+		optm->best_a = optm->forward_a;
+		optm->best_b = optm->forward_b;
+		optm->best_target = optm->value;
+		optm->least_moves = total_moves;
+	}
+
+}
+void compare_both_backward(t_optim *optm)
+{
+	int total_moves;
+
+	total_moves = get_bigger(optm->backward_a, optm->backward_b);
+	if	(total_moves < optm->least_moves)
+	{
+		optm->a_direction = BACKWARD;
+		optm->b_direction = BACKWARD;
+		optm->best_a = optm->backward_a;
+		optm->best_b = optm->backward_b;
+		optm->best_target = optm->value;
+		optm->least_moves = total_moves;
+	}
+}
+void compare_forward_a_backward_b(t_optim *optm)
+{
+	int total_moves;
+
+	total_moves = optm->forward_a + optm->backward_b;
+	if	(total_moves < optm->least_moves)
+	{
+		optm->a_direction = FORWARD;
+		optm->best_a = optm->forward_a;
+		optm->b_direction = BACKWARD;
+		optm->best_b = optm->backward_b;
+		optm->best_target = optm->value;
+		optm->least_moves = total_moves;
+	}
+}
+void compare_forward_b_backward_a(t_optim *optm)
+{
+	int total_moves;
+
+	total_moves = optm->forward_b + optm->backward_a;
+	if	(total_moves < optm->least_moves)
+	{
+		optm->b_direction = FORWARD;
+		optm->best_b = optm->forward_b;
+		optm->a_direction = BACKWARD;
+		optm->best_a = optm->backward_a;
+		optm->best_target = optm->value;
+		optm->least_moves =  total_moves;
+	}
+}
+
+void compare_results(t_optim *optm)
+{
+	compare_both_forward(optm);
+	compare_both_backward(optm);
+	compare_forward_a_backward_b(optm);
+	compare_forward_b_backward_a(optm);
+}
+///
+//// COMPARE END
+
+
+int get_travel_a(t_sort *sort, t_llist *target)
+{
+	int travel;
+	t_llist *temp;
+
+	travel = 0;
+	temp = sort->stack_a;
+	while(temp != target)
+	{
+		++travel;
+		temp = temp->next;
+	}
+	return (travel);
+}
+
+//// TRAVEL CALC
+///START
 
 int is_biggest(t_sort *sort, int value)
 {
@@ -398,98 +503,37 @@ int is_smallest(t_sort *sort, int value)
 }
 
 
-int get_stack_b_travel(t_sort *sort, int value, int direction)
+int get_travel_b(t_sort *sort, int value)
 {
 	int travel;
 	t_llist *temp;
 
 	travel = 0;
 	temp = sort->stack_b;
-	if (llist_len(sort->stack_b) < 2)
-		return (0);
 	while(temp)
 	{
 		if (is_biggest(sort, temp->content)
 			 && (temp->content < value || is_smallest(sort, value)))
-			return (distance(sort, travel, direction));
+			return (travel);
 
 		if (temp->next && value < temp->content && value > temp->next->content)
-			return (distance(sort, travel + 1, direction));
+			return (travel + 1);
 
 		temp = temp->next;
 		++travel;
 	}
 	return (0);
 }
-
-////
-////Travel End`
-////
-
 ///
-//// COMPARE START
+//// TRAVEL CALC END
 ///
 
-void compare_both_forward(t_optim *optm)
+int convert(int travel, int size)
 {
-	if	(get_bigger(optm->forward_a, optm->forward_b) < optm->least_moves)
-	{
-		optm->a_direction = FORWARD;
-		optm->b_direction = FORWARD;
-		optm->best_a = optm->forward_a;
-		optm->best_b = optm->forward_b;
-		optm->best_target = optm->target_value;
-		optm->least_moves = get_bigger(optm->forward_a, optm->forward_b);
-	}
-
+	if (travel)
+		return (size - travel);
+	return (travel);
 }
-void compare_both_backward(t_optim *optm)
-{
-if	(get_bigger(optm->backward_a, optm->backward_b) < optm->least_moves)
-	{
-		optm->a_direction = BACKWARD;
-		optm->b_direction = BACKWARD;
-		optm->best_a = optm->backward_a;
-		optm->best_b = optm->backward_b;
-		optm->best_target = optm->target_value;
-		optm->least_moves = get_bigger(optm->backward_a, optm->backward_b);
-	}
-}
-void compare_forward_a_backward_b(t_optim *optm)
-{
-if	((optm->forward_a + optm->backward_b) < optm->least_moves)
-	{
-		optm->a_direction = FORWARD;
-		optm->best_a = optm->forward_a;
-		optm->b_direction = BACKWARD;
-		optm->best_b = optm->backward_b;
-		optm->best_target = optm->target_value;
-		optm->least_moves = optm->forward_a + optm->backward_b;
-	}
-}
-void compare_forward_b_backward_a(t_optim *optm)
-{
-	if	((optm->forward_b + optm->backward_a) < optm->least_moves)
-	{
-		optm->b_direction = FORWARD;
-		optm->best_b = optm->backward_a;
-		optm->a_direction = BACKWARD;
-		optm->best_a = optm->forward_b;
-		optm->best_target = optm->target_value;
-		optm->least_moves =  optm->forward_b + optm->backward_a;
-	}
-}
-
-void compare_results(t_optim *optm)
-{
-	compare_both_forward(optm);
-	compare_both_backward(optm);
-	compare_forward_a_backward_b(optm);
-	compare_forward_b_backward_a(optm);
-}
-///
-//// COMPARE END
-
 
 
 void get_next_target(t_sort *sort, int current_chunk)
@@ -499,16 +543,18 @@ void get_next_target(t_sort *sort, int current_chunk)
 
 	temp = sort->stack_a;
 	ft_memset(&optm, 0, sizeof(t_optim));
-	optm.least_moves = llist_len(sort->stack_a) * 5;
+	optm.least_moves = 999999;
 	while (temp)
 	{
 		if (temp->chunk == current_chunk)
 		{
-			optm.forward_a = get_travel_a(sort, temp->content, FORWARD);
-			optm.forward_b = get_stack_b_travel(sort, temp->content, FORWARD);
-			optm.backward_a = get_travel_a(sort, temp->content, BACKWARD);
-			optm.backward_b = get_stack_b_travel(sort, temp->content, BACKWARD);
-			optm.target_value = temp->content;
+			//if(llist_len(sort->stack_a) == 2)
+			//	printf("wtf push plx\n");
+			optm.forward_a = get_travel_a(sort, temp);
+			optm.forward_b = get_travel_b(sort, temp->content);
+			optm.backward_a = convert(optm.forward_a, llist_len(sort->stack_a));
+			optm.backward_b = convert(optm.forward_b, llist_len(sort->stack_b));
+			optm.value = temp->content;
 			compare_results(&optm);
 		}
 		temp = temp->next;
@@ -585,34 +631,43 @@ void add_move(t_sort *sort, int move_id, int direction)
 
 void move_target_to_stack_b(t_sort *sort)
 {
+	//if(sort->curr_target == 532 || sort->curr_target == 488)
+	//{
 	//printf("target is: %i\n", sort->curr_target);
 	//printf("most optimal move is b_direction: %i b_rotation: %i\n", sort->b_direction, sort->b_rotation);
 	//printf("most optimal move is a_direction: %i a_rotation: %i\n", sort->a_direction, sort->a_rotation);
+//	}
 	while (sort->a_rotation || sort->b_rotation)
 	{
 		if (sort->a_direction == sort->b_direction
-			&& sort->a_rotation && sort->b_rotation
-			&& llist_len(sort->stack_a) > 1
-			&& llist_len(sort->stack_b) > 1)
+			&& sort->a_rotation && sort->b_rotation)
 		{
 			rotate_both_stacks(sort, sort->a_direction);
 			add_move(sort, ROTATE_BOTH, sort->a_direction);
 			sort->a_rotation--;
 			sort->b_rotation--;
 		}
-		else if (sort->a_rotation && llist_len(sort->stack_a) > 1)
+		else if (sort->a_rotation)
 		{
 			rotate_stack_a(sort, sort->a_direction);
 			add_move(sort, ROTATE_A, sort->a_direction);
 			sort->a_rotation--;
 		}
-		else if (llist_len(sort->stack_b) > 1)
+		else
 		{
 			rotate_stack_b(sort, sort->b_direction);
 			add_move(sort, ROTATE_B, sort->b_direction);
 			sort->b_rotation--;
 		}
 	}
+	//if(sort->stack_a->content == 532 || sort->stack_a->content == 488)
+	//{
+	///printf("target is: %i\n", sort->curr_target);
+	//printf("most optimal move is b_direction: %i b_rotation: %i\n", sort->b_direction, sort->b_rotation);
+	//printf("most optimal move is a_direction: %i a_rotation: %i\n", sort->a_direction, sort->a_rotation);
+	//print_list_delete(sort->stack_a);
+	//print_list_delete(sort->stack_b);
+	//}
 	push_stack(sort, STACK_A);
 	add_move(sort, PUSH_A, FORWARD);
 }
@@ -697,10 +752,45 @@ void sort_integers(t_sort *sort)
 
 }
 
+int is_it_sorted(t_sort *sort)
+{
+	t_llist *temp;
+
+	temp = sort->stack_a;
+	if (sort->stack_b != NULL)
+		return (0);
+	while(temp && temp->next)
+	{
+		if(temp->content > temp->next->content)
+			return(0);
+		temp = temp->next;
+	}
+	return(1);
+}
+
+void is_sorted(t_sort *sort)
+{
+	t_llist *temp;
+
+	temp = sort->stack_a;
+	if (sort->stack_b != NULL)
+		printf("stack_b is not empty at split %f\n", sort->split);
+	while(temp && temp->next)
+	{
+		if(temp->content > temp->next->content)
+		{
+			printf("not valid input at split %f\n stack_a is:\n", sort->split);
+			print_list_delete(sort->stack_a);
+			break ;
+		}
+		temp = temp->next;
+	}
+}
+
 void compare_sort(t_sort *sort)
 {
-	if (sort->current_best == NULL
-	 		|| llist_len(sort->moves) < llist_len(sort->current_best))
+	if ( is_it_sorted(sort) && (sort->current_best == NULL
+	 		|| llist_len(sort->moves) < llist_len(sort->current_best)))
 		{
 			llist_destroy(&sort->current_best);
 			sort->current_best = sort->moves;
@@ -784,26 +874,6 @@ void print_moves(t_llist *list)
 	}
 }
 
-
-void is_sorted(t_sort *sort)
-{
-	t_llist *temp;
-
-	temp = sort->stack_a;
-	if (sort->stack_b != NULL)
-		printf("stack_b is not empty at split %f\n", sort->split);
-	while(temp && temp->next)
-	{
-		if(temp->content > temp->next->content)
-		{
-			printf("not valid input at split %f\n", sort->split);
-			print_list(sort->stack_a);
-			break ;
-		}
-		temp = temp->next;
-	}
-}
-
 int main(int arg_count, char **arg_values)
 {
 	t_sort sort;
@@ -818,7 +888,7 @@ int main(int arg_count, char **arg_values)
 		make_struct(&sort, arg_count, arg_values);
 		sort_integers(&sort);
 		/// DEBUG
-		is_sorted(&sort);
+		//is_sorted(&sort);
 		/// DEBUG
 		compare_sort(&sort);
 		sort.split = adjust_split();
@@ -826,10 +896,10 @@ int main(int arg_count, char **arg_values)
 	}
 	llist_rev(&sort.current_best);
 	//print_list(sort.current_best);
-	//print_moves(sort.current_best);
+	print_moves(sort.current_best);
 	llist_destroy(&sort.current_best);
 	return (0);
 }
 //$>ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
-//$>ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker $ARG
+//$>ARG="388 230 1234 380 331 961 1011 1193 332 363 1086 839 206 652 519 581 747 894 1077 34 1203 1270 876 1132 1268 1230 420 1127 209 768 248 14 1128 1070 1117 44 1250 211 61 1007 122 1098 690 597 374 29 647 703 587 329 931 777 692 196 521 968 1290 572 948 439 1194 607 237 1105 766 721 530 969 739 527 1019 1185 407 701 252 883 631 1002 665 1174 352 403 1287 30 41 99 1226 17 809 770 1243 991 453 385 676 731 444 477 980 411 1277 171 778 1221 528 157 543 712 1024 993 536 1085 154 339 760 934 1093 992 309 557 910 585 190 466 148 265 819 315 262 442 677 1125 470 952 843 109 722 734 437 942 269 998 855 825 383 191 1099 472 205 849 412 103 21 933 251 1224 774 794 1172 1012 1082 1013 243 354 155 529 795 545 971 451 1183 906 419 850 752 233 36 91 165 965 239 1190 1102 1255 1126 808 911 944 1147 1136 872 807 596 905 340 1100 939 59 1181 40 1291 389 173 1046 814 152 1005 866 433 875 1120 1175 561 1153 454 292 610 588 293 181 37 490 1049 798 621 1297 1079 518 954 1143 1206 461 579 614"; ./push_swap $ARG | ./checker $ARG
 //OK
