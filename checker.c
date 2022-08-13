@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/12 18:57:22 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/13 12:40:30 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int is_only_numbers(char *str)
 	{
 		if (!ft_isdigit(*str))
 		{
-			printf("isonlynumbers failed\n");
+			write(1, "Error, (is_only_numbers)\n", 25);
 			return(0);
 		}
 		++str;
@@ -147,13 +147,13 @@ int is_bigger_than_max(char *str)
 	{
 		if (ft_strlen(str) > 10)
 		{
-			printf("bigger than max failed(number was %s)\n ", str);
+			write(1, "Error, (is_bigger_than_max)\n", 28);
 			return (1);
 		}
 		if (ft_strlen(str) == 10
 			&& ft_strcmp(str, "2147483647") > 0)
 		{
-			printf("bigger than max failed(number was %s)\n ", str);
+			write(1, "Error, (is_bigger_than_max)\n", 28);
 			return (1);
 		}
 	}
@@ -166,13 +166,13 @@ int is_smaller_than_min(char *str)
 	{
 		if (ft_strlen(str) > 11)
 		{
-			printf("smaller than min failed\n");
+			write(1, "Error, (is_smaller_than_min)\n", 29);
 			return (1);
 		}
 		if (ft_strlen(str) == 11
 			&& ft_strcmp(str, "-2147483648") > 0)
 		{
-			printf("smaller than min failed\n");
+			write(1, "Error, (is_smaller_than_min)\n", 29);
 			return (1);
 		}
 	}
@@ -189,7 +189,7 @@ int is_dup(char **numbers, int index, int size)
 	{
 		if (ft_strcmp(target, numbers[index]) == 0)
 		{
-			printf("isdup failed\n");
+			write(1, "Error, is_dup\n", 14);
 			return(1);
 		}
 		++index;
@@ -329,14 +329,14 @@ void get_moves(t_stacks *stacks)
 	{
 		if (ret == -1)
 		{
-			printf("error in get_next_line\n");
+			write(1, "Error\n", 6);
 			ft_error(stacks);
 		}
 		new = llist_new(parse_move(next_move));
 		if(!new)
 		{
 			free(next_move);
-			printf("error, malloc error\n");
+			write(1, "Error\n", 6);
 			ft_error(stacks);
 		}
 		llist_add(&stacks->moves, new);
@@ -505,7 +505,7 @@ void rrotate_both(t_stacks *stacks)
 
 void is_error(t_stacks *stacks)
 {
-	printf("error in parsing (moves code 8)\n");
+	write(1, "Error, parsing_error\n", 21);
 	ft_error(stacks);
 }
 
@@ -587,9 +587,9 @@ int main (int arg_count, char **arg_values)
 
 /// PHASE 4 FINAL CHECK
 	if (is_in_order(&stacks))
-		printf("OK\n");
+		write(1, "OK\n", 3);
 	else
-		printf("KO\n");
+		write(1,"KO\n", 3);
 
 /// PHASE 5 FREE EVERYTHING
 	free_all(&stacks);

@@ -1,7 +1,6 @@
-input="./valid_input"
+input="./valid_500"
 while read -r line
 do
-	echo "$line"
-	read -r line
+	./push_swap "$line" | wc -l
 	./push_swap "$line" | ./checker "$line"
 done < "$input"

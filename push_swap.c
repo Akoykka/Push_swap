@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/12 18:34:50 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/13 13:02:03 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -901,9 +901,9 @@ int set_split_and_max_split(t_sort *sort, int arg_count, char **arg_values)
 	}
 	if (arg_count > 399 && arg_count < 800)
 	{
-		sort->split = 1.0f / 4;
-		sort->max_split = 1.0f / 12;
-		return (4);
+		sort->split = 1.0f / 1;
+		sort->max_split = 1.0f / 16;
+		return (1);
 	}
 	if (arg_count > 799)
 	{
