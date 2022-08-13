@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/23 17:07:39 by akoykka           #+#    #+#              #
-#    Updated: 2022/07/23 13:08:15 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/13 17:59:18 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,11 +47,11 @@ INCLUDES = includes/
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	ar rc $(NAME) $(OBJECTS)
-	ranlib $(NAME)
+	@ar rc $(NAME) $(OBJECTS)
+	@ranlib $(NAME)
 
 $(OBJECTS): %.o:%.c Makefile
-	gcc $(FLAGS) -c $< -o $@ -I $(INCLUDES)
+	@gcc $(FLAGS) -c $< -o $@ -I $(INCLUDES)
 
 clean:
 	rm -f $(OBJECTS)

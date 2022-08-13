@@ -58,8 +58,7 @@ void rrotate_a(t_stacks *stacks);
 void rrotate_b(t_stacks *stacks);
 void rrotate_both(t_stacks *stacks);
 void is_error(t_stacks *stacks);
-void execute_moves(t_stacks *stacks);
-
 int is_in_order(t_stacks *stacks);
 
+void execute_moves(t_stacks *stacks);
 #endif

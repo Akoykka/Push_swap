@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 12:40:30 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/13 18:03:57 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,6 @@ size_t llist_len(t_llist *list)
 	return (length);
 }
 
-void print_list(t_llist *list)
-{
-	if (!list)
-		printf("EMPTY LIST\n");
-	while(list)
-	{
-		ft_putnbr(list->content);
-		printf("\n");
-		list = list->next;
-	}
-}
-
 void llist_destroy(t_llist **list)
 {
 	t_llist *temp;
@@ -99,11 +87,6 @@ void llist_destroy(t_llist **list)
 	}
 	list = NULL;
 }
-////
-////LLIST FUNCTIONS END
-////
-
-
 
 void free_all(t_stacks *stacks)
 {
@@ -118,105 +101,6 @@ void ft_error(t_stacks *stacks)
 	free_all(stacks);
 	exit(1);
 }
-
-
-
-///////
-//// VALID START
-///////
-
-int is_only_numbers(char *str)
-{
-	if (*str == '-' && ft_strlen(str) > 1)
-		++str;
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-		{
-			write(1, "Error, (is_only_numbers)\n", 25);
-			return(0);
-		}
-		++str;
-	}
-	return(1);
-}
-
-int is_bigger_than_max(char *str)
-{
-	if (ft_isdigit(*str))
-	{
-		if (ft_strlen(str) > 10)
-		{
-			write(1, "Error, (is_bigger_than_max)\n", 28);
-			return (1);
-		}
-		if (ft_strlen(str) == 10
-			&& ft_strcmp(str, "2147483647") > 0)
-		{
-			write(1, "Error, (is_bigger_than_max)\n", 28);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int is_smaller_than_min(char *str)
-{
-	if(*str == '-')
-	{
-		if (ft_strlen(str) > 11)
-		{
-			write(1, "Error, (is_smaller_than_min)\n", 29);
-			return (1);
-		}
-		if (ft_strlen(str) == 11
-			&& ft_strcmp(str, "-2147483648") > 0)
-		{
-			write(1, "Error, (is_smaller_than_min)\n", 29);
-			return (1);
-		}
-	}
-	return(0);
-}
-
-int is_dup(char **numbers, int index, int size)
-{
-	char *target;
-
-	target = numbers[index];
-	++index;
-	while (size > index)
-	{
-		if (ft_strcmp(target, numbers[index]) == 0)
-		{
-			write(1, "Error, is_dup\n", 14);
-			return(1);
-		}
-		++index;
-	}
-	return (0);
-}
-
-
-int is_valid_input(char **input, int size)
-{
-	int i;
-
-	i = 0;
-	if(!input || !size)
-		return(0);
-	while(size > i)
-	{	if (!is_only_numbers(input[i])
-			|| is_bigger_than_max(input[i])
-			|| is_smaller_than_min(input[i])
-			|| is_dup(input, i, size))
-			return(0);
-		++i;
-	}
-	return(1);
-}
-//// VALID END
-///////
 
 t_llist	*char_array_to_llist(char **array, int size)
 {
@@ -286,8 +170,11 @@ void make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 	else
 		stacks->stack_a = char_array_to_llist(arg_values, arg_count);
 	if (!stacks->stack_a)
-		exit(1);
-	stacks->stack_b = NULL;
+	{
+		write(1, "Error\n", 6);
+		exit (1);
+	}
+		stacks->stack_b = NULL;
 }
 
 int parse_move(char *next_move)
@@ -362,6 +249,20 @@ void push_a(t_stacks *stacks)
 
 	t_llist *target;
 
+	if (stacks->stack_b)
+	{
+	target = stacks->stack_b;
+	stacks->stack_b = stacks->stack_b->next;
+	target->next = stacks->stack_a;
+	stacks->stack_a = target;
+	}
+}
+
+void push_b(t_stacks *stacks)
+{
+
+	t_llist *target;
+
 	if (stacks->stack_a)
 	{
 	target = stacks->stack_a;
@@ -371,19 +272,7 @@ void push_a(t_stacks *stacks)
 	}
 }
 
-void push_b(t_stacks *stacks)
-{
 
-	t_llist *target;
-
-	if (stacks->stack_b)
-	{
-	target = stacks->stack_b;
-	stacks->stack_b = stacks->stack_b->next;
-	target->next = stacks->stack_a;
-	stacks->stack_a = target;
-	}
-}
 
 void swap_a(t_stacks *stacks)
 {
@@ -548,50 +437,33 @@ int is_in_order(t_stacks *stacks)
 	t_llist *temp;
 
 	temp = stacks->stack_a;
-	if(stacks->stack_b == NULL)
+	if (stacks->stack_b == NULL)
 	{
-		while(temp->next)
+		while (temp->next)
 		{
-			if(temp->content > temp->next->content)
-				return(0);
+			if (temp->content > temp->next->content)
+				return (0);
 			temp = temp->next;
 		}
-		return(1);
+		return (1);
 	}
-	return(0);
+	return (0);
 }
 
-int main (int arg_count, char **arg_values)
+int	main (int arg_count, char **arg_values)
 {
-	t_stacks stacks;
+	t_stacks	stacks;
 
 	arg_count--;
 	arg_values++;
 
-
-// PHASE 1 GET NUMBERS AS A LIST
 	make_struct(arg_count, arg_values, &stacks);
-
-	//printf("\tThese are the numbers:\n");
-	//print_list(stacks.stack_a);
-
-
-/// PHASE 2 GET INSTRUCTIONS AS A LIST
 	get_moves(&stacks);
-
-	//printf("\tThese are the moves:\n");
-	//print_list(stacks.moves);
-
-// PHASE 3 DISPATCH TABLE FOR EXECUTION
 	execute_moves(&stacks);
-
-/// PHASE 4 FINAL CHECK
 	if (is_in_order(&stacks))
 		write(1, "OK\n", 3);
 	else
 		write(1,"KO\n", 3);
-
-/// PHASE 5 FREE EVERYTHING
 	free_all(&stacks);
 	return (0);
 }
