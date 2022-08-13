@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 18:03:57 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/13 18:19:36 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /////LLIST FUNCTIONS START
 /////
-
+/*
 void llist_add(t_llist **list, t_llist *new)
 {
 	new->next = *list;
@@ -22,7 +22,7 @@ void llist_add(t_llist **list, t_llist *new)
 }
 
 
-void llist_rev(t_llist **head)
+void	llist_rev(t_llist **head)
 {
 	t_llist	*temp_prevnode;
 	t_llist	*temp;
@@ -43,7 +43,7 @@ void llist_rev(t_llist **head)
 	*head = temp_prevnode;
 }
 
-t_llist *llist_new(int content)
+t_llist	*llist_new(int content)
 {
 	t_llist *new;
 
@@ -56,7 +56,7 @@ t_llist *llist_new(int content)
 	return(new);
 }
 
-size_t llist_len(t_llist *list)
+size_t	llist_len(t_llist *list)
 {
 	size_t length;
 
@@ -69,7 +69,7 @@ size_t llist_len(t_llist *list)
 	return (length);
 }
 
-void llist_destroy(t_llist **list)
+void	llist_destroy(t_llist **list)
 {
 	t_llist *temp;
 	t_llist *next;
@@ -87,26 +87,26 @@ void llist_destroy(t_llist **list)
 	}
 	list = NULL;
 }
-
-void free_all(t_stacks *stacks)
+*/
+void	free_all(t_stacks *stacks)
 {
 	llist_destroy(&(stacks->stack_a));
 	llist_destroy(&(stacks->stack_b));
 	llist_destroy(&(stacks->moves));
 }
 
-void ft_error(t_stacks *stacks)
+void	ft_error(t_stacks *stacks)
 {
 	write(1, "Error", 6);
 	free_all(stacks);
-	exit(1);
+	exit (1);
 }
 
 t_llist	*char_array_to_llist(char **array, int size)
 {
-	t_llist *head;
-	t_llist *new;
-	int	i;
+	t_llist	*head;
+	t_llist	*new;
+	int		i;
 
 	head = NULL;
 	i = 0;
@@ -124,25 +124,25 @@ t_llist	*char_array_to_llist(char **array, int size)
 		++i;
 	}
 	llist_rev(&head);
-	return(head);
+	return (head);
 }
 
-int get_len(char **array)
+int	get_len(char **array)
 {
 	int	i;
 
 	i = 0;
 	while (array[i])
 		++i;
-	return(i);
+	return (i);
 }
 
-void free_array(char **array)
+void	free_array(char **array)
 {
 	int	i;
 
 	if (!array)
-		return;
+		return ;
 	i = 0;
 	while (array[i])
 	{
@@ -155,7 +155,7 @@ void free_array(char **array)
 	array = NULL;
 }
 
-void make_struct(int arg_count, char **arg_values, t_stacks *stacks)
+void	make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 {
 	char	**temp;
 
@@ -177,38 +177,38 @@ void make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 		stacks->stack_b = NULL;
 }
 
-int parse_move(char *next_move)
+int	parse_move(char *next_move)
 {
 	if (!ft_strcmp (next_move, "pa"))
-		return(0);
+		return (0);
 	if (!ft_strcmp (next_move, "pb"))
-		return(1);
+		return (1);
 	if (!ft_strcmp (next_move, "sa"))
-		return(2);
+		return (2);
 	if (!ft_strcmp (next_move, "sb"))
-		return(3);
+		return (3);
 	if (!ft_strcmp (next_move, "ss"))
-		return(4);
+		return (4);
 	if (!ft_strcmp (next_move, "ra"))
-		return(5);
+		return (5);
 	if (!ft_strcmp (next_move, "rb"))
-		return(6);
+		return (6);
 	if (!ft_strcmp (next_move, "rr"))
-		return(7);
+		return (7);
 	if (!ft_strcmp (next_move, "rra"))
-		return(8);
+		return (8);
 	if (!ft_strcmp (next_move, "rrb"))
-		return(9);
+		return (9);
 	if (!ft_strcmp (next_move, "rrr"))
-		return(10);
-	return(11);
+		return (10);
+	return (11);
 }
 
-void get_moves(t_stacks *stacks)
+void	get_moves(t_stacks *stacks)
 {
-	char *next_move;
-	int ret;
-	t_llist *new;
+	char	*next_move;
+	int		ret;
+	t_llist	*new;
 
 	next_move = NULL;
 	ret = get_next_line(0, &next_move);
@@ -220,7 +220,7 @@ void get_moves(t_stacks *stacks)
 			ft_error(stacks);
 		}
 		new = llist_new(parse_move(next_move));
-		if(!new)
+		if (!new)
 		{
 			free(next_move);
 			write(1, "Error\n", 6);
@@ -237,28 +237,27 @@ void get_moves(t_stacks *stacks)
 //// MOVES START
 /////
 
-t_llist *get_llist_tail(t_llist *list)
+t_llist	*get_llist_tail(t_llist *list)
 {
 	while (list->next)
 		list = list->next;
-	return list;
+	return (list);
 }
 
-void push_a(t_stacks *stacks)
+void	push_a(t_stacks *stacks)
 {
-
 	t_llist *target;
 
 	if (stacks->stack_b)
 	{
-	target = stacks->stack_b;
-	stacks->stack_b = stacks->stack_b->next;
-	target->next = stacks->stack_a;
-	stacks->stack_a = target;
+		target = stacks->stack_b;
+		stacks->stack_b = stacks->stack_b->next;
+		target->next = stacks->stack_a;
+		stacks->stack_a = target;
 	}
 }
 
-void push_b(t_stacks *stacks)
+void	push_b(t_stacks *stacks)
 {
 
 	t_llist *target;
@@ -274,7 +273,7 @@ void push_b(t_stacks *stacks)
 
 
 
-void swap_a(t_stacks *stacks)
+void	swap_a(t_stacks *stacks)
 {
 	t_llist *first;
 	t_llist *second;
@@ -289,7 +288,7 @@ void swap_a(t_stacks *stacks)
 	}
 }
 
-void swap_b(t_stacks *stacks)
+void	swap_b(t_stacks *stacks)
 {
 	t_llist *first;
 	t_llist *second;
@@ -304,95 +303,92 @@ void swap_b(t_stacks *stacks)
 	}
 }
 
-void swap_both(t_stacks *stacks)
+void	swap_both(t_stacks *stacks)
 {
 	swap_a(stacks);
 	swap_b(stacks);
 }
 
-void rotate_a(t_stacks *stacks)
+void	rotate_a(t_stacks *stacks)
 {
-	t_llist *target;
+	t_llist	*target;
 
 	target = NULL;
-
 	if (llist_len(stacks->stack_a) > 1)
 	{
-	target = stacks->stack_a;
-	stacks->stack_a = stacks->stack_a->next;
-	get_llist_tail(stacks->stack_a)->next = target;
-	target->next = NULL;
+		target = stacks->stack_a;
+		stacks->stack_a = stacks->stack_a->next;
+		get_llist_tail(stacks->stack_a)->next = target;
+		target->next = NULL;
 	}
 }
 
-void rotate_b(t_stacks *stacks)
+void	rotate_b(t_stacks *stacks)
 {
-	t_llist *target;
+	t_llist	*target;
 
 	target = NULL;
 
 	if (llist_len(stacks->stack_b) > 1)
 	{
-	target = stacks->stack_b;
-	stacks->stack_b = stacks->stack_b->next;
-	get_llist_tail(stacks->stack_b)->next = target;
-	target->next = NULL;
+		target = stacks->stack_b;
+		stacks->stack_b = stacks->stack_b->next;
+		get_llist_tail(stacks->stack_b)->next = target;
+		target->next = NULL;
 	}
 }
 
-void rotate_both(t_stacks *stacks)
+void	rotate_both(t_stacks *stacks)
 {
 	rotate_a(stacks);
 	rotate_b(stacks);
 }
 
-void rrotate_a(t_stacks *stacks)
+void	rrotate_a(t_stacks *stacks)
 {
-	t_llist *target;
-	t_llist *temp;
+	t_llist	*target;
+	t_llist	*temp;
 
 	temp = NULL;
 	target = NULL;
-
 	if (llist_len(stacks->stack_a) > 1)
 	{
-	target = get_llist_tail(stacks->stack_a);
-	temp = stacks->stack_a;
-	while(temp->next != target)
-		temp = temp->next;
-	temp->next = NULL;
-	target->next = stacks->stack_a;
-	stacks->stack_a = target;
+		target = get_llist_tail(stacks->stack_a);
+		temp = stacks->stack_a;
+		while (temp->next != target)
+			temp = temp->next;
+		temp->next = NULL;
+		target->next = stacks->stack_a;
+		stacks->stack_a = target;
 	}
 }
 
-void rrotate_b(t_stacks *stacks)
+void	rrotate_b(t_stacks *stacks)
 {
-	t_llist *target;
-	t_llist *temp;
+	t_llist	*target;
+	t_llist	*temp;
 
 	temp = NULL;
 	target = NULL;
-
 	if (llist_len(stacks->stack_b) > 1)
 	{
-	target = get_llist_tail(stacks->stack_b);
-	temp = stacks->stack_b;
-	while(temp->next != target)
-		temp = temp->next;
-	temp->next = NULL;
-	target->next = stacks->stack_b;
-	stacks->stack_b = target;
+		target = get_llist_tail(stacks->stack_b);
+		temp = stacks->stack_b;
+		while (temp->next != target)
+			temp = temp->next;
+		temp->next = NULL;
+		target->next = stacks->stack_b;
+		stacks->stack_b = target;
 	}
 }
 
-void rrotate_both(t_stacks *stacks)
+void	rrotate_both(t_stacks *stacks)
 {
 	rrotate_a(stacks);
 	rrotate_b(stacks);
 }
 
-void is_error(t_stacks *stacks)
+void	is_error(t_stacks *stacks)
 {
 	write(1, "Error, parsing_error\n", 21);
 	ft_error(stacks);
@@ -402,15 +398,11 @@ void is_error(t_stacks *stacks)
 //// MOVES END
 //////
 
-void execute_moves(t_stacks *stacks)
+void	execute_moves(t_stacks *stacks)
 {
-	int i;
-	t_llist *temp;
-
-	temp = stacks->moves;
-	i = 0;
-
-	static const t_dispatch_table	dispatch_table[12] = {
+	int				i;
+	t_llist			*temp;
+	static const	t_dispatch_table dispatch_table[12] = {
 		push_a,
 		push_b,
 		swap_a,
@@ -423,18 +415,20 @@ void execute_moves(t_stacks *stacks)
 		rrotate_b,
 		rrotate_both,
 		is_error
-		};
+	};
 
-		while(temp)
-		{
-			dispatch_table[temp->content](stacks);
-			temp = temp->next;
-		}
+	temp = stacks->moves;
+	i = 0;
+	while (temp)
+	{
+		dispatch_table[temp->content](stacks);
+		temp = temp->next;
+	}
 }
 
-int is_in_order(t_stacks *stacks)
+int	is_in_order(t_stacks *stacks)
 {
-	t_llist *temp;
+	t_llist	*temp;
 
 	temp = stacks->stack_a;
 	if (stacks->stack_b == NULL)
@@ -450,20 +444,19 @@ int is_in_order(t_stacks *stacks)
 	return (0);
 }
 
-int	main (int arg_count, char **arg_values)
+int	main(int arg_count, char **arg_values)
 {
 	t_stacks	stacks;
 
 	arg_count--;
 	arg_values++;
-
 	make_struct(arg_count, arg_values, &stacks);
 	get_moves(&stacks);
 	execute_moves(&stacks);
 	if (is_in_order(&stacks))
 		write(1, "OK\n", 3);
 	else
-		write(1,"KO\n", 3);
+		write(1, "KO\n", 3);
 	free_all(&stacks);
 	return (0);
 }
