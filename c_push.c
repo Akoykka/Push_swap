@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 08:06:21 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 08:06:46 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 17:18:22 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	push_a(t_stacks *stacks)
 {
-	t_llist *target;
+	t_llist	*target;
 
 	if (stacks->stack_b)
 	{
@@ -27,14 +27,13 @@ void	push_a(t_stacks *stacks)
 
 void	push_b(t_stacks *stacks)
 {
-
-	t_llist *target;
+	t_llist	*target;
 
 	if (stacks->stack_a)
 	{
-	target = stacks->stack_a;
-	stacks->stack_a = stacks->stack_a->next;
-	target->next = stacks->stack_b;
-	stacks->stack_b = target;
+		target = stacks->stack_a;
+		stacks->stack_a = stacks->stack_a->next;
+		target->next = stacks->stack_b;
+		stacks->stack_b = target;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 17:48:41 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 21:12:07 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	add_move(t_sort *sort, int move_id, int direction)
 		sort->stack_b = NULL;
 		llist_destroy(&sort->moves);
 		sort->moves = NULL;
-		print_error("Error add_move");
+		print_error("Error\n");
 		exit(1);
 	}
 	if (direction == BACKWARD)

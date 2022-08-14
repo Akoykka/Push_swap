@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/14 08:45:10 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/14 20:43:29 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,10 +49,10 @@ $(OBJECT_LIST): %.o:%.c Makefile
 	gcc -c -g $< $(INCLUDES)
 
 clean:
-	make clean -C libft/
-	rm -f $(OBJECT_LIST)
-	rm -f $(OBJECT_LIST_CHECKER)
-
+	@make clean -C libft/
+	@rm -f $(OBJECT_LIST)
+	@rm -f $(OBJECT_LIST_CHECKER)
+	@echo "Object files removed"
 fclean:
 	make fclean -C libft/
 	rm -f $(NAME)

@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 08:41:40 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 08:44:13 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 17:36:50 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 	char	**temp;
 
 	temp = NULL;
+	stacks->stack_b = NULL;
+	stacks->moves = NULL;
 	if (arg_count == 1)
 	{
 		temp = ft_strsplit(*arg_values, ' ');
@@ -52,9 +54,5 @@ void	make_struct(int arg_count, char **arg_values, t_stacks *stacks)
 	else
 		stacks->stack_a = char_array_to_llist(arg_values, arg_count);
 	if (!stacks->stack_a)
-	{
-		write(1, "Error\n", 6);
-		exit (1);
-	}
-		stacks->stack_b = NULL;
+		error_n_exit(stacks);
 }

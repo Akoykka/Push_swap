@@ -6,11 +6,20 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 08:40:28 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 18:11:48 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
+
+void error_n_exit(t_stacks *stacks)
+{
+	write(2, "Error\n", 6);
+	llist_destroy(&stacks->stack_a);
+	llist_destroy(&stacks->stack_b);
+	llist_destroy(&stacks->moves);
+	exit (1);
+}
 
 int	parse_move(char *next_move)
 {
@@ -50,16 +59,12 @@ void	get_moves(t_stacks *stacks)
 	while (ret)
 	{
 		if (ret == -1)
-		{
-			write(1, "Error\n", 6);
-			ft_error(stacks);
-		}
+			error_n_exit(stacks);
 		new = llist_new(parse_move(next_move));
 		if (!new)
 		{
 			free(next_move);
-			write(1, "Error\n", 6);
-			ft_error(stacks);
+			error_n_exit(stacks);
 		}
 		llist_add(&stacks->moves, new);
 		free(next_move);
@@ -69,13 +74,11 @@ void	get_moves(t_stacks *stacks)
 	llist_rev(&stacks->moves);
 }
 
-
-
 void	execute_moves(t_stacks *stacks)
 {
-	int				i;
-	t_llist			*temp;
-	static const	t_dispatch_table dispatch_table[12] = {
+	int								i;
+	t_llist							*temp;
+	static const t_dispatch_table	dispatch_table[12] = {
 		push_a,
 		push_b,
 		swap_a,
@@ -87,7 +90,7 @@ void	execute_moves(t_stacks *stacks)
 		rrotate_a,
 		rrotate_b,
 		rrotate_both,
-		is_error
+		error_n_exit
 	};
 
 	temp = stacks->moves;

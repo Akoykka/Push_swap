@@ -5,8 +5,6 @@
 # include "libft/includes/libft.h"
 # include "libft/includes/get_next_line.h"
 
-
-
 typedef struct s_llist
 {
 	int 			content;
@@ -28,8 +26,6 @@ size_t llist_len(t_llist *list);
 void print_list(t_llist *list);
 void llist_destroy(t_llist **list);
 void free_all(t_stacks *stacks);
-void ft_error(t_stacks *stacks);
-void	print_error(char *str);
 
 /// VALIDATION
 int is_only_numbers(char *str);
@@ -58,7 +54,7 @@ void rotate_both(t_stacks *stacks);
 void rrotate_a(t_stacks *stacks);
 void rrotate_b(t_stacks *stacks);
 void rrotate_both(t_stacks *stacks);
-void is_error(t_stacks *stacks);
+void error_n_exit(t_stacks *stacks);
 int is_in_order(t_stacks *stacks);
 
 void execute_moves(t_stacks *stacks);

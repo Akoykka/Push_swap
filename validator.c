@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:11:12 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 17:12:54 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 21:08:12 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	is_only_numbers(char *str)
 	{
 		if (!ft_isdigit(*str))
 		{
-			print_error("Error, invalid input (not_numbers)\n");
 			return (0);
 		}
 		++str;
@@ -35,7 +34,6 @@ int	is_bigger_than_max(char *str)
 		if (ft_strlen(str) > 10 || (ft_strlen(str) == 10
 				&& ft_strcmp(str, "2147483647") > 0))
 		{
-			print_error("Error, number bigger than MAX_INT\n");
 			return (1);
 		}
 	}
@@ -49,7 +47,6 @@ int	is_smaller_than_min(char *str)
 		if (ft_strlen(str) > 11 || (ft_strlen(str) == 11
 				&& ft_strcmp(str, "-2147483648") > 0))
 		{
-			print_error("Error, number smaller than MIN_INT\n");
 			return (1);
 		}
 	}
@@ -66,7 +63,6 @@ int	is_dup(char **numbers, int index, int size)
 	{
 		if (ft_strcmp(target, numbers[index]) == 0)
 		{
-			print_error("Error, duplicate number\n");
 			return (1);
 		}
 		++index;

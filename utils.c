@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:24:27 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 17:38:43 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 20:04:13 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_struct(t_sort *sort)
 
 void	print_error(char *str)
 {
-	write(2, "str", ft_strlen(str));
+	write(2, str, ft_strlen(str));
 }
 
 void	free_array(char **str)

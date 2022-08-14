@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:27:09 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 17:29:32 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 21:08:47 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	make_struct(t_sort *sort, int argc, char **argv)
 		sort->stack_a = char_array_to_llist(argv, argc);
 	if (!sort->stack_a)
 	{
-		print_error("Error, malloc_error (make_struct)\n");
+		print_error("Error\n");
 		exit(1);
 	}
 	sort->stack_b = NULL;

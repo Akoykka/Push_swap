@@ -6,16 +6,16 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 08:05:12 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 08:07:37 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 17:15:09 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-void swap_a(t_stacks *stacks)
+void	swap_a(t_stacks *stacks)
 {
-	t_llist *first;
-	t_llist *second;
+	t_llist	*first;
+	t_llist	*second;
 
 	if (llist_len(stacks->stack_a) > 1)
 	{
@@ -27,10 +27,10 @@ void swap_a(t_stacks *stacks)
 	}
 }
 
-void swap_b(t_stacks *stacks)
+void	swap_b(t_stacks *stacks)
 {
-	t_llist *first;
-	t_llist *second;
+	t_llist	*first;
+	t_llist	*second;
 
 	if (llist_len(stacks->stack_b) > 1)
 	{
@@ -42,7 +42,7 @@ void swap_b(t_stacks *stacks)
 	}
 }
 
-void swap_both(t_stacks *stacks)
+void	swap_both(t_stacks *stacks)
 {
 	swap_a(stacks);
 	swap_b(stacks);
