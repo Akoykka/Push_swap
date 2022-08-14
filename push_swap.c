@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 21:12:07 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/14 21:38:19 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	get_next_target(t_sort *sort)
 
 void	sort_integers(t_sort *sort)
 {
-	while (sort->stack_a)
+	while (llist_len(sort->stack_a) > 2)
 	{
 		get_next_target(sort);
 		move_target_to_stack_b(sort);
@@ -100,6 +100,16 @@ void	sort_integers(t_sort *sort)
 	llist_rev(&sort->moves);
 }
 
+void print_list(t_llist *list)
+{
+	while (list)
+	{
+		printf("\t%i\t", list->content);
+		list = list->next;
+	}
+	printf("\n");
+}
+
 int	main(int arg_count, char **arg_values)
 {
 	t_sort	sort;
@@ -110,6 +120,9 @@ int	main(int arg_count, char **arg_values)
 	if (!is_sorted(&sort))
 		sort_integers(&sort);
 	print_moves(sort.moves);
+	///
+	print_list(sort.stack_a);
+	///
 	free_struct(&sort);
 	return (0);
 }
