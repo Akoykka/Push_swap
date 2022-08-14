@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/13 17:50:28 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/14 08:45:10 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,13 @@ NAME_CHECKER = checker
 
 SRC_LIST =	push_swap.c llist_functions.c llist_functions2.c operations.c\
 			validator.c compare.c get_travel.c align_stack_b.c \
-			utils.c structmaker.c 
+			utils.c structmaker.c
 
 #SRC_LIST += debug.c
 
-SRC_LIST_CHECKER = checker.c
+SRC_LIST_CHECKER = checker.c c_llist_functions.c c_llist_functions2.c \
+					c_push.c c_rotate.c c_rrotate.c c_swap.c c_utils.c \
+					c_validator.c c_makestruct.c
 
 OBJECT_LIST = $(SRC_LIST:%.c=%.o)
 OBJECT_LIST_CHECKER = $(SRC_LIST_CHECKER:%.c=%.o)
@@ -58,7 +60,7 @@ fclean:
 
 norm:
 	norminette $(SRC_LIST_CHECKER)
-	
+
 run:
 	./$(NAME) 9 8 1 2 4 5 6 7
 

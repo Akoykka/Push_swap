@@ -29,8 +29,9 @@ void print_list(t_llist *list);
 void llist_destroy(t_llist **list);
 void free_all(t_stacks *stacks);
 void ft_error(t_stacks *stacks);
+void	print_error(char *str);
 
-/// VALIDATION 
+/// VALIDATION
 int is_only_numbers(char *str);
 int is_bigger_than_max(char *str);
 int is_smaller_than_min(char *str);
