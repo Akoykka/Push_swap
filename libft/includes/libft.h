@@ -98,14 +98,9 @@ void 	ft_lst_push_top(t_list **src, t_list **dest);
 t_list	*ft_lst_get_tail(t_list *head);
 void 	ft_lst_move_one_to_tail(t_list **head, t_list *target);
 void 	ft_lst_reverse(t_list **head);
-
+t_list	*ft_findtail(t_list *start);
 void	*ft_memrcpy(void *dst, const void *src, size_t n);
 char	*ft_strndup(const char *s1, size_t n);
-t_list	*ft_findtail(t_list *start);
-
-t_mnode	*ft_mnode_new(void const *content, size_t content_size);
-void	ft_mnode_destroy(t_mnode **root);
-void	ft_mnode_insert(t_mnode *dst, t_mnode *new_mnode);
-
 int		*ft_invert_int_array(int *array, size_t size);
+int		get_next_line(const int fd, char **line);
 #endif
