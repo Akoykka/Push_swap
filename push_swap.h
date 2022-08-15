@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:52:12 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 18:46:52 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/15 13:16:36 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void 	add_move(t_sort *sort, int move_id, int direction);
 /// SORT
 void move_target_to_stack_b(t_sort *sort);
 void sort_integers(t_sort *sort);
+void simple_sort(t_sort *sort);
 
 ///ALIGN STACK
 int get_big(t_llist *list);

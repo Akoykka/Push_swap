@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 21:38:19 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/15 14:47:59 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	get_next_target(t_sort *sort)
 	ft_memset(&optm, 0, sizeof(t_optim));
 	optm.move_cost = 999999;
 	while (temp)
-	{	
+	{
 		get_travel_a(sort, &optm, temp);
 		get_travel_b(sort, &optm, temp->content);
 		compare_results(&optm, temp->content);
@@ -86,7 +86,7 @@ void	get_next_target(t_sort *sort)
 
 void	sort_integers(t_sort *sort)
 {
-	while (llist_len(sort->stack_a) > 2)
+	while (sort->stack_a)
 	{
 		get_next_target(sort);
 		move_target_to_stack_b(sort);
@@ -118,7 +118,12 @@ int	main(int arg_count, char **arg_values)
 	arg_values += 1;
 	make_struct(&sort, arg_count, arg_values);
 	if (!is_sorted(&sort))
-		sort_integers(&sort);
+	{
+		if (llist_len(sort.stack_a) < 7)
+			simple_sort(&sort);
+		else
+			sort_integers(&sort);
+	}
 	print_moves(sort.moves);
 	///
 	print_list(sort.stack_a);
