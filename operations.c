@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:09:35 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/13 17:42:39 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:50:40 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,20 @@ void	rotate_stack_b(t_sort *sort, int direction)
 		temp->next = NULL;
 		target->next = sort->stack_b;
 		sort->stack_b = target;
+	}
+}
+void swap(t_sort *sort, int stack_id)
+{
+	t_llist *first;
+	t_llist *second;
+
+	if (stack_id == STACK_A && llist_len(sort->stack_a) > 1)
+	{
+		first = sort->stack_a;
+		second = sort->stack_a->next;
+		first->next = second->next;
+		second->next = first;
+		sort->stack_a = second;
 	}
 }
 

@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/14 20:43:29 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/16 01:00:22 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME_CHECKER = checker
 
 SRC_LIST =	push_swap.c llist_functions.c llist_functions2.c operations.c\
 			validator.c compare.c get_travel.c align_stack_b.c \
-			utils.c structmaker.c
+			utils.c structmaker.c simple_sort.c
 
 #SRC_LIST += debug.c
 
@@ -30,7 +30,7 @@ COMPILER = gcc
 INCLUDES = -I .
 WWW = -Wall -Werror -Wextra
 #WWW += Wconversion
-FLAGS +=  -g -o
+FLAGS += -o
 LIB = -lft -L./libft
 
 all: $(NAME) $(NAME_CHECKER)
@@ -94,37 +94,3 @@ lldb:
 	lldb push_swap
 
 re: fclean all
-
-#NAME = checker
-
-#INCLUDES = -I "checker.h"
-
-#LIB = -lft -L./libft -lftprintf -L./libft/ft_printf
-#
-#SOURCES = checker.c
-
-#OBJECTS = checker.o
-
-#COMPILER = gcc
-
-#FLAGS = -g -o
-#FLAGS += -Wall -Werror -Wextra
-
-
-#all: $(NAME)
-
-#$(NAME):
-##	make -C libft/
-#	$(COMPILER) $(SOURCES) $(INCLUDES)  $(FLAGS) $(NAME) $(LIB)
-
-#clean:
-#	rm -f $(OBJECTS)
-
-#fclean:
-#	rm -f $(NAME)
-
-
-#re: fclean all
-
-
-

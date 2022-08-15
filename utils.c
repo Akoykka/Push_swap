@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:24:27 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 20:04:13 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:40:05 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	print_moves(t_llist *list)
 {
 	while (list)
 	{
+		if (list->content == SWAP_A)
+			write(1, "sa\n", 3);
 		if (list->content == PUSH_A)
 			write(1, "pa\n", 3);
 		if (list->content == PUSH_B)

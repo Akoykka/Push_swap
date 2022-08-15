@@ -6,15 +6,14 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:52:12 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/15 13:16:36 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/16 00:58:01 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-# include <stdlib.h>
-# include <stdio.h>
 # include "libft/includes/libft.h"
+# define SWAP_A		3
 # define STACK_A	4
 # define STACK_B	5
 # define FORWARD	1
@@ -86,6 +85,13 @@ t_llist	*char_array_to_llist(char **array, int size);
 void	make_struct(t_sort *sort, int argc, char **argv);
 int		is_sorted(t_sort *sort);
 
+/// SIMPLESORT
+int		simple_is_biggest_of(int value, t_llist *list);
+void 	simple_push_back_to_a(t_sort *sort, int travel);
+void	simple_align_stack_a(t_sort *sort);
+void	simple_sort_few(t_sort *sort, t_llist *list);
+int		simple_get_travel(t_sort *sort);
+void 	simple_sort(t_sort *sort);
 
 /// GET TARGET
 
@@ -115,12 +121,13 @@ void 	push_to_stack(t_sort *sort, int stack);
 void 	rotate_stack_a(t_sort *sort, int direction);
 void 	rotate_stack_b(t_sort *sort, int direction);
 void 	rotate_both_stacks(t_sort *sort, int direction);
+void 	swap(t_sort *sort, int stack_id);
 void 	add_move(t_sort *sort, int move_id, int direction);
 
 /// SORT
 void move_target_to_stack_b(t_sort *sort);
 void sort_integers(t_sort *sort);
-void simple_sort(t_sort *sort);
+
 
 ///ALIGN STACK
 int get_big(t_llist *list);

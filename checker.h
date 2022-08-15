@@ -1,7 +1,5 @@
 #ifndef CHECKER_H
 # define CHECKER_H
-# include <stdlib.h>
-# include <stdio.h>
 # include "libft/includes/libft.h"
 # include "libft/includes/get_next_line.h"
 
