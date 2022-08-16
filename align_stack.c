@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   align_stack_b.c                                    :+:      :+:    :+:   */
+/*   align_stack.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:22:10 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 00:57:38 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:37:27 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	simple_align_stack_a(t_sort *sort)
 
 	direction = FORWARD;
 	rotates = 0;
-	while(!is_sorted(sort))
+	while (!is_sorted(sort))
 	{
 		rotate_stack_a(sort, FORWARD);
 		++rotates;

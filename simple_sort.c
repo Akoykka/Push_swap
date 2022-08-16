@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 13:14:41 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 00:56:55 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:39:21 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	simple_is_biggest_of(int value, t_llist *list)
 	}
 	return (1);
 }
+
 int	simple_get_travel(t_sort *sort)
 {
 	t_llist	*temp;
@@ -31,19 +32,19 @@ int	simple_get_travel(t_sort *sort)
 	b_head = sort->stack_b->content;
 	travel = 0;
 	temp = sort->stack_a;
-
 	while (temp->next)
 	{
 		if (temp->content < b_head && temp->next->content > b_head)
 			return (travel + 1);
 		if (simple_is_biggest_of(temp->content, sort->stack_a)
 			&& (b_head > temp->content || b_head < temp->next->content))
-			return( travel + 1);
+			return (travel + 1);
 		++travel;
 		temp = temp->next;
 	}
 	return (0);
 }
+
 void	simple_sort_few(t_sort *sort, t_llist *list)
 {
 	int	loop;
@@ -64,13 +65,12 @@ void	simple_sort_few(t_sort *sort, t_llist *list)
 	}
 }
 
-void simple_push_back_to_a(t_sort *sort, int travel)
+void	simple_push_back_to_a(t_sort *sort, int travel)
 {
-	int direction;
-	int loop;
+	int	direction;
+	int	loop;
 
-	if (travel &&
-		travel > (llist_len(sort->stack_a) / 2 ))
+	if (travel && travel > (llist_len(sort->stack_a) / 2))
 	{
 		loop = llist_len(sort->stack_a) - travel;
 		direction = BACKWARD;

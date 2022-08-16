@@ -1,4 +1,5 @@
-input="./three_to_five"
+#first parameter is filename for randomized number lists 
+#just put them on one line
 linenbr=1
 while read -r line
 do
@@ -6,4 +7,4 @@ do
 	let "linenbr"++
 	./push_swap "$line" | wc -l
 	./push_swap "$line" | ./checker "$line"
-done < "$input"
+done < "$1"

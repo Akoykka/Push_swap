@@ -6,7 +6,7 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/16 01:00:22 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/16 16:36:38 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = push_swap
 NAME_CHECKER = checker
 
 SRC_LIST =	push_swap.c llist_functions.c llist_functions2.c operations.c\
-			validator.c compare.c get_travel.c align_stack_b.c \
+			validator.c compare.c get_travel.c align_stack.c \
 			utils.c structmaker.c simple_sort.c
 
 #SRC_LIST += debug.c
@@ -53,13 +53,13 @@ clean:
 	@rm -f $(OBJECT_LIST)
 	@rm -f $(OBJECT_LIST_CHECKER)
 	@echo "Object files removed"
-fclean:
+fclean: clean
 	make fclean -C libft/
 	rm -f $(NAME)
 	rm -f $(NAME_CHECKER)
 
 norm:
-	norminette $(SRC_LIST_CHECKER)
+	norminette $(SRC_LIST_CHECKER) $(SRC_LIST)
 
 run:
 	./$(NAME) 9 8 1 2 4 5 6 7

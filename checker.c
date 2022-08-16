@@ -6,13 +6,13 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:02:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/14 18:11:48 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:34:50 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-void error_n_exit(t_stacks *stacks)
+void	error_n_exit(t_stacks *stacks)
 {
 	write(2, "Error\n", 6);
 	llist_destroy(&stacks->stack_a);
