@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:22:10 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 16:37:27 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 14:08:25 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	align_stack_b(t_sort *sort)
 	while (distance)
 	{
 		rotate_stack_b(sort, direction);
-		add_move(sort, ROTATE_B, direction);
+		print_move(ROTATE_B, direction);
 		--distance;
 	}
 }
@@ -77,5 +77,5 @@ void	simple_align_stack_a(t_sort *sort)
 		direction = BACKWARD;
 	}
 	while (rotates--)
-		add_move(sort, ROTATE_A, direction);
+		print_move(ROTATE_A, direction);
 }

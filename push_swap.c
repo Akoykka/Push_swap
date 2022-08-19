@@ -6,98 +6,95 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:23:00 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 01:01:04 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:40:16 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	add_move(t_sort *sort, int move_id, int direction)
+void	print_move(int move_id, int direction)
 {
-	t_llist	*new;
-
-	new = llist_new(move_id);
-	if (!new)
-	{
-		llist_destroy(&sort->stack_a);
-		sort->stack_a = NULL;
-		llist_destroy(&sort->stack_b);
-		sort->stack_b = NULL;
-		llist_destroy(&sort->moves);
-		sort->moves = NULL;
-		print_error("Error\n");
-		exit(1);
-	}
-	if (direction == BACKWARD)
-		new->content += 1;
-	llist_add(&sort->moves, new);
+	if (move_id == ROTATE_A && direction == FORWARD)
+		write(1, "ra\n", 3);
+	if (move_id == ROTATE_A && direction == BACKWARD)
+		write(1, "rra\n", 4);
+	if (move_id == ROTATE_B && direction == FORWARD)
+		write(1, "rb\n", 3);
+	if (move_id == ROTATE_B && direction == BACKWARD)
+		write(1, "rrb\n", 4);
+	if (move_id == ROTATE_BOTH && direction == FORWARD)
+		write(1, "rr\n", 3);
+	if (move_id == ROTATE_BOTH && direction == BACKWARD)
+		write(1, "rrr\n", 4);
+	if (move_id == PUSH_A && direction == FORWARD)
+		write(1, "pa\n", 3);
+	if (move_id == PUSH_B && direction == FORWARD)
+		write(1, "pb\n", 3);
+	if (move_id == SWAP_A && direction == FORWARD)
+		write(1, "sa\n", 3);
 }
 
-void	move_target_to_stack_b(t_sort *sort)
+void	move_target_to_stack_b(t_sort *sort, t_optim *next_move)
 {
-	while (sort->a_rotation || sort->b_rotation)
+	while (next_move->best_a || next_move->best_b)
 	{
-		if (sort->a_direction == sort->b_direction
-			&& sort->a_rotation && sort->b_rotation)
+		if (next_move->a_direction == next_move->b_direction
+			&& next_move->best_a && next_move->best_b)
 		{
-			rotate_both_stacks(sort, sort->a_direction);
-			add_move(sort, ROTATE_BOTH, sort->a_direction);
-			sort->a_rotation--;
-			sort->b_rotation--;
+			rotate_both_stacks(sort, next_move->a_direction);
+			print_move(ROTATE_BOTH, next_move->a_direction);
+			next_move->best_a--;
+			next_move->best_b--;
 		}
-		else if (sort->a_rotation)
+		else if (next_move->best_a)
 		{
-			rotate_stack_a(sort, sort->a_direction);
-			add_move(sort, ROTATE_A, sort->a_direction);
-			sort->a_rotation--;
+			rotate_stack_a(sort, next_move->a_direction);
+			print_move(ROTATE_A, next_move->a_direction);
+			next_move->best_a--;
 		}
 		else
 		{
-			rotate_stack_b(sort, sort->b_direction);
-			add_move(sort, ROTATE_B, sort->b_direction);
-			sort->b_rotation--;
+			rotate_stack_b(sort, next_move->b_direction);
+			print_move(ROTATE_B, next_move->b_direction);
+			next_move->best_b--;
 		}
 	}
 	push_to_stack(sort, STACK_B);
-	add_move(sort, PUSH_B, FORWARD);
+	print_move(PUSH_B, FORWARD);
 }
 
-void	get_next_target(t_sort *sort)
+void	get_next_target(t_sort *sort, t_optim *next_move)
 {
-	t_optim	optm;
+	
 	t_llist	*temp;
 
 	temp = sort->stack_a;
-	ft_memset(&optm, 0, sizeof(t_optim));
-	optm.move_cost = 999999;
+	ft_memset(next_move, 0, sizeof(t_optim));
+	next_move->move_cost = 999999;
 	while (temp)
 	{
-		get_travel_a(sort, &optm, temp);
-		get_travel_b(sort, &optm, temp->content);
-		compare_results(&optm, temp->content);
+		get_travel_a(sort, next_move, temp);
+		get_travel_b(sort, next_move, temp->content);
+		compare_results(next_move, temp->content);
 		temp = temp->next;
 	}
-	sort->curr_target = optm.best_target;
-	sort->a_direction = optm.a_direction;
-	sort->a_rotation = optm.best_a;
-	sort->b_direction = optm.b_direction;
-	sort->b_rotation = optm.best_b;
 }
 
 void	sort_integers(t_sort *sort)
 {
+	t_optim	next_move;
+
 	while (sort->stack_a)
 	{
-		get_next_target(sort);
-		move_target_to_stack_b(sort);
+		get_next_target(sort, &next_move);
+		move_target_to_stack_b(sort, &next_move);
 	}
 	align_stack_b(sort);
 	while (sort->stack_b)
 	{
 		push_to_stack(sort, STACK_A);
-		add_move(sort, PUSH_A, FORWARD);
+		print_move(PUSH_A, FORWARD);
 	}
-	llist_rev(&sort->moves);
 }
 
 int	main(int arg_count, char **arg_values)
@@ -106,7 +103,7 @@ int	main(int arg_count, char **arg_values)
 
 	arg_count -= 1;
 	arg_values += 1;
-	make_struct(&sort, arg_count, arg_values);
+	make_list(&sort, arg_count, arg_values);
 	if (!is_sorted(&sort))
 	{
 		if (llist_len(sort.stack_a) < 11)
@@ -114,7 +111,6 @@ int	main(int arg_count, char **arg_values)
 		else
 			sort_integers(&sort);
 	}
-	print_moves(sort.moves);
-	free_struct(&sort);
+	llist_destroy(&sort.stack_a);
 	return (0);
 }

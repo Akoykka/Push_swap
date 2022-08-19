@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:27:09 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/15 13:37:42 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:29:30 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	getarrlen(char **str)
 	return (len);
 }
 
-void	make_struct(t_sort *sort, int argc, char **argv)
+void	make_list(t_sort *sort, int argc, char **argv)
 {
 	char	**temp;
 
@@ -67,5 +67,4 @@ void	make_struct(t_sort *sort, int argc, char **argv)
 		exit(1);
 	}
 	sort->stack_b = NULL;
-	sort->moves = NULL;
 }

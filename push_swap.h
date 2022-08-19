@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:52:12 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 00:58:01 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:43:09 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,9 @@ typedef struct s_llist
 
 typedef struct s_sort
 {
-	t_llist		*moves;
 	t_llist		*stack_a;
 	t_llist		*stack_b;
-
-	int			a_direction;
-	int			a_rotation;
-	int			b_direction;
-	int			b_rotation;
-	int			curr_target;
 }				t_sort;
-
-//OPERATIONS
-void 	push_to_stack(t_sort *sort, int stack);
-void 	rotate_stack_a(t_sort *sort, int direction);
-void 	rotate_stack_b(t_sort *sort, int direction);
-void 	rotate_both_stacks(t_sort *sort, int direction);
 
 //VALIDATOR
 int		is_only_numbers(char *str);
@@ -74,16 +61,15 @@ int		is_dup(char **numbers, int index, int size);
 int		is_valid_input(char **input, int size);
 
 /// UTILS ??
-void	free_struct(t_sort *sort);
 void	print_error(char *str);
 void	free_array(char **str);
-void	print_moves(t_llist *list);
+void	print_move(int move_id, int direction);
+int		is_sorted(t_sort *sort);
 
-/// STRUCT MAKER
+/// MAKE_LIST
 int		getarrlen(char **str);
 t_llist	*char_array_to_llist(char **array, int size);
-void	make_struct(t_sort *sort, int argc, char **argv);
-int		is_sorted(t_sort *sort);
+void	make_list(t_sort *sort, int argc, char **argv);
 
 /// SIMPLESORT
 int		simple_is_biggest_of(int value, t_llist *list);
@@ -94,27 +80,16 @@ int		simple_get_travel(t_sort *sort);
 void 	simple_sort(t_sort *sort);
 
 /// GET TARGET
-
 void 	get_travel_a(t_sort *sort, t_optim *optm, t_llist *target);
 void 	get_travel_b(t_sort *sort, t_optim *optm, int value);
-void 	get_next_target(t_sort *sort);
+void	get_next_target(t_sort *sort, t_optim *next_move);
 
 /// COMPARE
-
 void compare_both_forward(t_optim *optm, int value);
 void compare_both_backward(t_optim *optm, int value);
 void compare_forward_a_backward_b(t_optim *optm, int value);
 void compare_forward_b_backward_a(t_optim *optm, int value);
 void compare_results(t_optim *optm, int value);
-
-/// LLIST FUNCTIONS
-t_llist	*get_llist_tail(t_llist *list);
-t_llist *llist_new(int content);
-size_t	llist_len(t_llist *list);
-void	llist_add_tail(t_llist *head, t_llist *new); //onestar here might be bug
-void	llist_destroy(t_llist **list);
-void 	llist_rev(t_llist **head);
-void	llist_add(t_llist **list, t_llist *new);
 
 /// OPERATIONS ROTATE & PUSH
 void 	push_to_stack(t_sort *sort, int stack);
@@ -122,16 +97,21 @@ void 	rotate_stack_a(t_sort *sort, int direction);
 void 	rotate_stack_b(t_sort *sort, int direction);
 void 	rotate_both_stacks(t_sort *sort, int direction);
 void 	swap(t_sort *sort, int stack_id);
-void 	add_move(t_sort *sort, int move_id, int direction);
 
-/// SORT
-void move_target_to_stack_b(t_sort *sort);
+/// SORT 
+void move_target_to_stack_b(t_sort *sort, t_optim *next_move);
 void sort_integers(t_sort *sort);
-
 
 ///ALIGN STACK
 int get_big(t_llist *list);
 int get_dist_to_big(t_llist *list, int big);
 void align_stack_b(t_sort *sort);
 
+/// LLIST FUNCTIONS
+t_llist	*get_llist_tail(t_llist *list);
+t_llist *llist_new(int content);
+size_t	llist_len(t_llist *list);
+void	llist_destroy(t_llist **list);
+void 	llist_rev(t_llist **head);
+void	llist_add(t_llist **list, t_llist *new);
 #endif

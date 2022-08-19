@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 13:14:41 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 16:39:21 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 14:11:43 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	simple_sort_few(t_sort *sort, t_llist *list)
 	if (!sorted)
 	{
 		swap(sort, STACK_A);
-		add_move(sort, SWAP_A, FORWARD);
+		print_move(SWAP_A, FORWARD);
 	}
 }
 
@@ -82,10 +82,10 @@ void	simple_push_back_to_a(t_sort *sort, int travel)
 	}
 	while (loop--)
 	{
-		add_move(sort, ROTATE_A, direction);
+		print_move(ROTATE_A, direction);
 		rotate_stack_a(sort, direction);
 	}
-	add_move(sort, PUSH_A, FORWARD);
+	print_move(PUSH_A, FORWARD);
 	push_to_stack(sort, STACK_A);
 }
 
@@ -97,7 +97,7 @@ void	simple_sort(t_sort *sort)
 	while (llist_len(sort->stack_a) > 3)
 	{
 		push_to_stack(sort, STACK_B);
-		add_move(sort, PUSH_B, FORWARD);
+		print_move(PUSH_B, FORWARD);
 	}
 	simple_sort_few(sort, sort->stack_a);
 	while (sort->stack_b)
@@ -106,5 +106,4 @@ void	simple_sort(t_sort *sort)
 		simple_push_back_to_a(sort, travel);
 	}
 	simple_align_stack_a(sort);
-	llist_rev(&sort->moves);
 }

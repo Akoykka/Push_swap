@@ -6,7 +6,7 @@
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:24:27 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/15 19:40:05 by akoykka          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:36:24 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	free_struct(t_sort *sort)
 	sort->stack_a = NULL;
 	llist_destroy(&sort->stack_b);
 	sort->stack_b = NULL;
-	llist_destroy(&sort->moves);
-	sort->moves = NULL;
 }
 
 void	print_error(char *str)
@@ -54,30 +52,4 @@ int	is_sorted(t_sort *sort)
 		temp = temp->next;
 	}
 	return (1);
-}
-
-void	print_moves(t_llist *list)
-{
-	while (list)
-	{
-		if (list->content == SWAP_A)
-			write(1, "sa\n", 3);
-		if (list->content == PUSH_A)
-			write(1, "pa\n", 3);
-		if (list->content == PUSH_B)
-			write(1, "pb\n", 3);
-		if (list->content == ROTATE_A)
-			write(1, "ra\n", 3);
-		if (list->content == RROTATE_A)
-			write(1, "rra\n", 4);
-		if (list->content == ROTATE_B)
-			write(1, "rb\n", 3);
-		if (list->content == RROTATE_B)
-			write(1, "rrb\n", 4);
-		if (list->content == ROTATE_BOTH)
-			write(1, "rr\n", 3);
-		if (list->content == RROTATE_BOTH)
-			write(1, "rrr\n", 4);
-		list = list->next;
-	}
 }

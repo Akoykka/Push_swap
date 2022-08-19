@@ -6,12 +6,14 @@
 #    By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/13 11:26:04 by akoykka           #+#    #+#              #
-#    Updated: 2022/08/16 16:36:38 by akoykka          ###   ########.fr        #
+#    Updated: 2022/08/19 15:34:09 by akoykka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
 NAME_CHECKER = checker
+
+HEADER_LIST = checker.h push_swap.h
 
 SRC_LIST =	push_swap.c llist_functions.c llist_functions2.c operations.c\
 			validator.c compare.c get_travel.c align_stack.c \
@@ -35,7 +37,7 @@ LIB = -lft -L./libft
 
 all: $(NAME) $(NAME_CHECKER)
 
-$(NAME): $(OBJECT_LIST) $(SRC_LIST) Makefile
+$(NAME): $(OBJECT_LIST) $(SRC_LIST) $(HEADER_LIST) Makefile
 	make -C libft/
 	$(COMPILER) $(WWW) $(OBJECT_LIST) $(INCLUDES) $(FLAGS) $(NAME) $(LIB)
 
