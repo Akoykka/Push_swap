@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_invert_int_array.c                              :+:      :+:    :+:   */
+/*   c_llist_functions2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akoykka <akoykka@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/28 22:04:58 by akoykka           #+#    #+#             */
-/*   Updated: 2022/08/16 16:42:12 by akoykka          ###   ########.fr       */
+/*   Created: 2022/08/13 17:20:39 by akoykka           #+#    #+#             */
+/*   Updated: 2022/08/14 08:26:33 by akoykka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "checker.h"
 
-int	*ft_invert_int_array(int *array, size_t size)
+t_llist	*get_llist_tail(t_llist *list)
 {
-	size_t	high;
-	size_t	low;
-	int		temp;
+	t_llist	*temp;
 
-	if (!array || !size)
-		return (0);
-	high = size - 1;
-	low = 0;
-	while (high > low)
+	temp = list;
+	if (!temp)
+		return (NULL);
+	while (temp->next)
+		temp = temp->next;
+	return (temp);
+}
+
+void	llist_add_tail(t_llist *head, t_llist *new)
+{
+	if (!head)
 	{
-		temp = array[high];
-		array[high] = array[low];
-		array[low] = temp;
-		--high;
-		++low;
+		head = new;
+		return ;
 	}
-	return (array);
+	(get_llist_tail(head))->next = new;
+	new->next = NULL;
 }
