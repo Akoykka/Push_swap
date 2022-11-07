@@ -1,11 +1,11 @@
 # Push_swap
-Project Push-Swap - Sorting 2 stacks with limited methods - Helsinki Hive (42 school) project;
+Project Push-Swap - Sorting integers with limited methods - Helsinki Hive (42 school) project;
 
 Project time: ~200 hours.
 
 Subject:  
-Writing a program to check valid output (checker) and  
-second program to sort a stack with help of second stack, using least amount of moves (push_swap)
+Write a program to check valid output (checker) 
+Write a program to sort list of integers using 2 stacks with least amount of moves (push_swap)
 
 Restrictions: 
 
